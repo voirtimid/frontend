@@ -1,18 +1,25 @@
 import React from 'react';
-import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
-import logo from '../../logo.svg';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import './App.css';
 
 import Header from "../Header/Header";
+import MachinesApp from "../MachinesApp/MachinesApp";
 
-function App() {
-  return (
-    <div className="App">
-        <Router>
-            <Header/>
-        </Router>
-    </div>
-  );
+class App extends React.Component {
+    render() {
+        return (
+            <div className="App">
+                <Router>
+                    <Header/>
+                    <Switch>
+                        <Route path={"/machines"}>
+                            <MachinesApp />
+                        </Route>
+                    </Switch>
+                </Router>
+            </div>
+        );
+    }
 }
 
 export default App;
