@@ -1,9 +1,9 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
-import MachinesList from "../Machines/MachinesList/MachinesList";
+import MachinesList from "./Machines/MachinesList/MachinesList";
 import MachineService from "../../service/MachineService";
-import MachineAdd from "../Machines/MachineAdd/MachineAdd";
-import MachineEdit from "../Machines/MachineEdit/MachineEdit";
+import MachineAdd from "./Machines/MachineAdd/MachineAdd";
+import MachineEdit from "./Machines/MachineEdit/MachineEdit";
 
 class MachinesApp extends React.Component {
 

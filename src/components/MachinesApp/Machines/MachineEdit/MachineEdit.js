@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
-import MachineService from "../../../service/MachineService";
+import MachineService from "../../../../service/MachineService";
 
 const MachineEdit = (props) => {
 
