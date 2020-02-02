@@ -1,23 +1,24 @@
 import React, {useState} from "react";
-import {useHistory, useParams} from "react-router";
+import {useHistory} from "react-router";
 
-const MachineAdd = (props) => {
+const EmployeeAdd = (props) => {
 
     const history = useHistory();
 
-    const emptyMachine = {
-        name: "",
-        shortName: "",
-        description: ""
+    const emptyEmployee = {
+        firstName: "",
+        lastName: "",
+        isAdmin: false,
+        positionDescription: ""
     };
 
-    const [machine, setMachine] = useState(emptyMachine);
+    const [employee, setEmployee] = useState(emptyEmployee);
 
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        props.onCreate(machine);
-        history.push("/machines");
+        props.onCreate(employee);
+        history.push("/employees");
     };
 
     const handleInputChange = (event) => {
@@ -33,41 +34,41 @@ const MachineAdd = (props) => {
             value = target.value;
         }
 
-        const changedMachine = {
-            ...machine,
+        const changedEmployee = {
+            ...employee,
             [name]: value
         };
 
-        setMachine(changedMachine);
+        setEmployee(changedEmployee);
     };
 
     const cancelGoBack = () => {
-        history.push("/machines");
+        history.push("/employees");
     };
 
     return (
         <div className="row">
             <form className="card" onSubmit={onFormSubmit}>
-                <h4 className="text-upper text-left">Add Machine</h4>
+                <h4 className="text-upper text-left">Add Employee</h4>
                 <div className="form-group row">
-                    <label htmlFor="name" className="col-sm-4 offset-sm-1 text-left">Machine name</label>
+                    <label htmlFor="firstName" className="col-sm-4 offset-sm-1 text-left">First Name</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="name" name="name"
-                               placeholder="Machine name" value={machine.name} onChange={handleInputChange}/>
+                        <input type="text" className="form-control" id="firstName" name="firstName"
+                               placeholder="First Name" value={employee.firstName} onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="form-group row">
-                    <label htmlFor="shortName" className="col-sm-4 offset-sm-1 text-left">Short name</label>
+                    <label htmlFor="lastName" className="col-sm-4 offset-sm-1 text-left">Last Name</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="shortName" name="shortName"
-                               placeholder="Short Name" value={machine.shortName} onChange={handleInputChange}/>
+                        <input type="text" className="form-control" id="lastName" name="lastName"
+                               placeholder="Short Name" value={employee.lastName} onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="form-group row">
-                    <label htmlFor="description" className="col-sm-4 offset-sm-1 text-left">Description</label>
+                    <label htmlFor="positionDescription" className="col-sm-4 offset-sm-1 text-left">Position Description</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="description" name="description"
-                               placeholder="Description" value={machine.description} onChange={handleInputChange}/>
+                        <input type="text" className="form-control" id="positionDescription" name="positionDescription"
+                               placeholder="Position Description" value={employee.positionDescription} onChange={handleInputChange}/>
                     </div>
                 </div>
 
@@ -94,7 +95,6 @@ const MachineAdd = (props) => {
             </form>
         </div>
     );
-
 };
 
-export default MachineAdd;
+export default EmployeeAdd;

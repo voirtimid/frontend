@@ -17,15 +17,13 @@ class MachinesApp extends React.Component {
         this.deleteMachine = this.deleteMachine.bind(this);
     }
 
-    componentDidMount()
-    {
+    componentDidMount() {
         this.loadMachines();
     }
 
     loadMachines()
     {
         MachineService.getAllMachines().then(data => {
-            console.log(data);
             this.setState(() => ({
                 machines: data.data
             }))
@@ -45,7 +43,6 @@ class MachinesApp extends React.Component {
 
     updateMachine(machineId, editedMachine) {
         MachineService.updateMachine(machineId, editedMachine).then(response => {
-            console.log(response);
             const updatedMachine = response.data;
             this.setState(prevState => {
                 const newMachines = prevState.machines.map(m => {
@@ -68,7 +65,6 @@ class MachinesApp extends React.Component {
                 const newMachines = prevState.machines.filter(m => {
                     return m.machineId !== deletedMachine.machineId;
                 });
-                console.log(newMachines);
                 return {
                     "machines": newMachines
                 }

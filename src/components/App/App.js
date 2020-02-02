@@ -4,6 +4,7 @@ import './App.css';
 
 import Header from "../Header/Header";
 import MachinesApp from "../MachinesApp/MachinesApp";
+import EmployeesApp from "../EmployeesApp/EmployeesApp";
 
 class App extends React.Component {
     render() {
@@ -14,6 +15,9 @@ class App extends React.Component {
                     <Switch>
                         <Route path={"/machines"}>
                             <MachinesApp />
+                        </Route>
+                        <Route path={"/employees"}>
+                            <EmployeesApp />
                         </Route>
                     </Switch>
                 </Router>

@@ -1,25 +1,25 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const Machine = (props) => {
+const Employee = (props) => {
     return (
         <tr>
-            <td>{props.machine.name}</td>
-            <td>{props.machine.shortName}</td>
-            <td>{props.machine.description}</td>
+            <td>{props.employee.firstName}</td>
+            <td>{props.employee.lastName}</td>
+            <td>{props.employee.positionDescription}</td>
             <td>
                 <Link className="btn btn-sm btn-secondary"
-                      to={"/machines/" + props.machine.machineId + "/edit"}>
+                      to={"/employees/" + props.employee.employeeId + "/edit"}>
                     <span className="fa fa-edit"/>
                     <span><strong>Edit</strong></span>
                 </Link>
                 <button className="btn btn-sm btn-outline-secondary"
-                        onClick={() => props.onDelete(props.machine.machineId)}>
+                        onClick={() => props.onDelete(props.employee.employeeId)}>
                     <span className="fa fa-remove"/>
                     <span><strong>Remove</strong></span>
                 </button>
                 <Link className="btn btn-sm btn-outline-dark"
-                      to={"/machines/" + props.machine.machineId + "/details"}>
+                      to={"/employees/" + props.employee.employeeId + "/details"}>
                     <span><strong>Details</strong></span>
                 </Link>
             </td>
@@ -27,4 +27,4 @@ const Machine = (props) => {
     );
 };
 
-export default Machine;
+export default Employee;
