@@ -34,7 +34,7 @@ class EmployeesApp extends React.Component {
     createEmployee(employee) {
         EmployeeService.createEmployee(employee).then(response => {
             this.setState(prevState => {
-                const newEmployees = [...prevState.employees, employee];
+                const newEmployees = [...prevState.employees, response.data];
                 return {
                     "employees": newEmployees
                 }

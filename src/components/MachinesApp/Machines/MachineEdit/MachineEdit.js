@@ -55,21 +55,21 @@ const MachineEdit = (props) => {
     return (
         <div className="row">
             <form className="card" onSubmit={onFormSubmit}>
-                <h4 className="text-upper text-left">Edit Ingredient</h4>
+                <h4 className="text-upper text-left">Edit Machine</h4>
                 <div className="form-group row">
-                    <label htmlFor="amount" className="col-sm-4 offset-sm-1 text-left">Name</label>
+                    <label htmlFor="name" className="col-sm-4 offset-sm-1 text-left">Name</label>
                     <div className="col-sm-6">
                         <input type="text" className="form-control" id="name" name="name" placeholder="Name" value={machine.name} onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="form-group row">
-                    <label htmlFor="amount" className="col-sm-4 offset-sm-1 text-left">Short Name</label>
+                    <label htmlFor="shortName" className="col-sm-4 offset-sm-1 text-left">Short Name</label>
                     <div className="col-sm-6">
                         <input type="text" className="form-control" id="shortName" name="shortName" placeholder="Short Name" value={machine.shortName} onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="form-group row">
-                    <label htmlFor="amount" className="col-sm-4 offset-sm-1 text-left">Description</label>
+                    <label htmlFor="description" className="col-sm-4 offset-sm-1 text-left">Description</label>
                     <div className="col-sm-6">
                         <input type="text" className="form-control" id="description" name="description" placeholder="Description" value={machine.description} onChange={handleInputChange}/>
                     </div>

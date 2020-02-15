@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useHistory, useParams} from "react-router";
+import {useHistory} from "react-router";
 
 const MachineAdd = (props) => {
 

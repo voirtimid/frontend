@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 const EmployeesList = (props) => {
 
-    const employees = props.employees.map(employee => <Employee key={employee.employeeId} employee={employee} onDelete={props.onDelete}/>)
+    const employees = props.employees.map(employee => <Employee key={employee.employeeId} employee={employee} onDelete={props.onDelete}/>);
 
     let employeesTable = (
         <div className="table-responsive">

@@ -33,7 +33,7 @@ class MachinesApp extends React.Component {
     createMachine(machine) {
         MachineService.createMachine(machine).then(response => {
             this.setState(prevState => {
-                const newMachines = [...prevState.machines, machine];
+                const newMachines = [...prevState.machines, response.data];
                 return {
                     "machines": newMachines
                 }

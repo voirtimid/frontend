@@ -47,9 +47,9 @@ const EmployeeAdd = (props) => {
     };
 
     return (
-        <div className="row">
+        <div>
+            <h4 className="text-upper text-left">Add Employee</h4>
             <form className="card" onSubmit={onFormSubmit}>
-                <h4 className="text-upper text-left">Add Employee</h4>
                 <div className="form-group row">
                     <label htmlFor="firstName" className="col-sm-4 offset-sm-1 text-left">First Name</label>
                     <div className="col-sm-6">
