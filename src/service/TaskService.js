@@ -5,8 +5,15 @@ class TaskService {
         return axios.get(`/api/tasks`);
     }
 
-    static createTask(task) {
-        return axios.post(`/api/tasks`, task);
+    static createTask(task, jobId, employeeId, machineId, cncCodeId) {
+        const taskDTO = {
+            task: task,
+            jobId: jobId,
+            employeeId: employeeId,
+            machineId: machineId,
+            cncCodeId: cncCodeId
+        };
+        return axios.post(`/api/tasks`, taskDTO);
     }
 
     static getTask(taskId) {
@@ -31,6 +38,18 @@ class TaskService {
 
     static addCncCodeToTask(taskId, cncId) {
         return axios.put(`/api/tasks/${taskId}/addCnc/${cncId}`);
+    }
+
+    static startWorkingOnTask(taskId) {
+        return axios.put(`/api/tasks/${taskId}/startWorkTime`)
+    }
+
+    static endWorkingOnTask(taskId) {
+        return axios.put(`/api/tasks/${taskId}/endWorkTime`);
+    }
+
+    static completeTask(taskId) {
+        return axios.put(`/api/tasks/${taskId}/complete`);
     }
 }
 

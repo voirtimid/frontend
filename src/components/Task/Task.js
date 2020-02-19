@@ -1,0 +1,75 @@
+import React, {useEffect, useState} from "react";
+import EmployeeService from "../../service/EmployeeService";
+import MachineService from "../../service/MachineService";
+
+const Task = (props) => {
+
+    const [task] = useState(props.task);
+
+    const calculateTotalWorkingTime = () => {
+        let seconds = Math.floor(task.totalWorkTime / 1000000000);
+        let minutes = 0;
+        let hours = 0;
+        if (seconds > 60) {
+            minutes = Math.floor(seconds / 60);
+            seconds %= 60;
+            if (minutes > 60) {
+                hours = Math.floor(minutes / 60);
+                minutes %= 60;
+            }
+        }
+        return `${hours} hours : ${minutes} minutes : ${seconds} seconds`;
+    };
+
+    const [employeeName, setEmployeeName] = useState("");
+    const [machineName, setMachineName] = useState("");
+    const [totalWorkTime] = useState(() => calculateTotalWorkingTime());
+    const [workInProgress, setWorkInProgress] = useState(props.task.workInProgress);
+    const [status, setStatus] = useState(props.task.finished);
+
+    useEffect(() => {
+        EmployeeService.getEmployee(props.task.employee.employeeId).then(response => {
+            setEmployeeName(response.data.firstName + " " + response.data.lastName)
+        })
+    }, []);
+
+    useEffect(() => {
+        MachineService.getMachine(props.task.machine.machineId).then(response => {
+            setMachineName(response.data.name + " - " + response.data.shortName);
+        })
+    }, []);
+
+
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+
+        props.onSubmit(workInProgress, task.taskId);
+        setWorkInProgress(!workInProgress);
+    };
+
+    const onTaskFinished = (e) => {
+        e.preventDefault();
+        props.onTaskFinished(task.taskId);
+        setStatus(!status);
+    };
+
+    return (
+        <tr>
+            <td>{props.task.taskName}</td>
+            <td>{employeeName}</td>
+            <td>{machineName}</td>
+            <td>{totalWorkTime}</td>
+            <td>{(status && "Finished") || "Not Finished"}</td>
+            <td>
+                <form onSubmit={onFormSubmit}>
+                    <button className="btn btn-sm btn-secondary"><span className="fas fa-clock">{(workInProgress && "End Working") || "Start Working"}</span></button>
+                </form>
+                <form onSubmit={onTaskFinished}>
+                    <button className="btn btn-sm btn-secondary"><span className="fas fa-clock">Complete Task</span></button>
+                </form>
+            </td>
+        </tr>
+    );
+};
+
+export default Task;

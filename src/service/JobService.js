@@ -24,6 +24,10 @@ class JobService {
     static addTaskToJob(jobId, task) {
         return axios.put(`/api/jobs/${jobId}/addTask`, task);
     }
+
+    static getAllTasksForJob(jobId) {
+        return axios.get(`/api/jobs/${jobId}//tasks`);
+    }
 }
 
 export default JobService;

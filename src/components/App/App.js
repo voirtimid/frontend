@@ -34,7 +34,6 @@ class App extends React.Component {
                     Subject: j.jobName
                 }
             });
-            console.log(localData);
             this.setState(() => ({
                 jobs: loadedJobs,
                 data: localData

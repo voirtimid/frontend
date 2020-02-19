@@ -4,6 +4,7 @@ import {Route, Switch} from "react-router";
 import JobsList from "./JobsList/JobsList";
 import JobAdd from "./JobAdd/JobAdd";
 import JobAddTask from "./JobAddTask/JobAddTask";
+import JobDetails from "./JobDetails/JobDetails";
 import TaskService from "../../service/TaskService";
 
 class JobsApp extends React.Component {
@@ -17,8 +18,7 @@ class JobsApp extends React.Component {
 
         this.createJob = this.createJob.bind(this);
         this.createTask = this.createTask.bind(this);
-        this.addEmployeeToTask = this.addEmployeeToTask.bind(this);
-        this.addMachineToTask = this.addMachineToTask.bind(this);
+        this.addTaskToJob = this.addTaskToJob.bind(this);
     }
 
     componentDidMount() {
@@ -45,31 +45,18 @@ class JobsApp extends React.Component {
     }
 
     createTask(jobId, task) {
-        TaskService.createTask(task).then(response => {
-            JobService.addTaskToJob(jobId, response.data);
+        console.log(task);
+        TaskService.createTask(task, jobId, task.employeeId, task.machineId, task.cncCodeId).then(response => {
+            console.log(response.data);
             this.setState(() => ({
                 task: response.data
-            }), () => this.addEmployeeToTask(jobId, task))
+            }), () => this.addTaskToJob(jobId))
         });
-        // JobService.addTaskToJob(jobId, task);
     }
 
-    addEmployeeToTask(jobId, task) {
-        JobService.addTaskToJob(jobId, task);
-        const taskId = this.state.task.taskId;
-        TaskService.addEmployeeToTask(taskId, task.employeeId).then(response => {
-            this.setState(() => ({
-                task: response.data
-            }), () => this.addMachineToTask(task))
-        })
-    }
-
-    addMachineToTask(task) {
-        const taskId = this.state.task.taskId;
-        TaskService.addMachineToTask(taskId, task.machineId).then(response => {
-            this.setState(() => ({
-                task: response.data
-            }))
+    addTaskToJob(jobId) {
+        JobService.addTaskToJob(jobId, this.state.task).then(response => {
+            console.log(response.data);
         })
     }
 
@@ -81,6 +68,7 @@ class JobsApp extends React.Component {
                         <Route path={"/jobs"} exact render={() => <JobsList jobs={this.state.jobs}/>} />
                         <Route path={"/jobs/new"} exact render={() => <JobAdd onCreate={this.createJob}/>}/>
                         <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>
+                        <Route path={"/jobs/:jobId/details"} exact render={() => <JobDetails />}/>
                     </Switch>
                 </div>
             </main>

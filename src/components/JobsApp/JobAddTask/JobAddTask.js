@@ -3,6 +3,7 @@ import {useHistory, useParams} from "react-router";
 import EmployeeService from "../../../service/EmployeeService";
 import MachineService from "../../../service/MachineService";
 import FileUploadService from "../../../service/FileUploadService";
+import CncService from "../../../service/CncService";
 
 const JobAddTask = (props) => {
 
@@ -15,7 +16,8 @@ const JobAddTask = (props) => {
         jobId: jobId.jobId,
         machineId: "",
         employeeId: "",
-        cncCodeId: "",
+        cncCodeId: 1,
+        cncCodeFileName: "",
         startDate: "",
         endDate: "",
         totalWorkTime: 0,
@@ -24,12 +26,13 @@ const JobAddTask = (props) => {
         pieceByMinute: "",
         priceByPiece: "",
         totalGain: "",
-        isFinished: false
+        isFinished: false,
+        workInProgress: false
     };
 
     const [task, setTask] = useState(emptyTask);
     const [employees, setEmployees] = useState([]);
-    const [cncCodes, setCncCodes] = useState([]);
+    const [cncCode, setCncCode] = useState([]);
     const [machines, setMachines] = useState([]);
 
     useEffect(() => {
@@ -74,6 +77,35 @@ const JobAddTask = (props) => {
 
         setTask(changedTask);
     };
+
+    // const handleInputChangeCNC = (event) => {
+    //     const target = event.target;
+    //     const name = target.name;
+    //     let value;
+    //
+    //     if (target.type === 'checkbox') {
+    //         value = target.checked;
+    //     } else if (target.type === 'number') {
+    //         value = Number(target.value);
+    //     } else {
+    //         value = target.value;
+    //     }
+    //
+    //     const cnc = {
+    //         fileName: value
+    //     };
+    //
+    //     CncService.createCnc(cnc).then(response => {
+    //         setCncCode(response.data);
+    //         const changedTask = {
+    //             ...task,
+    //             [name]: value,
+    //             cncCodeId: cncCode.cncCodeId
+    //         };
+    //         setTask(changedTask);
+    //     });
+    //
+    // };
 
     const onFileChangeHandler = (e) => {
         e.preventDefault();
@@ -151,6 +183,14 @@ const JobAddTask = (props) => {
                         {machinesDropDown}
                     </div>
                 </div>
+
+                {/*<div className="form-group row">*/}
+                {/*    <label htmlFor="cncCodeFileName" className="col-sm-4 offset-sm-1 text-left">CNC code</label>*/}
+                {/*    <div className="col-sm-6">*/}
+                {/*        <input type="text" className="form-control" id="cncCodeFileName" name="cncCodeFileName"*/}
+                {/*               placeholder="CNC Code file name" value={task.cncCodeFileName} onChange={handleInputChangeCNC}/>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
 
                 <div className="form-group row">
