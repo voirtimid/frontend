@@ -8,6 +8,7 @@ import EmployeesApp from "../EmployeesApp/EmployeesApp";
 import JobsApp from "../JobsApp/JobsApp";
 import CalendarApp from "../CalendarApp/CalendarApp";
 import JobService from "../../service/JobService";
+import UserManagementApp from "../UserManagementApp/UserManagementApp";
 
 class App extends React.Component {
 
@@ -56,8 +57,11 @@ class App extends React.Component {
                         <Route path={"/jobs"}>
                             <JobsApp />
                         </Route>
-                        <Route path={'/calendar'}>
+                        <Route path={"/calendar"}>
                             <CalendarApp data={this.state.data}/>
+                        </Route>
+                        <Route path={"/login"}>
+                            <UserManagementApp />
                         </Route>
                     </Switch>
                 </Router>

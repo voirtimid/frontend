@@ -24,6 +24,9 @@ const Job = (props) => {
                       to={"/jobs/" + props.job.jobId + "/details"}>
                     <span><strong>Details</strong></span>
                 </Link>
+                <Link className="btn btn-sm btn-outline-dark" to={"/jobs/" + props.job.jobId + "/addTask"}>
+                    <span><strong>Add Task</strong></span>
+                </Link>
             </td>
         </tr>
     );

@@ -1,30 +1,56 @@
-import React, {useState} from "react";
-import {useHistory} from "react-router";
+import React, {useEffect, useState} from "react";
+import {useHistory, useParams} from "react-router";
+import EmployeeService from "../../../service/EmployeeService";
+import MachineService from "../../../service/MachineService";
 import FileUploadService from "../../../service/FileUploadService";
 
-const JobAdd = (props) => {
+const JobAddTask = (props) => {
 
     const history = useHistory();
 
-    const emptyJob = {
-        jobName: "",
-        committeeName: "",
-        theirClaimId: "",
-        theirTechnology: "",
-        myTechnology: "",
-        image: "",
-        materials: "",
+    const jobId = useParams();
+
+    const emptyTask = {
+        taskName: "",
+        jobId: jobId.jobId,
+        machineId: "",
+        employeeId: "",
+        cncCodeId: "",
         startDate: "",
         endDate: "",
-        estimation: ""
+        totalWorkTime: 0,
+        measuringList: "",
+        usedTools: "",
+        pieceByMinute: "",
+        priceByPiece: "",
+        totalGain: "",
+        isFinished: false
     };
 
-    const [job, setJob] = useState(emptyJob);
+    const [task, setTask] = useState(emptyTask);
+    const [employees, setEmployees] = useState([]);
+    const [cncCodes, setCncCodes] = useState([]);
+    const [machines, setMachines] = useState([]);
+
+    useEffect(() => {
+        EmployeeService.getAllEmployees().then(response => {
+            console.log(response.data);
+            setEmployees(response.data);
+        })
+    }, []);
+
+    useEffect(() => {
+        MachineService.getAllMachines().then(response => {
+            setMachines(response.data);
+        })
+    }, []);
+
+
 
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        props.onCreate(job);
+        props.onCreate(jobId.jobId, task);
         history.push("/jobs");
     };
 
@@ -41,12 +67,12 @@ const JobAdd = (props) => {
             value = target.value;
         }
 
-        const changedJob = {
-            ...job,
+        const changedTask = {
+            ...task,
             [name]: value
         };
 
-        setJob(changedJob);
+        setTask(changedTask);
     };
 
     const onFileChangeHandler = (e) => {
@@ -68,12 +94,12 @@ const JobAdd = (props) => {
         let parts = value.split("\\");
         let fileName = parts[parts.length - 1];
 
-        const changedJob = {
-            ...job,
+        const changedTask = {
+            ...task,
             [name]: fileName
         };
 
-        setJob(changedJob);
+        setTask(changedTask);
 
     };
 
@@ -81,33 +107,51 @@ const JobAdd = (props) => {
         history.push("/jobs");
     };
 
+    let employeesDropDown = (
+        <select name="employeeId" id="employeeId" onChange={handleInputChange}>
+            <option disabled value="" selected>Select Employee</option>
+            {employees.map(e => {
+                return <option key={e.employeeId} value={e.employeeId}>{e.firstName} {e.lastName}</option>
+            })}
+        </select>
+    );
+
+    let machinesDropDown = (
+        <select name="machineId" id="machineId" onChange={handleInputChange}>
+            <option disabled value="" selected>Select Machine</option>
+            {machines.map(m => {
+                return <option key={m.machineId} value={m.machineId}>{m.name} - {m.shortName}</option>
+            })}
+        </select>
+    );
+
     return (
         <div>
-            <h4>Add Job</h4>
+            <h4>Add Task</h4>
             <form className='card' encType='multipart/form-data' onSubmit={onFormSubmit}>
+
                 <div className="form-group row">
-                    <label htmlFor="jobName" className="col-sm-4 offset-sm-1 text-left">Job Name</label>
+                    <label htmlFor="taskName" className="col-sm-4 offset-sm-1 text-left">Task Name</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="jobName" name="jobName"
-                               placeholder="Job Name" value={job.jobName} onChange={handleInputChange}/>
+                        <input type="text" className="form-control" id="taskName" name="taskName"
+                               placeholder="Task Name" value={task.taskName} onChange={handleInputChange}/>
                     </div>
                 </div>
 
                 <div className="form-group row">
-                    <label htmlFor="committeeName" className="col-sm-4 offset-sm-1 text-left">Committee Name</label>
+                    <label htmlFor="employeeId" className="col-sm-4 offset-sm-1 text-left">Choose employee for the task</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="committeeName" name="committeeName"
-                               placeholder="Committee Name" value={job.committeeName} onChange={handleInputChange}/>
+                        {employeesDropDown}
                     </div>
                 </div>
 
                 <div className="form-group row">
-                    <label htmlFor="theirClaimId" className="col-sm-4 offset-sm-1 text-left">Their Claim Id</label>
+                    <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the task</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="theirClaimId" name="theirClaimId"
-                               placeholder="Their Claim Id" value={job.theirClaimId} onChange={handleInputChange}/>
+                        {machinesDropDown}
                     </div>
                 </div>
+
 
                 <div className="form-group row">
                     <label htmlFor="theirTechnology" className="col-sm-4 offset-sm-1 text-left">Their Technology</label>
@@ -129,7 +173,7 @@ const JobAdd = (props) => {
                     <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
                     <div className="col-sm-6">
                         <input type="date" className="form-control" id="startDate" name="startDate"
-                               placeholder="Start Date" value={job.startDate} onChange={handleInputChange}/>
+                               placeholder="Start Date" value={task.startDate} onChange={handleInputChange}/>
                     </div>
                 </div>
 
@@ -137,15 +181,7 @@ const JobAdd = (props) => {
                     <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
                     <div className="col-sm-6">
                         <input type="date" className="form-control" id="endDate" name="endDate"
-                               placeholder="End Date" value={job.endDate} onChange={handleInputChange}/>
-                    </div>
-                </div>
-
-                <div className="form-group row">
-                    <label htmlFor="estimation" className="col-sm-4 offset-sm-1 text-left">Estimation</label>
-                    <div className="col-sm-6">
-                        <input type="number" className="form-control" id="estimation" name="estimation"
-                               placeholder="Estimation" value={job.estimation} onChange={handleInputChange}/>
+                               placeholder="End Date" value={task.endDate} onChange={handleInputChange}/>
                     </div>
                 </div>
 
@@ -177,4 +213,4 @@ const JobAdd = (props) => {
 
 };
 
-export default JobAdd;
+export default JobAddTask;

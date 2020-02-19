@@ -21,8 +21,8 @@ class JobService {
         return axios.delete(`/api/jobs/${jobId}`);
     }
 
-    static addTaskToJob(jobId, taskId) {
-        return axios.put(`/api/jobs/${jobId}/addTask/${taskId}`);
+    static addTaskToJob(jobId, task) {
+        return axios.put(`/api/jobs/${jobId}/addTask`, task);
     }
 }
 
