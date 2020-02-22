@@ -1,22 +1,30 @@
-import React, {useState} from "react";
-import {useHistory} from "react-router";
-import FileUploadService from "../../../service/FileUploadService";
+import React, {useEffect, useState} from "react";
+import {useHistory, useParams} from "react-router";
+import SketchService from "../../../service/SketchService";
+import JobService from "../../../service/JobService";
 
 const JobAdd = (props) => {
 
     const history = useHistory();
 
+    const sketchId = useParams().sketchId;
+
+    const [sketch, setSketch] = useState({});
+
+    useEffect(() => {
+        SketchService.getSketchById(sketchId).then(response => {
+            setSketch(response.data);
+        })
+    }, []);
+
     const emptyJob = {
         jobName: "",
-        committeeName: "",
-        theirClaimId: "",
-        theirTechnology: "",
-        myTechnology: "",
-        image: "",
-        materials: "",
+        sketchId: sketchId,
+        numberOfPieces: "",
         startDate: "",
         endDate: "",
-        estimation: ""
+        estimation: "",
+        isFinished: false
     };
 
     const [job, setJob] = useState(emptyJob);
@@ -24,8 +32,14 @@ const JobAdd = (props) => {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        props.onCreate(job);
-        history.push("/jobs");
+        const jobDTO = {
+            job: job,
+            sketchId: sketchId
+        };
+
+        JobService.createJob(jobDTO).then(response => {
+            history.push("/jobs");
+        });
     };
 
     const handleInputChange = (event) => {
@@ -49,34 +63,6 @@ const JobAdd = (props) => {
         setJob(changedJob);
     };
 
-    const onFileChangeHandler = (e) => {
-        e.preventDefault();
-
-        const file = e.target.files[0];
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        FileUploadService.uploadFile(formData).then(response => {
-            alert('File Upload Successfully');
-        });
-
-        const target = e.target;
-        const name = target.name;
-        const value = target.value;
-
-        let parts = value.split("\\");
-        let fileName = parts[parts.length - 1];
-
-        const changedJob = {
-            ...job,
-            [name]: fileName
-        };
-
-        setJob(changedJob);
-
-    };
-
     const cancelGoBack = () => {
         history.push("/jobs");
     };
@@ -93,37 +79,29 @@ const JobAdd = (props) => {
                     </div>
                 </div>
 
+                <br />
+                <hr />
+
                 <div className="form-group row">
-                    <label htmlFor="committeeName" className="col-sm-4 offset-sm-1 text-left">Committee Name</label>
+                    <label htmlFor="sketchName" className="col-sm-4 offset-sm-1 text-left">Sketch Name</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="committeeName" name="committeeName"
-                               placeholder="Committee Name" value={job.committeeName} onChange={handleInputChange}/>
+                        <a href={`/sketches/${sketchId}`}>{sketch.sketchName}</a>
                     </div>
                 </div>
 
+                <br />
+                <hr />
+
                 <div className="form-group row">
-                    <label htmlFor="theirClaimId" className="col-sm-4 offset-sm-1 text-left">Their Claim Id</label>
+                    <label htmlFor="numberOfPieces" className="col-sm-4 offset-sm-1 text-left">Број на парчиња</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="theirClaimId" name="theirClaimId"
-                               placeholder="Their Claim Id" value={job.theirClaimId} onChange={handleInputChange}/>
+                        <input type="number" className="form-control" id="numberOfPieces" name="numberOfPieces"
+                               placeholder="Број на парчиња" value={job.numberOfPieces} onChange={handleInputChange}/>
                     </div>
                 </div>
 
-                <div className="form-group row">
-                    <label htmlFor="theirTechnology" className="col-sm-4 offset-sm-1 text-left">Their Technology</label>
-                    <div className="col-sm-6">
-                        <input type="file" className="form-control" id="theirTechnology" name="theirTechnology"
-                               placeholder="Their Technology" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
-
-                <div className="form-group row">
-                    <label htmlFor="myTechnology" className="col-sm-4 offset-sm-1 text-left">My Technology</label>
-                    <div className="col-sm-6">
-                        <input type="file" className="form-control" id="myTechnology" name="myTechnology"
-                               placeholder="My Technology" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
+                <br />
+                <hr />
 
                 <div className="form-group row">
                     <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
@@ -133,6 +111,9 @@ const JobAdd = (props) => {
                     </div>
                 </div>
 
+                <br />
+                <hr />
+
                 <div className="form-group row">
                     <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
                     <div className="col-sm-6">
@@ -141,6 +122,9 @@ const JobAdd = (props) => {
                     </div>
                 </div>
 
+                <br />
+                <hr />
+
                 <div className="form-group row">
                     <label htmlFor="estimation" className="col-sm-4 offset-sm-1 text-left">Estimation</label>
                     <div className="col-sm-6">
@@ -148,6 +132,9 @@ const JobAdd = (props) => {
                                placeholder="Estimation" value={job.estimation} onChange={handleInputChange}/>
                     </div>
                 </div>
+
+                <br />
+                <hr />
 
                 <div className="form-group row">
                     <div

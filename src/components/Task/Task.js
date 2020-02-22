@@ -64,9 +64,12 @@ const Task = (props) => {
                 <form onSubmit={onFormSubmit}>
                     <button className="btn btn-sm btn-secondary"><span className="fas fa-clock">{(workInProgress && "End Working") || "Start Working"}</span></button>
                 </form>
+                {!status &&
                 <form onSubmit={onTaskFinished}>
-                    <button className="btn btn-sm btn-secondary"><span className="fas fa-clock">Complete Task</span></button>
+                    <button className="btn btn-sm btn-secondary"><span className="fas fa-clock">Complete Task</span>
+                    </button>
                 </form>
+                }
             </td>
         </tr>
     );

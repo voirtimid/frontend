@@ -9,6 +9,8 @@ import JobsApp from "../JobsApp/JobsApp";
 import CalendarApp from "../CalendarApp/CalendarApp";
 import JobService from "../../service/JobService";
 import UserManagementApp from "../UserManagementApp/UserManagementApp";
+import SketchesApp from "../SketchesApp/SketchesApp";
+import Footer from "../Footer/Footer";
 
 class App extends React.Component {
 
@@ -47,6 +49,9 @@ class App extends React.Component {
                 <Router>
                     <Header/>
                     <Switch>
+                        <Route path={"/sketches"}>
+                            <SketchesApp />
+                        </Route>
                         <Route path={"/machines"}>
                             <MachinesApp />
                         </Route>
@@ -63,6 +68,7 @@ class App extends React.Component {
                             <UserManagementApp />
                         </Route>
                     </Switch>
+                    {/*<Footer/>*/}
                 </Router>
             </div>
         );

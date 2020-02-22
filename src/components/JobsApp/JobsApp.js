@@ -2,7 +2,6 @@ import React from "react";
 import JobService from "../../service/JobService";
 import {Route, Switch} from "react-router";
 import JobsList from "./JobsList/JobsList";
-import JobAdd from "./JobAdd/JobAdd";
 import JobAddTask from "./JobAddTask/JobAddTask";
 import JobDetails from "./JobDetails/JobDetails";
 import TaskService from "../../service/TaskService";
@@ -15,8 +14,6 @@ class JobsApp extends React.Component {
             jobs: [],
             task: {}
         };
-
-        this.createJob = this.createJob.bind(this);
         this.createTask = this.createTask.bind(this);
         this.addTaskToJob = this.addTaskToJob.bind(this);
     }
@@ -30,17 +27,6 @@ class JobsApp extends React.Component {
             this.setState(() => ({
                 jobs: response.data
             }));
-        })
-    }
-
-    createJob(job) {
-        JobService.createJob(job).then(response => {
-            this.setState(prevState => {
-                const newJobs = [...prevState.jobs, response.data];
-                return {
-                    'jobs': newJobs
-                }
-            })
         })
     }
 
@@ -66,7 +52,6 @@ class JobsApp extends React.Component {
                 <div className="container">
                     <Switch>
                         <Route path={"/jobs"} exact render={() => <JobsList jobs={this.state.jobs}/>} />
-                        <Route path={"/jobs/new"} exact render={() => <JobAdd onCreate={this.createJob}/>}/>
                         <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>
                         <Route path={"/jobs/:jobId/details"} exact render={() => <JobDetails />}/>
                     </Switch>

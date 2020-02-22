@@ -12,10 +12,12 @@ const JobsList = (props) => {
                 <thead>
                 <tr>
                     <th scope="col">Job Name</th>
-                    <th scope="col">Committee Name</th>
+                    <th scope="col">Sketch Name</th>
                     <th scope="col">Start date</th>
                     <th scope="col">End date</th>
                     <th scope="col">Estimation</th>
+                    <th scope="col">Number of pieces</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -28,14 +30,14 @@ const JobsList = (props) => {
 
     return (
         <Fragment>
-            <h4 className="text-upper text-left row">Jobs</h4>
+            <h4 className="text-upper text-left row">Работни налози</h4>
 
             <div className="row">
                 {jobsTable}
             </div>
 
-            <Link className="btn btn-outline-secondary mb-3 row" to={"/jobs/new"}>
-                <span><strong>Add new job</strong></span>
+            <Link className="btn btn-outline-secondary mb-3 row" to={"/sketches"}>
+                <span><strong>Креирај нов работен налог</strong></span>
             </Link>
         </Fragment>
     );

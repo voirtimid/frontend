@@ -9,15 +9,14 @@ const JobAddTask = (props) => {
 
     const history = useHistory();
 
-    const jobId = useParams();
+    const jobId = useParams().jobId;
 
     const emptyTask = {
         taskName: "",
-        jobId: jobId.jobId,
+        jobId: jobId,
         machineId: "",
         employeeId: "",
-        cncCodeId: 1,
-        cncCodeFileName: "",
+        cncCodeId: "",
         startDate: "",
         endDate: "",
         totalWorkTime: 0,
@@ -32,7 +31,6 @@ const JobAddTask = (props) => {
 
     const [task, setTask] = useState(emptyTask);
     const [employees, setEmployees] = useState([]);
-    const [cncCode, setCncCode] = useState([]);
     const [machines, setMachines] = useState([]);
 
     useEffect(() => {
@@ -53,7 +51,7 @@ const JobAddTask = (props) => {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        props.onCreate(jobId.jobId, task);
+        props.onCreate(jobId, task);
         history.push("/jobs");
     };
 
@@ -120,19 +118,22 @@ const JobAddTask = (props) => {
         });
 
         const target = e.target;
-        const name = target.name;
         const value = target.value;
 
         let parts = value.split("\\");
         let fileName = parts[parts.length - 1];
 
-        const changedTask = {
-            ...task,
-            [name]: fileName
+        const cnc = {
+            cncFilename: fileName
         };
 
-        setTask(changedTask);
-
+        CncService.createCnc(cnc).then(response => {
+            const changedTask = {
+                ...task,
+                cncCodeId: response.data.cncId
+            };
+            setTask(changedTask);
+        });
     };
 
     const cancelGoBack = () => {
@@ -170,12 +171,18 @@ const JobAddTask = (props) => {
                     </div>
                 </div>
 
+                <br />
+                <hr />
+
                 <div className="form-group row">
                     <label htmlFor="employeeId" className="col-sm-4 offset-sm-1 text-left">Choose employee for the task</label>
                     <div className="col-sm-6">
                         {employeesDropDown}
                     </div>
                 </div>
+
+                <br />
+                <hr />
 
                 <div className="form-group row">
                     <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the task</label>
@@ -184,30 +191,19 @@ const JobAddTask = (props) => {
                     </div>
                 </div>
 
-                {/*<div className="form-group row">*/}
-                {/*    <label htmlFor="cncCodeFileName" className="col-sm-4 offset-sm-1 text-left">CNC code</label>*/}
-                {/*    <div className="col-sm-6">*/}
-                {/*        <input type="text" className="form-control" id="cncCodeFileName" name="cncCodeFileName"*/}
-                {/*               placeholder="CNC Code file name" value={task.cncCodeFileName} onChange={handleInputChangeCNC}/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-
+                <br />
+                <hr />
 
                 <div className="form-group row">
-                    <label htmlFor="theirTechnology" className="col-sm-4 offset-sm-1 text-left">Their Technology</label>
+                    <label htmlFor="cncFilename" className="col-sm-4 offset-sm-1 text-left">CNC code file</label>
                     <div className="col-sm-6">
-                        <input type="file" className="form-control" id="theirTechnology" name="theirTechnology"
-                               placeholder="Their Technology" onChange={onFileChangeHandler}/>
+                        <input type="file" className="form-control" id="cncFilename" name="cncFilename"
+                               placeholder="CNC code file" onChange={onFileChangeHandler}/>
                     </div>
                 </div>
 
-                <div className="form-group row">
-                    <label htmlFor="myTechnology" className="col-sm-4 offset-sm-1 text-left">My Technology</label>
-                    <div className="col-sm-6">
-                        <input type="file" className="form-control" id="myTechnology" name="myTechnology"
-                               placeholder="My Technology" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
+                <br />
+                <hr />
 
                 <div className="form-group row">
                     <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
@@ -217,6 +213,9 @@ const JobAddTask = (props) => {
                     </div>
                 </div>
 
+                <br />
+                <hr />
+
                 <div className="form-group row">
                     <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
                     <div className="col-sm-6">
@@ -224,6 +223,9 @@ const JobAddTask = (props) => {
                                placeholder="End Date" value={task.endDate} onChange={handleInputChange}/>
                     </div>
                 </div>
+
+                <br />
+                <hr />
 
                 <div className="form-group row">
                     <div
