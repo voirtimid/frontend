@@ -1,10 +1,14 @@
 import axios from '../custom-axios/axios'
 
-class FileUploadService {
+class FileService {
 
     static uploadFile(file, destination) {
         return axios.post(`/upload/${destination}`, file);
     }
+
+    static readFile(cncId) {
+        return axios.get(`/upload/${cncId}`);
+    }
 }
 
-export default FileUploadService;
+export default FileService;

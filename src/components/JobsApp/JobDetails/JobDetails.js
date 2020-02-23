@@ -1,25 +1,23 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import JobService from "../../../service/JobService";
-import Task from "../../Task/Task";
+import Task from "../../Tasks/Task/Task";
 import TaskService from "../../../service/TaskService";
 
 const JobDetails = (props) => {
 
-    const jobId = useParams();
+    const jobId = useParams().jobId;
     const[tasks, setTasks] = useState([]);
     const[job, setJob] = useState({});
 
     useEffect(() => {
-        JobService.getAllTasksForJob(jobId.jobId).then(response => {
-            console.log(response.data);
+        JobService.getAllTasksForJob(jobId).then(response => {
             setTasks(response.data);
         })
     }, []);
 
     useEffect(() => {
-        JobService.getJob(jobId.jobId).then(response => {
-            console.log(response.data);
+        JobService.getJob(jobId).then(response => {
             setJob(response.data)
         })
     }, []);
@@ -64,7 +62,7 @@ const JobDetails = (props) => {
         })
     };
 
-    const tasksView = tasks.map(task => <Task key={task.taskId} task={task} onSubmit={updateTasks} onTaskFinished={closeTask}/>);
+    const tasksView = tasks.map(task => <Task key={task.taskId} jobId={jobId} task={task} onSubmit={updateTasks} onTaskFinished={closeTask}/>);
 
     let tasksTable = (
         <div className="table-responsive">

@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from "react";
-import EmployeeService from "../../service/EmployeeService";
-import MachineService from "../../service/MachineService";
+import EmployeeService from "../../../service/EmployeeService";
+import MachineService from "../../../service/MachineService";
+import {useHistory} from "react-router";
 
 const Task = (props) => {
+
+    const history = useHistory();
 
     const [task] = useState(props.task);
 
@@ -53,17 +56,30 @@ const Task = (props) => {
         setStatus(!status);
     };
 
+    const onTaskDetails = (e) => {
+        e.preventDefault();
+        history.push(`/jobs/${props.jobId}/tasks/${task.taskId}`);
+    };
+
     return (
         <tr>
-            <td>{props.task.taskName}</td>
+            <td>{task.taskName}</td>
             <td>{employeeName}</td>
             <td>{machineName}</td>
             <td>{totalWorkTime}</td>
             <td>{(status && "Finished") || "Not Finished"}</td>
             <td>
-                <form onSubmit={onFormSubmit}>
-                    <button className="btn btn-sm btn-secondary"><span className="fas fa-clock">{(workInProgress && "End Working") || "Start Working"}</span></button>
+                <form onSubmit={onTaskDetails}>
+                    <button className="btn btn-sm btn-secondary">
+                        <span>Details</span>
+                    </button>
                 </form>
+                {!status &&
+                <form onSubmit={onFormSubmit}>
+                    <button className="btn btn-sm btn-secondary"><span
+                        className="fas fa-clock">{(workInProgress && "End Working") || "Start Working"}</span></button>
+                </form>
+                }
                 {!status &&
                 <form onSubmit={onTaskFinished}>
                     <button className="btn btn-sm btn-secondary"><span className="fas fa-clock">Complete Task</span>

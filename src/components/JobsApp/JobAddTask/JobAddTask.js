@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import EmployeeService from "../../../service/EmployeeService";
 import MachineService from "../../../service/MachineService";
-import FileUploadService from "../../../service/FileUploadService";
+import FileService from "../../../service/FileService";
 import CncService from "../../../service/CncService";
 
 const JobAddTask = (props) => {
@@ -32,6 +32,8 @@ const JobAddTask = (props) => {
     const [task, setTask] = useState(emptyTask);
     const [employees, setEmployees] = useState([]);
     const [machines, setMachines] = useState([]);
+    const [fileContent, setFileContent] = useState("");
+    const [cnc, setCnc] = useState({});
 
     useEffect(() => {
         EmployeeService.getAllEmployees().then(response => {
@@ -45,7 +47,6 @@ const JobAddTask = (props) => {
             setMachines(response.data);
         })
     }, []);
-
 
 
     const onFormSubmit = (e) => {
@@ -84,8 +85,9 @@ const JobAddTask = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        FileUploadService.uploadFile(formData, "cnc").then(response => {
+        FileService.uploadFile(formData, "cnc").then(response => {
             alert('File Upload Successfully');
+            setFileContent(response.data)
         });
 
         const target = e.target;
@@ -104,7 +106,8 @@ const JobAddTask = (props) => {
                 cncCodeId: response.data.cncId
             };
             setTask(changedTask);
-        });
+            setCnc(response.data);
+        })
     };
 
     const cancelGoBack = () => {

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import SketchService from "../../../service/SketchService";
-import FileUploadService from "../../../service/FileUploadService";
+import FileService from "../../../service/FileService";
 
 const SketchDetails = (props) => {
 
@@ -46,7 +46,7 @@ const SketchDetails = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        FileUploadService.uploadFile(formData).then(response => {
+        FileService.uploadFile(formData).then(response => {
             alert('File Upload Successfully');
         });
 
