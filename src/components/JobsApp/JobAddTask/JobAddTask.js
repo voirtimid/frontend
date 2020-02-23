@@ -76,35 +76,6 @@ const JobAddTask = (props) => {
         setTask(changedTask);
     };
 
-    // const handleInputChangeCNC = (event) => {
-    //     const target = event.target;
-    //     const name = target.name;
-    //     let value;
-    //
-    //     if (target.type === 'checkbox') {
-    //         value = target.checked;
-    //     } else if (target.type === 'number') {
-    //         value = Number(target.value);
-    //     } else {
-    //         value = target.value;
-    //     }
-    //
-    //     const cnc = {
-    //         fileName: value
-    //     };
-    //
-    //     CncService.createCnc(cnc).then(response => {
-    //         setCncCode(response.data);
-    //         const changedTask = {
-    //             ...task,
-    //             [name]: value,
-    //             cncCodeId: cncCode.cncCodeId
-    //         };
-    //         setTask(changedTask);
-    //     });
-    //
-    // };
-
     const onFileChangeHandler = (e) => {
         e.preventDefault();
 
@@ -113,7 +84,7 @@ const JobAddTask = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        FileUploadService.uploadFile(formData).then(response => {
+        FileUploadService.uploadFile(formData, "cnc").then(response => {
             alert('File Upload Successfully');
         });
 

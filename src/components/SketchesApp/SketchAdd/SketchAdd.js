@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useHistory} from "react-router";
+import {useHistory, useParams} from "react-router";
 import FileUploadService from "../../../service/FileUploadService";
 import SketchService from "../../../service/SketchService";
 
@@ -7,8 +7,10 @@ const SketchAdd = (props) => {
 
     const history = useHistory();
 
+    const sketchName = useParams().sketchName;
+
     const emptySketch = {
-        sketchName: "",
+        sketchName: sketchName,
         companyName: "",
         companyInfo: "",
         imageFilename: "",
@@ -43,7 +45,7 @@ const SketchAdd = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        FileUploadService.uploadFile(formData).then(response => {
+        FileUploadService.uploadFile(formData, sketch.sketchName).then(response => {
             alert('File Upload Successfully');
         });
 
@@ -68,7 +70,7 @@ const SketchAdd = (props) => {
 
         SketchService.createNewSketch(sketch).then(response => {
             const newSketch = response.data;
-            history.push(`/sketches/${newSketch.sketchId}`)
+            history.push(`/sketches/${newSketch.sketchId}/new`)
         });
     };
 

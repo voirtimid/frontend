@@ -1,12 +1,10 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {useHistory, useParams} from "react-router";
+import {useParams} from "react-router";
 import JobService from "../../../service/JobService";
 import Task from "../../Task/Task";
 import TaskService from "../../../service/TaskService";
 
 const JobDetails = (props) => {
-
-    const history = useHistory();
 
     const jobId = useParams();
     const[tasks, setTasks] = useState([]);

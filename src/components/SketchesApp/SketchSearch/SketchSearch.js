@@ -6,9 +6,24 @@ import FileUploadService from "../../../service/FileUploadService";
 const SketchSearch = (props) => {
 
     const history = useHistory();
+
+    // const emptySketch = {
+    //     sketchName: "",
+    //     companyName: "",
+    //     companyInfo: "",
+    //     imageFilename: "",
+    //     technologyFilename: "",
+    //     myTechnologyFilename: "",
+    //     measuringListFilename: "",
+    //     myMeasuringListFilename: "",
+    //     gcodeFilename: "",
+    //     usedTools: ""
+    // };
+
     const [sketchName, setSketchName] = useState("");
     const [sketch, setSketch] = useState({});
     const [exist, setExist] = useState(false);
+
 
     const onFormSubmit = (e) => {
         e.preventDefault();
@@ -18,7 +33,13 @@ const SketchSearch = (props) => {
             // console.log(sketch);
             if (sketch === "") {
                 alert("Не постои цртеж со ова име. Креирајте нов цртеж");
-                history.push("/sketches/new")
+                // const newSketch = {
+                //     ...emptySketch,
+                //     sketchName: sketchName
+                // };
+                // setSketch(newSketch);
+                // setExist(true);
+                history.push(`/sketches/new/` + sketchName)
             } else {
                 setSketch(sketch);
                 setExist(true);
@@ -55,7 +76,7 @@ const SketchSearch = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        FileUploadService.uploadFile(formData).then(response => {
+        FileUploadService.uploadFile(formData, sketch.sketchName).then(response => {
             alert('File Upload Successfully');
         });
 
@@ -85,7 +106,7 @@ const SketchSearch = (props) => {
 
     };
 
-    let sketchResult = (
+    let editSketch = (
         <div>
             <h4 className="text-upper text-left">Edit Sketch</h4>
             <form className="card" onSubmit={onEditSketch}>
@@ -252,7 +273,7 @@ const SketchSearch = (props) => {
             <br />
 
             <br />
-            {exist && sketchResult}
+            {exist && editSketch}
         </div>
     );
 
