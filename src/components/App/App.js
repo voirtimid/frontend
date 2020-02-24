@@ -10,7 +10,6 @@ import CalendarApp from "../CalendarApp/CalendarApp";
 import JobService from "../../service/JobService";
 import UserManagementApp from "../UserManagementApp/UserManagementApp";
 import SketchesApp from "../SketchesApp/SketchesApp";
-import Footer from "../Footer/Footer";
 
 class App extends React.Component {
 
@@ -18,7 +17,8 @@ class App extends React.Component {
         super(props);
         this.state = {
             jobs: [],
-            data: []
+            data: [],
+            user: {}
         };
     }
 
@@ -64,8 +64,9 @@ class App extends React.Component {
                         <Route path={"/calendar"}>
                             <CalendarApp data={this.state.data}/>
                         </Route>
+
                         <Route path={"/login"}>
-                            <UserManagementApp />
+                            <UserManagementApp user={this.state.data}/>
                         </Route>
                     </Switch>
                     {/*<Footer/>*/}

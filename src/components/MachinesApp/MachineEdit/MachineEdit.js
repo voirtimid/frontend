@@ -1,28 +1,36 @@
-import React, {useState} from "react";
-import {useHistory} from "react-router";
+import React, {useEffect, useState} from "react";
+import {useHistory, useParams} from "react-router";
+import MachineService from "../../../service/MachineService";
 
-const MachineAdd = (props) => {
+const MachineEdit = (props) => {
 
     const history = useHistory();
+    const [machine, setMachine] = useState({});
+    const {machineId} = useParams();
 
-    const emptyMachine = {
-        name: "",
-        shortName: "",
-        description: ""
-    };
-
-    const [machine, setMachine] = useState(emptyMachine);
+    useEffect(() => {
+        MachineService.getMachine(machineId).then(response => {
+            setMachine(response.data);
+        });
+    }, []);
 
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        props.onCreate(machine);
+        let modifiedMachine = {};
+        modifiedMachine.machineId = machineId;
+        modifiedMachine.name = machine.name;
+        modifiedMachine.shortName = machine.shortName;
+        modifiedMachine.description = machine.description;
+
+        props.onSubmit(machineId, modifiedMachine);
         history.push("/machines");
     };
 
     const handleInputChange = (event) => {
         const target = event.target;
         const name = target.name;
+
         let value;
 
         if (target.type === 'checkbox') {
@@ -33,41 +41,37 @@ const MachineAdd = (props) => {
             value = target.value;
         }
 
-        const changedMachine = {
+        setMachine({
             ...machine,
             [name]: value
-        };
-
-        setMachine(changedMachine);
+        });
     };
+
 
     const cancelGoBack = () => {
         history.push("/machines");
     };
 
     return (
-        <div className="row">
+        <div>
+            <h4 className="text-upper text-left">Edit Machine</h4>
             <form className="card" onSubmit={onFormSubmit}>
-                <h4 className="text-upper text-left">Add Machine</h4>
                 <div className="form-group row">
-                    <label htmlFor="name" className="col-sm-4 offset-sm-1 text-left">Machine name</label>
+                    <label htmlFor="name" className="col-sm-4 offset-sm-1 text-left">Name</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="name" name="name"
-                               placeholder="Machine name" value={machine.name} onChange={handleInputChange}/>
+                        <input type="text" className="form-control" id="name" name="name" placeholder="Name" value={machine.name} onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="form-group row">
-                    <label htmlFor="shortName" className="col-sm-4 offset-sm-1 text-left">Short name</label>
+                    <label htmlFor="shortName" className="col-sm-4 offset-sm-1 text-left">Short Name</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="shortName" name="shortName"
-                               placeholder="Short Name" value={machine.shortName} onChange={handleInputChange}/>
+                        <input type="text" className="form-control" id="shortName" name="shortName" placeholder="Short Name" value={machine.shortName} onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="form-group row">
                     <label htmlFor="description" className="col-sm-4 offset-sm-1 text-left">Description</label>
                     <div className="col-sm-6">
-                        <input type="text" className="form-control" id="description" name="description"
-                               placeholder="Description" value={machine.description} onChange={handleInputChange}/>
+                        <input type="text" className="form-control" id="description" name="description" placeholder="Description" value={machine.description} onChange={handleInputChange}/>
                     </div>
                 </div>
 
@@ -95,6 +99,7 @@ const MachineAdd = (props) => {
         </div>
     );
 
+
 };
 
-export default MachineAdd;
+export default MachineEdit;

@@ -53,9 +53,9 @@ const EmployeeEdit = (props) => {
     };
 
     return (
-        <div className="row">
+        <div>
+            <h4 className="text-upper text-left">Edit Employee</h4>
             <form className="card" onSubmit={onFormSubmit}>
-                <h4 className="text-upper text-left">Edit Employee</h4>
                 <div className="form-group row">
                     <label htmlFor="firstName" className="col-sm-4 offset-sm-1 text-left">First Name</label>
                     <div className="col-sm-6">
@@ -68,13 +68,6 @@ const EmployeeEdit = (props) => {
                     <div className="col-sm-6">
                         <input type="text" className="form-control" id="lastName" name="lastName"
                                placeholder="Short Name" value={employee.lastName} onChange={handleInputChange}/>
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <label htmlFor="positionDescription" className="col-sm-4 offset-sm-1 text-left">Position Description</label>
-                    <div className="col-sm-6">
-                        <input type="text" className="form-control" id="positionDescription" name="positionDescription"
-                               placeholder="Position Description" value={employee.positionDescription} onChange={handleInputChange}/>
                     </div>
                 </div>
 

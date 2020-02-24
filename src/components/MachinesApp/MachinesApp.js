@@ -1,9 +1,10 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
-import MachinesList from "./Machines/MachinesList/MachinesList";
+import MachinesList from "./MachinesList/MachinesList";
 import MachineService from "../../service/MachineService";
-import MachineAdd from "./Machines/MachineAdd/MachineAdd";
-import MachineEdit from "./Machines/MachineEdit/MachineEdit";
+import MachineAdd from "./MachineAdd/MachineAdd";
+import MachineEdit from "./MachineEdit/MachineEdit";
+import MachineCalendar from "../CalendarApp/MachineCalendar/MachineCalendar";
 
 class MachinesApp extends React.Component {
 
@@ -83,7 +84,8 @@ class MachinesApp extends React.Component {
                                render={() => <MachineAdd onCreate={this.createMachine}/>}/>
                         <Route path={"/machines/:machineId/edit"}
                                render={() => <MachineEdit onSubmit={this.updateMachine}/>}/>
-                        {/*<Route path={"/pizzas/:pizzaName/details"} render={() => <PizzaDetails/>}/>*/}
+                        <Route path={"/machines/:machineId/calendar"}
+                               render={() => <MachineCalendar />}/>
                     </Switch>
                 </div>
             </main>

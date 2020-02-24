@@ -19,8 +19,8 @@ const Machine = (props) => {
                     <span><strong>Remove</strong></span>
                 </button>
                 <Link className="btn btn-sm btn-outline-dark"
-                      to={"/machines/" + props.machine.machineId + "/details"}>
-                    <span><strong>Details</strong></span>
+                      to={"/machines/" + props.machine.machineId + "/calendar"}>
+                    <span><strong>Show Calendar</strong></span>
                 </Link>
             </td>
         </tr>

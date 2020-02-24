@@ -7,19 +7,6 @@ const SketchSearch = (props) => {
 
     const history = useHistory();
 
-    // const emptySketch = {
-    //     sketchName: "",
-    //     companyName: "",
-    //     companyInfo: "",
-    //     imageFilename: "",
-    //     technologyFilename: "",
-    //     myTechnologyFilename: "",
-    //     measuringListFilename: "",
-    //     myMeasuringListFilename: "",
-    //     gcodeFilename: "",
-    //     usedTools: ""
-    // };
-
     const [sketchName, setSketchName] = useState("");
     const [sketch, setSketch] = useState({});
     const [exist, setExist] = useState(false);
@@ -33,12 +20,6 @@ const SketchSearch = (props) => {
             // console.log(sketch);
             if (sketch === "") {
                 alert("Не постои цртеж со ова име. Креирајте нов цртеж");
-                // const newSketch = {
-                //     ...emptySketch,
-                //     sketchName: sketchName
-                // };
-                // setSketch(newSketch);
-                // setExist(true);
                 history.push(`/sketches/new/` + sketchName)
             } else {
                 setSketch(sketch);

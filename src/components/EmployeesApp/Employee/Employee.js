@@ -6,7 +6,6 @@ const Employee = (props) => {
         <tr>
             <td>{props.employee.firstName}</td>
             <td>{props.employee.lastName}</td>
-            <td>{props.employee.positionDescription}</td>
             <td>
                 <Link className="btn btn-sm btn-secondary"
                       to={"/employees/" + props.employee.employeeId + "/edit"}>

@@ -7,9 +7,7 @@ const EmployeeAdd = (props) => {
 
     const emptyEmployee = {
         firstName: "",
-        lastName: "",
-        isAdmin: false,
-        positionDescription: ""
+        lastName: ""
     };
 
     const [employee, setEmployee] = useState(emptyEmployee);
@@ -62,13 +60,6 @@ const EmployeeAdd = (props) => {
                     <div className="col-sm-6">
                         <input type="text" className="form-control" id="lastName" name="lastName"
                                placeholder="Short Name" value={employee.lastName} onChange={handleInputChange}/>
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <label htmlFor="positionDescription" className="col-sm-4 offset-sm-1 text-left">Position Description</label>
-                    <div className="col-sm-6">
-                        <input type="text" className="form-control" id="positionDescription" name="positionDescription"
-                               placeholder="Position Description" value={employee.positionDescription} onChange={handleInputChange}/>
                     </div>
                 </div>
 

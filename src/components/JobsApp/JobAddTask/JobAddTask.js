@@ -32,8 +32,6 @@ const JobAddTask = (props) => {
     const [task, setTask] = useState(emptyTask);
     const [employees, setEmployees] = useState([]);
     const [machines, setMachines] = useState([]);
-    const [fileContent, setFileContent] = useState("");
-    const [cnc, setCnc] = useState({});
 
     useEffect(() => {
         EmployeeService.getAllEmployees().then(response => {
@@ -87,7 +85,6 @@ const JobAddTask = (props) => {
 
         FileService.uploadFile(formData, "cnc").then(response => {
             alert('File Upload Successfully');
-            setFileContent(response.data)
         });
 
         const target = e.target;
@@ -106,7 +103,6 @@ const JobAddTask = (props) => {
                 cncCodeId: response.data.cncId
             };
             setTask(changedTask);
-            setCnc(response.data);
         })
     };
 
@@ -116,7 +112,7 @@ const JobAddTask = (props) => {
 
     let employeesDropDown = (
         <select name="employeeId" id="employeeId" onChange={handleInputChange}>
-            <option disabled value="" selected>Select Employee</option>
+            <option disabled value="" selected hidden>Select Employee</option>
             {employees.map(e => {
                 return <option key={e.employeeId} value={e.employeeId}>{e.firstName} {e.lastName}</option>
             })}
@@ -125,7 +121,7 @@ const JobAddTask = (props) => {
 
     let machinesDropDown = (
         <select name="machineId" id="machineId" onChange={handleInputChange}>
-            <option disabled value="" selected>Select Machine</option>
+            <option disabled value="" selected hidden>Select Machine</option>
             {machines.map(m => {
                 return <option key={m.machineId} value={m.machineId}>{m.name} - {m.shortName}</option>
             })}

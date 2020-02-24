@@ -1,8 +1,13 @@
 import axios from '../custom-axios/axios'
 
 class TaskService {
+
     static getAllTasks() {
         return axios.get(`/api/tasks`);
+    }
+
+    static getAllTasksForMachine(machineId) {
+        return axios.get(`/api/tasks/machine/${machineId}`)
     }
 
     static createTask(task, jobId, employeeId, machineId, cncCodeId) {

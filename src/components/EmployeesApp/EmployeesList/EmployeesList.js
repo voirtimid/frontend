@@ -13,7 +13,6 @@ const EmployeesList = (props) => {
                 <tr>
                     <th scope="col">First Name</th>
                     <th scope="col">Last name</th>
-                    <th scope="col">Job Description</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>

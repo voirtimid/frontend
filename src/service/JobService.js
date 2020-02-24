@@ -5,6 +5,14 @@ class JobService {
         return axios.get("/api/jobs");
     }
 
+    static getAllTasksInProgress() {
+        return axios.get(`/api/jobs/status/false`)
+    }
+
+    static getAllFinishedTasks() {
+        return axios.get(`/api/jobs/status/true`)
+    }
+
     static createJob(job) {
         return axios.post("/api/jobs", job);
     }

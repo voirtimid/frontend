@@ -6,6 +6,7 @@ import JobAddTask from "./JobAddTask/JobAddTask";
 import JobDetails from "./JobDetails/JobDetails";
 import TaskService from "../../service/TaskService";
 import TaskDetails from "../Tasks/TaskDetails/TaskDetails";
+import JobEdit from "./JobEdit/JobEdit";
 
 class JobsApp extends React.Component {
 
@@ -17,6 +18,7 @@ class JobsApp extends React.Component {
         };
         this.createTask = this.createTask.bind(this);
         this.addTaskToJob = this.addTaskToJob.bind(this);
+        this.updateJob = this.updateJob.bind(this);
     }
 
     componentDidMount() {
@@ -24,7 +26,7 @@ class JobsApp extends React.Component {
     }
 
     loadJobs() {
-        JobService.getAllJobs().then(response => {
+        JobService.getAllTasksInProgress().then(response => {
             this.setState(() => ({
                 jobs: response.data
             }));
@@ -47,12 +49,30 @@ class JobsApp extends React.Component {
         })
     }
 
+    updateJob(jobId, updatedJob) {
+        JobService.updateJob(jobId, updatedJob).then(response => {
+            const newJob = response.data;
+            this.setState(prevState => {
+                const newJobs = prevState.jobs.map(j => {
+                    if (j.jobId === newJob.jobId) {
+                        return newJob;
+                    }
+                    return j;
+                });
+                return {
+                    "jobs": newJobs
+                }
+            })
+        })
+    }
+
     render() {
         return (
             <main role="main" className="mt-3">
                 <div className="container">
                     <Switch>
                         <Route path={"/jobs"} exact render={() => <JobsList jobs={this.state.jobs}/>} />
+                        <Route path={"/jobs/:jobId/edit"} exact render={() => <JobEdit onSubmit={this.updateJob}/>}/>
                         <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>
                         <Route path={"/jobs/:jobId/details"} exact render={() => <JobDetails />}/>
                         <Route path={"/jobs/:jobId/tasks/:taskId"} exact render={() => <TaskDetails/>}/>
@@ -62,7 +82,5 @@ class JobsApp extends React.Component {
         );
     }
 }
-
-
 
 export default JobsApp;
