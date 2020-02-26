@@ -19,6 +19,7 @@ class JobsApp extends React.Component {
         this.createTask = this.createTask.bind(this);
         this.addTaskToJob = this.addTaskToJob.bind(this);
         this.updateJob = this.updateJob.bind(this);
+        this.deleteJob = this.deleteJob.bind(this);
     }
 
     componentDidMount() {
@@ -66,12 +67,26 @@ class JobsApp extends React.Component {
         })
     }
 
+    deleteJob(jobId) {
+        JobService.deleteJob(jobId).then(response => {
+            const toDelete = response.data;
+            this.setState(prevState => {
+                const newJobs = prevState.jobs.filter(job => {
+                    return job.jobId !== toDelete.jobId
+                });
+                return {
+                    "jobs": newJobs
+                }
+            })
+        })
+    }
+
     render() {
         return (
             <main role="main" className="mt-3">
                 <div className="container">
                     <Switch>
-                        <Route path={"/jobs"} exact render={() => <JobsList jobs={this.state.jobs}/>} />
+                        <Route path={"/jobs"} exact render={() => <JobsList jobs={this.state.jobs} onDelete={this.deleteJob}/>} />
                         <Route path={"/jobs/:jobId/edit"} exact render={() => <JobEdit onSubmit={this.updateJob}/>}/>
                         <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>
                         <Route path={"/jobs/:jobId/details"} exact render={() => <JobDetails />}/>

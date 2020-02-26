@@ -5,8 +5,21 @@ import EmployeeService from "../../../service/EmployeeService";
 const EmployeeEdit = (props) => {
 
     const history = useHistory();
-    const [employee, setEmployee] = useState({});
+
+    const employeeValidation = {
+        firstNameError: "",
+        lastNameError: ""
+    };
+
+    const emptyEmployee = {
+        firstName: "",
+        lastName: ""
+    };
+
+    const [employee, setEmployee] = useState(emptyEmployee);
+    const [employeeValidated, setEmployeeValidated] = useState(employeeValidation);
     const {employeeId} = useParams();
+
 
     useEffect(() => {
         EmployeeService.getEmployee(employeeId).then(response => {
@@ -14,18 +27,25 @@ const EmployeeEdit = (props) => {
         });
     }, []);
 
-    const onFormSubmit = (e) => {
-        e.preventDefault();
+    const validate = () => {
+        let firstNameError = "";
+        let lastNameError = "";
+        if (!employee.firstName) {
+            firstNameError = "First name is not entered";
+        }
+        if (!employee.lastName) {
+            lastNameError = "Last name is not entered";
+        }
+        if (firstNameError || lastNameError) {
+            setEmployeeValidated({
+                ...employeeValidation,
+                firstNameError: firstNameError,
+                lastNameError: lastNameError
+            });
+            return false;
+        }
+        return true;
 
-        let modifiedEmployee = {};
-        modifiedEmployee.employeeId = employeeId;
-        modifiedEmployee.firstName = employee.firstName;
-        modifiedEmployee.lastName = employee.lastName;
-        modifiedEmployee.isAdmin = false;
-        modifiedEmployee.positionDescription = employee.positionDescription;
-
-        props.onSubmit(employeeId, modifiedEmployee);
-        history.push("/employees");
     };
 
     const handleInputChange = (event) => {
@@ -52,13 +72,33 @@ const EmployeeEdit = (props) => {
         history.push("/employees");
     };
 
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+
+        let modifiedEmployee = {};
+        modifiedEmployee.employeeId = employeeId;
+        modifiedEmployee.firstName = employee.firstName;
+        modifiedEmployee.lastName = employee.lastName;
+
+        const isValid = validate();
+
+        if (isValid) {
+            props.onSubmit(employeeId, modifiedEmployee);
+            history.push("/employees");
+        }
+    };
+
     return (
         <div>
             <h4 className="text-upper text-left">Edit Employee</h4>
             <form className="card" onSubmit={onFormSubmit}>
+                <div className="card-body">
                 <div className="form-group row">
                     <label htmlFor="firstName" className="col-sm-4 offset-sm-1 text-left">First Name</label>
                     <div className="col-sm-6">
+                        <div style={{ fontSize: 12, color: "red"}}>
+                            {employeeValidated.firstNameError}
+                        </div>
                         <input type="text" className="form-control" id="firstName" name="firstName"
                                placeholder="First Name" value={employee.firstName} onChange={handleInputChange}/>
                     </div>
@@ -66,6 +106,9 @@ const EmployeeEdit = (props) => {
                 <div className="form-group row">
                     <label htmlFor="lastName" className="col-sm-4 offset-sm-1 text-left">Last Name</label>
                     <div className="col-sm-6">
+                        <div style={{ fontSize: 12, color: "red"}}>
+                            {employeeValidated.lastNameError}
+                        </div>
                         <input type="text" className="form-control" id="lastName" name="lastName"
                                placeholder="Short Name" value={employee.lastName} onChange={handleInputChange}/>
                     </div>
@@ -90,6 +133,7 @@ const EmployeeEdit = (props) => {
                             Cancel
                         </button>
                     </div>
+                </div>
                 </div>
             </form>
         </div>

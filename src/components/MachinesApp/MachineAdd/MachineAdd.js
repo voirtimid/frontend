@@ -11,13 +11,35 @@ const MachineAdd = (props) => {
         description: ""
     };
 
+    const validation = {
+        nameError: "",
+        shortNameError: ""
+    };
+
     const [machine, setMachine] = useState(emptyMachine);
+    const [validate, setValidate] = useState(validation);
 
-    const onFormSubmit = (e) => {
-        e.preventDefault();
+    const isValid = () => {
+        let nameError = "";
+        let shortNameError = "";
 
-        props.onCreate(machine);
-        history.push("/machines");
+        if (!machine.name) {
+            nameError = "Enter machine name";
+        }
+        if (!machine.shortName) {
+            shortNameError = "Enter machine short name";
+        }
+
+        if (nameError || shortNameError) {
+            setValidate({
+                ...validation,
+                nameError: nameError,
+                shortNameError: shortNameError
+            });
+            return false;
+        }
+
+        return true
     };
 
     const handleInputChange = (event) => {
@@ -45,13 +67,26 @@ const MachineAdd = (props) => {
         history.push("/machines");
     };
 
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+
+        if (isValid()) {
+            props.onCreate(machine);
+            history.push("/machines");
+        }
+    };
+
     return (
         <div>
             <h4 className="text-upper text-left">Add Machine</h4>
             <form className="card" onSubmit={onFormSubmit}>
+                <div className="card-body">
                 <div className="form-group row">
                     <label htmlFor="name" className="col-sm-4 offset-sm-1 text-left">Machine name</label>
                     <div className="col-sm-6">
+                        <div style={{ fontSize: 12, color: "red"}}>
+                            {validate.nameError}
+                        </div>
                         <input type="text" className="form-control" id="name" name="name"
                                placeholder="Machine name" value={machine.name} onChange={handleInputChange}/>
                     </div>
@@ -59,6 +94,9 @@ const MachineAdd = (props) => {
                 <div className="form-group row">
                     <label htmlFor="shortName" className="col-sm-4 offset-sm-1 text-left">Short name</label>
                     <div className="col-sm-6">
+                        <div style={{ fontSize: 12, color: "red"}}>
+                            {validate.shortNameError}
+                        </div>
                         <input type="text" className="form-control" id="shortName" name="shortName"
                                placeholder="Short Name" value={machine.shortName} onChange={handleInputChange}/>
                     </div>
@@ -90,6 +128,7 @@ const MachineAdd = (props) => {
                             Cancel
                         </button>
                     </div>
+                </div>
                 </div>
             </form>
         </div>

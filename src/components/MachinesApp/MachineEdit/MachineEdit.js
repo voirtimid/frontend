@@ -5,7 +5,14 @@ import MachineService from "../../../service/MachineService";
 const MachineEdit = (props) => {
 
     const history = useHistory();
+
+    const validation = {
+        nameError: "",
+        shortNameError: ""
+    };
+
     const [machine, setMachine] = useState({});
+    const [validate, setValidate] = useState(validation);
     const {machineId} = useParams();
 
     useEffect(() => {
@@ -14,17 +21,27 @@ const MachineEdit = (props) => {
         });
     }, []);
 
-    const onFormSubmit = (e) => {
-        e.preventDefault();
+    const isValid = () => {
+        let nameError = "";
+        let shortNameError = "";
 
-        let modifiedMachine = {};
-        modifiedMachine.machineId = machineId;
-        modifiedMachine.name = machine.name;
-        modifiedMachine.shortName = machine.shortName;
-        modifiedMachine.description = machine.description;
+        if (!machine.name) {
+            nameError = "Enter machine name";
+        }
+        if (!machine.shortName) {
+            shortNameError = "Enter machine short name";
+        }
 
-        props.onSubmit(machineId, modifiedMachine);
-        history.push("/machines");
+        if (nameError || shortNameError) {
+            setValidate({
+                ...validation,
+                nameError: nameError,
+                shortNameError: shortNameError
+            });
+            return false;
+        }
+
+        return true
     };
 
     const handleInputChange = (event) => {
@@ -47,24 +64,44 @@ const MachineEdit = (props) => {
         });
     };
 
-
     const cancelGoBack = () => {
         history.push("/machines");
+    };
+
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+
+        let modifiedMachine = {};
+        modifiedMachine.machineId = machineId;
+        modifiedMachine.name = machine.name;
+        modifiedMachine.shortName = machine.shortName;
+
+        if (isValid()) {
+            props.onSubmit(machineId, modifiedMachine);
+            history.push("/machines");
+        }
     };
 
     return (
         <div>
             <h4 className="text-upper text-left">Edit Machine</h4>
             <form className="card" onSubmit={onFormSubmit}>
+                <div className="card-body">
                 <div className="form-group row">
                     <label htmlFor="name" className="col-sm-4 offset-sm-1 text-left">Name</label>
                     <div className="col-sm-6">
+                        <div style={{ fontSize: 12, color: "red"}}>
+                            {validate.nameError}
+                        </div>
                         <input type="text" className="form-control" id="name" name="name" placeholder="Name" value={machine.name} onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="form-group row">
                     <label htmlFor="shortName" className="col-sm-4 offset-sm-1 text-left">Short Name</label>
                     <div className="col-sm-6">
+                        <div style={{ fontSize: 12, color: "red"}}>
+                            {validate.shortNameError}
+                        </div>
                         <input type="text" className="form-control" id="shortName" name="shortName" placeholder="Short Name" value={machine.shortName} onChange={handleInputChange}/>
                     </div>
                 </div>
@@ -94,6 +131,7 @@ const MachineEdit = (props) => {
                             Cancel
                         </button>
                     </div>
+                </div>
                 </div>
             </form>
         </div>

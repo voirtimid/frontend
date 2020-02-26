@@ -9,13 +9,33 @@ const SketchDetails = (props) => {
 
     const sketchId = useParams().sketchId;
 
+    const validation = {
+        sketchNameError: ""
+    };
+
     const [sketch, setSketch] = useState({});
+    const [validate, setValidate] = useState(validation);
 
     useEffect(() => {
         SketchService.getSketchById(sketchId).then(response => {
             setSketch(response.data);
         })
     }, []);
+
+    const isValid = () => {
+        let sketchNameError = "";
+        if (!sketch.sketchName) {
+            sketchNameError = "Sketch name is not entered";
+        }
+        if (sketchNameError) {
+            setValidate({
+                ...validation,
+                sketchNameError: sketchNameError
+            });
+            return false;
+        }
+        return true;
+    };
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -69,10 +89,12 @@ const SketchDetails = (props) => {
     const onEditSketch = (e) => {
         e.preventDefault();
 
-        SketchService.updateSketch(sketch.sketchId, sketch).then(response => {
-            console.log(response.data);
-            history.push(`/jobs`)
-        })
+        if (isValid()) {
+            SketchService.updateSketch(sketch.sketchId, sketch).then(response => {
+                console.log(response.data);
+                history.push(`/jobs`)
+            })
+        }
 
     };
 
@@ -84,6 +106,9 @@ const SketchDetails = (props) => {
                 <div className="form-group row">
                     <label htmlFor="sketchName" className="col-sm-4 offset-sm-1 text-left">Sketch Name</label>
                     <div className="col-sm-6">
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.sketchNameError}
+                        </div>
                         <input type="text" className="form-control" id="sketchName" name="sketchName"
                                placeholder="Sketch Name" value={sketch.sketchName} onChange={handleInputChange}/>
                     </div>

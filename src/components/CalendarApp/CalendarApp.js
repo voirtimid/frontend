@@ -10,7 +10,7 @@ const CalendarApp = (props) => {
     return (
         <main role="main" className="mt-3">
             <div className="container">
-                <ScheduleComponent currentView='Month' eventSettings={loadData}>
+                <ScheduleComponent height="100%" currentView='Month' eventSettings={loadData}>
                     <Inject services={[Day, Week, WorkWeek, Month, Agenda]}/>
                 </ScheduleComponent>
             </div>

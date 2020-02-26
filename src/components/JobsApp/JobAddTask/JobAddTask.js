@@ -132,7 +132,7 @@ const JobAddTask = (props) => {
         <div>
             <h4>Add Task</h4>
             <form className='card' encType='multipart/form-data' onSubmit={onFormSubmit}>
-
+                <div className="card-body">
                 <div className="form-group row">
                     <label htmlFor="taskName" className="col-sm-4 offset-sm-1 text-left">Task Name</label>
                     <div className="col-sm-6">
@@ -216,6 +216,7 @@ const JobAddTask = (props) => {
                             Cancel
                         </button>
                     </div>
+                </div>
                 </div>
 
             </form>

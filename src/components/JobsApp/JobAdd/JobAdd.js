@@ -71,6 +71,7 @@ const JobAdd = (props) => {
         <div>
             <h4>Add Job</h4>
             <form className='card' encType='multipart/form-data' onSubmit={onFormSubmit}>
+                <div className="card-body">
                 <div className="form-group row">
                     <label htmlFor="jobName" className="col-sm-4 offset-sm-1 text-left">Job Name</label>
                     <div className="col-sm-6">
@@ -105,9 +106,11 @@ const JobAdd = (props) => {
 
                 <div className="form-group row">
                     <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
-                    <div className="col-sm-6">
+                    <div className="col-sm-6 form-inline">
                         <input type="date" className="form-control" id="startDate" name="startDate"
                                placeholder="Start Date" value={job.startDate} onChange={handleInputChange}/>
+                        {/*<input type="time" className="form-control" id="startTime" name="startTime" min="08:00:00" max="18:00:00"*/}
+                        {/*       placeholder="Start Date" value={job.startTime} onChange={handleInputChange}/>*/}
                     </div>
                 </div>
 
@@ -116,9 +119,14 @@ const JobAdd = (props) => {
 
                 <div className="form-group row">
                     <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
-                    <div className="col-sm-6">
+                    <div className="col-sm-6 form-inline">
                         <input type="date" className="form-control" id="endDate" name="endDate"
                                placeholder="End Date" value={job.endDate} onChange={handleInputChange}/>
+                        {/*<input type="time" className="form-control" id="endTime" name="endTime" min="08:00:00" max="18:00:00"*/}
+                        {/*       placeholder="End Date" value={job.endTime} onChange={handleInputChange}/>*/}
+                        {/*       <div>*/}
+                        {/*           Selected date and time: {job.endDate} + {job.startDate}*/}
+                        {/*       </div>*/}
                     </div>
                 </div>
 
@@ -155,6 +163,7 @@ const JobAdd = (props) => {
                             Cancel
                         </button>
                     </div>
+                </div>
                 </div>
 
             </form>

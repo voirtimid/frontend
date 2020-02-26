@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import JobService from "../../../service/JobService";
-import moment from "moment";
 
 const JobEdit = (props) => {
 
@@ -58,6 +57,7 @@ const JobEdit = (props) => {
         <div>
             <h4>Add Job</h4>
             <form className='card' encType='multipart/form-data' onSubmit={onFormSubmit}>
+                <div className="card-body">
                 <div className="form-group row">
                     <label htmlFor="jobName" className="col-sm-4 offset-sm-1 text-left">Job Name</label>
                     <div className="col-sm-6">
@@ -142,6 +142,7 @@ const JobEdit = (props) => {
                             Cancel
                         </button>
                     </div>
+                </div>
                 </div>
 
             </form>
