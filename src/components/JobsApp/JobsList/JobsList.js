@@ -15,8 +15,9 @@ const JobsList = (props) => {
                     <th scope="col">Sketch Name</th>
                     <th scope="col">Start date</th>
                     <th scope="col">End date</th>
-                    <th scope="col">Estimation</th>
+                    <th scope="col">Estimated hours</th>
                     <th scope="col">Number of pieces</th>
+                    <th scope="col">Time for a Piece</th>
                     <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                 </tr>

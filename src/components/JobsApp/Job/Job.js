@@ -8,10 +8,11 @@ const Job = (props) => {
             <td>{props.job.jobName}</td>
             <td><a href={`/sketches/${props.job.sketch.sketchId}`}>{props.job.sketch.sketchName}</a></td>
             {/*<td>{props.job.startDateTime}</td>*/}
-            <td>{ moment(props.job.startDateTime).format("DD-MMM-YYYY hh:mm")}</td>
-            <td>{ moment(props.job.endDateTime).format("DD-MMM-YYYY hh:mm")}</td>
-            <td>{props.job.estimation}</td>
+            <td>{ moment(props.job.startDate).format("DD-MMM-YYYY")}</td>
+            <td>{ moment(props.job.endDate).format("DD-MMM-YYYY")}</td>
+            <td>{props.job.estimatedHours}</td>
             <td>{props.job.numberOfPieces}</td>
+            <td>{props.job.sketch.minutesForPiece}</td>
             <td>{(props.job.isFinished && "FINISHED") || "NOT FINISHED"}</td>
             <td>
                 <Link className="btn btn-sm btn-secondary"

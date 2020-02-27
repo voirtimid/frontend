@@ -34,7 +34,11 @@ class JobService {
     }
 
     static getAllTasksForJob(jobId) {
-        return axios.get(`/api/jobs/${jobId}//tasks`);
+        return axios.get(`/api/jobs/${jobId}/tasks`);
+    }
+
+    static updateDates(jobId) {
+        return axios.get(`/api/jobs/updateDates/${jobId}`);
     }
 }
 

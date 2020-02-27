@@ -35,9 +35,7 @@ class JobsApp extends React.Component {
     }
 
     createTask(jobId, task) {
-        console.log(task);
-        TaskService.createTask(task, jobId, task.employeeId, task.machineId, task.cncCodeId).then(response => {
-            console.log(response.data);
+        TaskService.createTask(task).then(response => {
             this.setState(() => ({
                 task: response.data
             }), () => this.addTaskToJob(jobId))
@@ -46,7 +44,22 @@ class JobsApp extends React.Component {
 
     addTaskToJob(jobId) {
         JobService.addTaskToJob(jobId, this.state.task).then(response => {
-            console.log(response.data);
+            const updatedJob = response.data;
+            JobService.updateDates(updatedJob.jobId).then(response => {
+                const newJob = response.data;
+                this.setState(prevState => {
+                    const newJobs = prevState.jobs.map(j => {
+                        if (j.jobId === newJob.jobId) {
+                            return newJob;
+                        }
+                        return j;
+                    });
+                    return {
+                        "jobs": newJobs
+                    }
+                })
+            })
+
         })
     }
 

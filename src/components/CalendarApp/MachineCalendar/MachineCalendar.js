@@ -11,8 +11,6 @@ const MachineCalendar = (props) => {
 
     useEffect(() => {
         TaskService.getAllTasksForMachine(machineId).then(response => {
-
-
             const localData = response.data.map(task => {
                 return {
                     EndTime: new Date(task.endDate),

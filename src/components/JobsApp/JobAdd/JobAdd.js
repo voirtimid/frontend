@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import SketchService from "../../../service/SketchService";
 import JobService from "../../../service/JobService";
+import {Link} from "react-router-dom";
 
 const JobAdd = (props) => {
 
@@ -9,6 +10,15 @@ const JobAdd = (props) => {
 
     const sketchId = useParams().sketchId;
 
+    const emptyJob = {
+        jobName: "",
+        sketchId: sketchId,
+        numberOfPieces: 0,
+        totalTimeNeeded: 0,
+        isFinished: false
+    };
+
+    const [job, setJob] = useState(emptyJob);
     const [sketch, setSketch] = useState({});
 
     useEffect(() => {
@@ -16,37 +26,6 @@ const JobAdd = (props) => {
             setSketch(response.data);
         })
     }, []);
-
-    const emptyJob = {
-        jobName: "",
-        sketchId: sketchId,
-        numberOfPieces: "",
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: "",
-        estimation: "",
-        isFinished: false
-    };
-
-    const [job, setJob] = useState(emptyJob);
-
-    const onFormSubmit = (e) => {
-        e.preventDefault();
-
-        const jobDTO = {
-            job: job,
-            sketchId: sketchId,
-            startDate: job.startDate,
-            startTime: job.startTime,
-            endDate: job.endDate,
-            endTime: job.endTime,
-        };
-
-        JobService.createJob(jobDTO).then(response => {
-            history.push("/jobs");
-        });
-    };
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -67,10 +46,34 @@ const JobAdd = (props) => {
         };
 
         setJob(changedJob);
+
+        console.log(changedJob);
     };
 
     const cancelGoBack = () => {
         history.push("/jobs");
+    };
+
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+
+        const numberOfHours = ((sketch.minutesForPiece * job.numberOfPieces) / 60);
+
+        const jobToAdd = {
+            ...job,
+            estimatedHours: numberOfHours
+        };
+
+        const jobDTO = {
+            job: jobToAdd,
+            sketchId: sketchId
+        };
+
+        JobService.createJob(jobDTO).then(response => {
+            const newJob = response.data;
+            history.push(`/jobs/${newJob.jobId}/addTask`)
+            // history.push("/jobs");
+        });
     };
 
     return (
@@ -91,7 +94,7 @@ const JobAdd = (props) => {
                     <div className="form-group row">
                         <label htmlFor="sketchName" className="col-sm-4 offset-sm-1 text-left">Sketch Name</label>
                         <div className="col-sm-6">
-                            <a href={`/sketches/${sketchId}`}>{sketch.sketchName}</a>
+                            <Link to={`/sketches/${sketchId}`}>{sketch.sketchName}</Link>
                         </div>
                     </div>
 
@@ -110,43 +113,35 @@ const JobAdd = (props) => {
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
-                        <div className="col-sm-6 form-inline">
-                            <input type="date" className="form-control" id="startDate" name="startDate"
-                                   placeholder="Start Date" value={job.startDate} onChange={handleInputChange}/>
-                            <input type="time" className="form-control" id="startTime" name="startTime" min="08:00:00"
-                                   max="18:00:00"
-                                   placeholder="Start Date" value={job.startTime} onChange={handleInputChange}/>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <div className="form-group row">
-                        <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
-                        <div className="col-sm-6 form-inline">
-                            <input type="date" className="form-control" id="endDate" name="endDate"
-                                   placeholder="End Date" value={job.endDate} onChange={handleInputChange}/>
-                            <input type="time" className="form-control" id="endTime" name="endTime" min="08:00:00"
-                                   max="18:00:00"
-                                   placeholder="End Date" value={job.endTime} onChange={handleInputChange}/>
-                            {/*       <div>*/}
-                            {/*           Selected date and time: {job.endDate} + {job.startDate}*/}
-                            {/*       </div>*/}
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <div className="form-group row">
-                        <label htmlFor="estimation" className="col-sm-4 offset-sm-1 text-left">Estimation</label>
+                        <label htmlFor="totalTimeNeeded" className="col-sm-4 offset-sm-1 text-left">Потребно време во минути</label>
                         <div className="col-sm-6">
-                            <input type="number" className="form-control" id="estimation" name="estimation"
-                                   placeholder="Estimation" value={job.estimation} onChange={handleInputChange}/>
+                            <input type="number" className="form-control" id="totalTimeNeeded" name="totalTimeNeeded"
+                                   placeholder="Потребно време" value={sketch.minutesForPiece * job.numberOfPieces}
+                                   onChange={handleInputChange}/>
                         </div>
                     </div>
 
                     <hr/>
+
+                    {/*<div className="form-group row">*/}
+                    {/*    <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>*/}
+                    {/*    <div className="col-sm-6 form-inline">*/}
+                    {/*        <input type="date" className="form-control" id="startDate" name="startDate"*/}
+                    {/*               placeholder="Start Date" value={job.startDate} onChange={handleInputChange}/>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+
+                    {/*<hr/>*/}
+
+                    {/*<div className="form-group row">*/}
+                    {/*    <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>*/}
+                    {/*    <div className="col-sm-6 form-inline">*/}
+                    {/*        <input type="date" className="form-control" id="endDate" name="endDate"*/}
+                    {/*               placeholder="End Date" value={job.endDate} onChange={handleInputChange}/>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+
+                    {/*<hr/>*/}
 
                     <div className="form-group row">
                         <div

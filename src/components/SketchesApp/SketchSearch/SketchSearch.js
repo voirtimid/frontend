@@ -3,6 +3,8 @@ import SketchService from "../../../service/SketchService";
 import {useHistory} from "react-router";
 import FileService from "../../../service/FileService";
 import "./SketchSearch.css"
+import {Constants} from "../../../Constants/Constants";
+import {Link} from "react-router-dom";
 
 const SketchSearch = (props) => {
 
@@ -105,7 +107,6 @@ const SketchSearch = (props) => {
                 history.push(`/sketches/${response.data.sketchId}/new`)
             })
         }
-
     };
 
     let editSketch = (
@@ -161,9 +162,29 @@ const SketchSearch = (props) => {
                     <hr/>
 
                     <div className="form-group row">
+                        <label htmlFor="usedTools" className="col-sm-4 offset-sm-1 text-left">Used Tools</label>
+                        <div className="col-sm-6">
+                            <input type="text" className="form-control" id="usedTools" name="usedTools"
+                                   placeholder="Used Tools" value={sketch.usedTools} onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div className="form-group row">
+                        <label htmlFor="minutesForPiece" className="col-sm-4 offset-sm-1 text-left">Потребно време за изработка во минути</label>
+                        <div className="col-sm-6">
+                            <input type="number" className="form-control" id="minutesForPiece" name="minutesForPiece"
+                                   placeholder="Piece in minute" value={sketch.minutesForPiece} onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div className="form-group row">
                         <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
                         <div className="col-sm-6">
-                            {sketch.imageFilename}
+                            <a href={Constants.getFilePath(sketchName, sketch.imageFilename)}>{sketch.imageFilename}</a>
                             <input type="file" className="form-control" id="imageFilename" name="imageFilename"
                                    placeholder="Image File" onChange={onFileChangeHandler}/>
                         </div>
@@ -229,26 +250,6 @@ const SketchSearch = (props) => {
                             {sketch.gcodeFilename}
                             <input type="file" className="form-control" id="gcodeFilename" name="gcodeFilename"
                                    placeholder="GCode File" onChange={onFileChangeHandler}/>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <div className="form-group row">
-                        <label htmlFor="usedTools" className="col-sm-4 offset-sm-1 text-left">Used Tools</label>
-                        <div className="col-sm-6">
-                            <input type="text" className="form-control" id="usedTools" name="usedTools"
-                                   placeholder="Used Tools" value={sketch.usedTools} onChange={handleInputChange}/>
-                        </div>
-                    </div>
-
-                    <hr />
-
-                    <div className="form-group row">
-                        <label htmlFor="usedTools" className="col-sm-4 offset-sm-1 text-left">Piece in minute</label>
-                        <div className="col-sm-6">
-                            <input type="number" className="form-control" id="pieceInMinute" name="pieceInMinute"
-                                   placeholder="Piece in minute" value={sketch.pieceInMinute} onChange={handleInputChange}/>
                         </div>
                     </div>
 
@@ -323,7 +324,10 @@ const SketchSearch = (props) => {
             </form>
 
             <br/>
-            <a href={"/sketches/new"}>Креирај нов цртеж</a>
+            <Link to={"/sketches/new"}>
+                Креирај нов цртеж
+            </Link>
+            {/*<a href={"/sketches/new"}></a>*/}
             <br/>
 
             <br/>

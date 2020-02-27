@@ -53,6 +53,10 @@ class TaskService {
     static checkIfSlotIsAvailable(dateTimeDTO) {
         return axios.post(`/api/tasks/checkTimeSlots`, dateTimeDTO);
     }
+
+    static getFirstAvailableSlot(machineId) {
+        return axios.get(`/api/tasks/findSlot/${machineId}`);
+    }
 }
 
 export default TaskService;

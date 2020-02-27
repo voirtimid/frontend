@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router";
+import {useHistory, useParams} from "react-router";
 import TaskService from "../../../service/TaskService";
 import FileService from "../../../service/FileService";
 import moment from "moment";
 
 const TaskDetails = (props) => {
 
+    const history = useHistory();
+
     const taskId = useParams().taskId;
+    const jobId = useParams().jobId;
 
     const [task, setTask] = useState({});
     const [employee, setEmployee] = useState({});
@@ -16,7 +19,6 @@ const TaskDetails = (props) => {
 
     useEffect(() => {
         TaskService.getTask(taskId).then(response => {
-            console.log(response.data);
             const task = response.data;
             setTask(task);
             setEmployee(task.employee);
@@ -29,6 +31,10 @@ const TaskDetails = (props) => {
         })
     }, []);
 
+    const cancelGoBack = () => {
+        history.push(`/jobs/${jobId}/details`);
+    };
+
     return (
         <div>
             <h4>Task</h4>
@@ -40,7 +46,6 @@ const TaskDetails = (props) => {
                     </div>
                 </div>
 
-                <br />
                 <hr />
 
                 <div className="form-group row">
@@ -50,7 +55,6 @@ const TaskDetails = (props) => {
                     </div>
                 </div>
 
-                <br />
                 <hr />
 
                 <div className="form-group row">
@@ -60,7 +64,6 @@ const TaskDetails = (props) => {
                     </div>
                 </div>
 
-                <br />
                 <hr />
 
                 <div className="form-group row">
@@ -70,7 +73,6 @@ const TaskDetails = (props) => {
                     </div>
                 </div>
 
-                <br />
                 <hr />
 
                 <div className="form-group row">
@@ -80,24 +82,34 @@ const TaskDetails = (props) => {
                     </div>
                 </div>
 
-                <br />
                 <hr />
 
                 <div className="form-group row">
                     <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
                     <div className="col-sm-6">
-                        { moment(task.startDateTime).format("DD-MMM-YYYY hh:mm")}
+                        { moment(task.startDate).format("DD-MMM-YYYY")}
                     </div>
                 </div>
 
-                <br />
                 <hr />
 
                 <div className="form-group row">
                     <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
                     <div className="col-sm-6">
-                        { moment(task.endDateTime).format("DD-MMM-YYYY hh:mm")}
+                        { moment(task.endDate).format("DD-MMM-YYYY")}
                     </div>
+                </div>
+
+                <hr />
+
+                <div
+                    className="offset-sm-1 col-sm-3  text-center">
+                    <button
+                        onClick={() => cancelGoBack()}
+                        type="button"
+                        className="btn btn-danger text-upper">
+                        Go Back
+                    </button>
                 </div>
             </div>
 
