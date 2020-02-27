@@ -31,8 +31,8 @@ class App extends React.Component {
             const loadedJobs = response.data;
             const localData = loadedJobs.map(j => {
                 return {
-                    EndTime: new Date(j.endDate),
-                    StartTime: new Date(j.startDate),
+                    EndTime: new Date(j.endDateTime),
+                    StartTime: new Date(j.startDateTime),
                     Subject: j.jobName
                 }
             });

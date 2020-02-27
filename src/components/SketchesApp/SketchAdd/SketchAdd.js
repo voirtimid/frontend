@@ -23,7 +23,8 @@ const SketchAdd = (props) => {
         measuringListFilename: "",
         myMeasuringListFilename: "",
         gcodeFilename: "",
-        usedTools: ""
+        usedTools: "",
+        pieceInMinute: 0
     };
 
     const [sketch, setSketch] = useState(emptySketch);
@@ -217,6 +218,16 @@ const SketchAdd = (props) => {
                     </div>
 
                     <hr/>
+
+                    <div className="form-group row">
+                        <label htmlFor="usedTools" className="col-sm-4 offset-sm-1 text-left">Piece in minute</label>
+                        <div className="col-sm-6">
+                            <input type="number" className="form-control" id="pieceInMinute" name="pieceInMinute"
+                                   placeholder="Piece in minute" value={sketch.pieceInMinute} onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr />
 
                     <div className="form-group row">
                         <div

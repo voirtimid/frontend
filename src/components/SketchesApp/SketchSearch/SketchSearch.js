@@ -133,7 +133,7 @@ const SketchSearch = (props) => {
                             <div style={{fontSize: 12, color: "red"}}>
                                 {validate.sketchNameError}
                             </div>
-                            <input type="text" className="form-control" id="sketchName" name="sketchName"
+                            <input type="text" disabled className="form-control" id="sketchName" name="sketchName"
                                    placeholder="Sketch Name" value={sketch.sketchName} onChange={handleInputChange}/>
                         </div>
                     </div>
@@ -239,6 +239,16 @@ const SketchSearch = (props) => {
                         <div className="col-sm-6">
                             <input type="text" className="form-control" id="usedTools" name="usedTools"
                                    placeholder="Used Tools" value={sketch.usedTools} onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div className="form-group row">
+                        <label htmlFor="usedTools" className="col-sm-4 offset-sm-1 text-left">Piece in minute</label>
+                        <div className="col-sm-6">
+                            <input type="number" className="form-control" id="pieceInMinute" name="pieceInMinute"
+                                   placeholder="Piece in minute" value={sketch.pieceInMinute} onChange={handleInputChange}/>
                         </div>
                     </div>
 

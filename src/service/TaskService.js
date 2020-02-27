@@ -10,14 +10,7 @@ class TaskService {
         return axios.get(`/api/tasks/machine/${machineId}`)
     }
 
-    static createTask(task, jobId, employeeId, machineId, cncCodeId) {
-        const taskDTO = {
-            task: task,
-            jobId: jobId,
-            employeeId: employeeId,
-            machineId: machineId,
-            cncCodeId: cncCodeId
-        };
+    static createTask(taskDTO) {
         return axios.post(`/api/tasks`, taskDTO);
     }
 
@@ -55,6 +48,10 @@ class TaskService {
 
     static completeTask(taskId) {
         return axios.put(`/api/tasks/${taskId}/complete`);
+    }
+
+    static checkIfSlotIsAvailable(dateTimeDTO) {
+        return axios.post(`/api/tasks/checkTimeSlots`, dateTimeDTO);
     }
 }
 

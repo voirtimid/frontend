@@ -86,7 +86,7 @@ const TaskDetails = (props) => {
                 <div className="form-group row">
                     <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
                     <div className="col-sm-6">
-                        { moment(task.startDate).format("DD-MMM-YYYY")}
+                        { moment(task.startDateTime).format("DD-MMM-YYYY hh:mm")}
                     </div>
                 </div>
 
@@ -96,7 +96,7 @@ const TaskDetails = (props) => {
                 <div className="form-group row">
                     <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
                     <div className="col-sm-6">
-                        { moment(task.endDate).format("DD-MMM-YYYY")}
+                        { moment(task.endDateTime).format("DD-MMM-YYYY hh:mm")}
                     </div>
                 </div>
             </div>

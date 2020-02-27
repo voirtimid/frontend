@@ -94,7 +94,7 @@ const JobEdit = (props) => {
                     <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
                     <div className="col-sm-6">
                         <input type="date" className="form-control" id="startDate" name="startDate"
-                               placeholder="Start Date" value={job.startDate} onChange={handleInputChange}/>
+                               placeholder="Start Date" value={job.startDateTime} onChange={handleInputChange}/>
                     </div>
                 </div>
 
@@ -105,7 +105,7 @@ const JobEdit = (props) => {
                     <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
                     <div className="col-sm-6">
                         <input type="date" className="form-control" id="endDate" name="endDate"
-                               placeholder="End Date" value={job.endDate} onChange={handleInputChange}/>
+                               placeholder="End Date" value={job.endDateTime} onChange={handleInputChange}/>
                     </div>
                 </div>
 
