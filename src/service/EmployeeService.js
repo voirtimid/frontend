@@ -20,6 +20,10 @@ class EmployeeService {
     static deleteEmployee(employeeId) {
         return axios.delete(`/api/employees/${employeeId}`);
     }
+
+    static getAllTasksForEmployee(employeeId) {
+        return axios.get(`/api/employees/${employeeId}/tasks`);
+    }
 }
 
 export default EmployeeService;

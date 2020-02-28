@@ -4,7 +4,7 @@ import EmployeeService from "../../service/EmployeeService";
 import EmployeesList from "./EmployeesList/EmployeesList";
 import EmployeeAdd from "./EmployeeAdd/EmployeeAdd";
 import EmployeeEdit from "./EmployeeEdit/EmployeeEdit";
-import JobsList from "../JobsApp/JobsList/JobsList";
+import TasksList from "../Tasks/TasksList/TasksList";
 
 class EmployeesApp extends React.Component {
 
@@ -17,8 +17,6 @@ class EmployeesApp extends React.Component {
         this.createEmployee = this.createEmployee.bind(this);
         this.updateEmployee = this.updateEmployee.bind(this);
         this.deleteEmployee = this.deleteEmployee.bind(this);
-        this.loadEmployeeJobs = this.loadEmployeeJobs.bind(this);
-
     }
 
     componentDidMount() {
@@ -75,10 +73,6 @@ class EmployeesApp extends React.Component {
         })
     }
 
-    loadEmployeeJobs(employeeId) {
-
-    }
-
     render() {
         return (
             <main role="main" className="mt-3">
@@ -87,7 +81,7 @@ class EmployeesApp extends React.Component {
                         <Route path={"/employees"} exact render={() => <EmployeesList employees={this.state.employees} onDelete={this.deleteEmployee} />}/>
                         <Route path={"/employees/new"} exact render={() => <EmployeeAdd onCreate={this.createEmployee}/>}/>
                         <Route path={"/employees/:employeeId/edit"} exact render={() => <EmployeeEdit onSubmit={this.updateEmployee}/>}/>
-                        {/*<Route path={"/employees/:employeeId/tasks"} exact render={() => <TasksList jobs={this.loadEmployeeTasks}/>}/>*/}
+                        <Route path={"/employees/:employeeId/tasks"} exact render={() => <TasksList />}/>
 
                         {/*<Route path={"/pizzas/:pizzaName/details"} render={() => <PizzaDetails/>}/>*/}
                     </Switch>

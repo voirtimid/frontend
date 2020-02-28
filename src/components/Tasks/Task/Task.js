@@ -21,7 +21,7 @@ const Task = (props) => {
                 minutes %= 60;
             }
         }
-        return `${hours} hours : ${minutes} minutes : ${seconds} seconds`;
+        return `${hours}H:${minutes}M:${seconds}S`;
     };
 
     const [employeeName, setEmployeeName] = useState("");

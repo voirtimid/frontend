@@ -1,7 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import './App.css';
-
 import Header from "../Header/Header";
 import MachinesApp from "../MachinesApp/MachinesApp";
 import EmployeesApp from "../EmployeesApp/EmployeesApp";
@@ -67,7 +66,6 @@ class App extends React.Component {
                             <UserManagementApp user={this.state.data}/>
                         </Route>
                     </Switch>
-                    {/*<Footer/>*/}
                 </Router>
             </div>
         );

@@ -67,13 +67,8 @@ const SketchAdd = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        // TODO add spinner and disable submit
-
         setShowLoading(true);
         FileService.uploadFile(formData, sketch.sketchName).then(response => {
-
-            alert('File Upload Successfully');
-
             setShowLoading(false);
         }).catch(reason => {
             alert(`REASON ${reason}`);
@@ -111,6 +106,10 @@ const SketchAdd = (props) => {
             <h4 className="card-title">Create new Sketch</h4>
             <div className="card-body">
                 <form onSubmit={onFormSubmit}>
+                    {showLoading &&
+                    <div className="alert alert-info" role="alert">
+                        This is a info alert—check it out!
+                    </div>}
                     <hr />
                     <div className="form-group row">
                         <label htmlFor="sketchName" className="col-sm-4 offset-sm-1 text-left">Sketch Name</label>
