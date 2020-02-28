@@ -78,52 +78,53 @@ const EmployeeAdd = (props) => {
 
 
     return (
-        <div>
-            <h4 className="text-upper text-left">Add Employee</h4>
-            <form className="card" onSubmit={onFormSubmit}>
-                <div className="card-body">
-                <div className="form-group row">
-                    <label htmlFor="firstName" className="col-sm-4 offset-sm-1 text-left">First Name</label>
-                    <div className="col-sm-6">
-                        <div style={{ fontSize: 12, color: "red"}}>
-                            {employeeValidated.firstNameError}
+        <div className="card">
+            <div className="card-body">
+                <form onSubmit={onFormSubmit}>
+                    <h4 className="text-upper text-left card-title">Add Employee</h4>
+                    <div className="form-group row">
+                        <label htmlFor="firstName" className="col-sm-4 offset-sm-1 text-left">First Name</label>
+                        <div className="col-sm-6">
+                            <div style={{fontSize: 12, color: "red"}}>
+                                {employeeValidated.firstNameError}
+                            </div>
+                            <input type="text" className="form-control" id="firstName" name="firstName"
+                                   placeholder="First Name" value={employee.firstName} onChange={handleInputChange}/>
                         </div>
-                        <input type="text" className="form-control" id="firstName" name="firstName" placeholder="First Name" value={employee.firstName} onChange={handleInputChange}/>
                     </div>
-                </div>
-                <div className="form-group row">
-                    <label htmlFor="lastName" className="col-sm-4 offset-sm-1 text-left">Last Name</label>
-                    <div className="col-sm-6">
-                        <div style={{ fontSize: 12, color: "red"}}>
-                            {employeeValidated.lastNameError}
+                    <div className="form-group row">
+                        <label htmlFor="lastName" className="col-sm-4 offset-sm-1 text-left">Last Name</label>
+                        <div className="col-sm-6">
+                            <div style={{fontSize: 12, color: "red"}}>
+                                {employeeValidated.lastNameError}
+                            </div>
+                            <input type="text" className="form-control" id="lastName" name="lastName"
+                                   placeholder="Short Name" value={employee.lastName} onChange={handleInputChange}/>
                         </div>
-                        <input type="text" className="form-control" id="lastName" name="lastName"
-                               placeholder="Short Name" value={employee.lastName} onChange={handleInputChange}/>
                     </div>
-                </div>
 
-                <div className="form-group row">
-                    <div
-                        className="offset-sm-1 col-sm-3  text-center">
-                        <button
-                            type="submit"
-                            // disabled={!isInputValid}
-                            className="btn btn-primary text-upper">
-                            Save
-                        </button>
+                    <div className="form-group row">
+                        <div
+                            className="col-sm-4  text-center">
+                            <button
+                                type="submit"
+                                // disabled={!isInputValid}
+                                className="btn btn-primary text-upper">
+                                Save
+                            </button>
+                        </div>
+                        <div
+                            className="col-sm-8  text-center">
+                            <button
+                                onClick={() => cancelGoBack()}
+                                type="button"
+                                className="btn btn-danger text-upper">
+                                Cancel
+                            </button>
+                        </div>
                     </div>
-                    <div
-                        className="offset-sm-1 col-sm-3  text-center">
-                        <button
-                            onClick={() => cancelGoBack()}
-                            type="button"
-                            className="btn btn-danger text-upper">
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     );
 };

@@ -23,7 +23,7 @@ const Employee = (props) => {
                 </Link>
                 <Link className="btn btn-sm btn-outline-dark"
                       to={"/employees/" + props.employee.employeeId + "/tasks"}>
-                    <span><strong>Details</strong></span>
+                    <span><strong>Tasks</strong></span>
                 </Link>
             </td>
         </tr>

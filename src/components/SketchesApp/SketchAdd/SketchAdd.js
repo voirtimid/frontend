@@ -29,6 +29,7 @@ const SketchAdd = (props) => {
 
     const [sketch, setSketch] = useState(emptySketch);
     const [validate, setValidate] = useState(validation);
+    const [showLoading, setShowLoading] = useState(false);
 
     const isValid = () => {
         let sketchNameError = "";
@@ -66,8 +67,16 @@ const SketchAdd = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
+        // TODO add spinner and disable submit
+
+        setShowLoading(true);
         FileService.uploadFile(formData, sketch.sketchName).then(response => {
+
             alert('File Upload Successfully');
+
+            setShowLoading(false);
+        }).catch(reason => {
+            alert(`REASON ${reason}`);
         });
 
         const target = e.target;
@@ -170,7 +179,7 @@ const SketchAdd = (props) => {
                         <label htmlFor="technologyFilename"
                                className="col-sm-4 offset-sm-1 text-left">Technology</label>
                         <div className="col-sm-6">
-                            {sketch.technologyFilename === "" || "No file yet. Upload file"}
+                            {sketch.technologyFilename}
                             <input type="file" className="form-control" id="technologyFilename"
                                    name="technologyFilename"
                                    placeholder="Technology" onChange={onFileChangeHandler}/>
@@ -196,7 +205,7 @@ const SketchAdd = (props) => {
                         <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring
                             List</label>
                         <div className="col-sm-6">
-                            {sketch.measuringListFilename === "" || "No file yet. Upload file"}
+                            {sketch.measuringListFilename}
                             <input type="file" className="form-control" id="measuringListFilename"
                                    name="measuringListFilename"
                                    placeholder="Measuring List" onChange={onFileChangeHandler}/>
@@ -209,7 +218,7 @@ const SketchAdd = (props) => {
                         <label htmlFor="myMeasuringListFilename" className="col-sm-4 offset-sm-1 text-left">My Measuring
                             List</label>
                         <div className="col-sm-6">
-                            {sketch.myMeasuringListFilename === "" || "No file yet. Upload file"}
+                            {sketch.myMeasuringListFilename}
                             <input type="file" className="form-control" id="myMeasuringListFilename"
                                    name="myMeasuringListFilename"
                                    placeholder="My Measuring List" onChange={onFileChangeHandler}/>
@@ -221,7 +230,7 @@ const SketchAdd = (props) => {
                     <div className="form-group row">
                         <label htmlFor="gcodeFilename" className="col-sm-4 offset-sm-1 text-left">GCode File</label>
                         <div className="col-sm-6">
-                            {sketch.gcodeFilename === "" || "No file yet. Upload file"}
+                            {sketch.gcodeFilename}
                             <input type="file" className="form-control" id="gcodeFilename" name="gcodeFilename"
                                    placeholder="GCode File" onChange={onFileChangeHandler}/>
                         </div>
@@ -234,10 +243,16 @@ const SketchAdd = (props) => {
                             className="offset-sm-1 col-sm-3  text-center">
                             <button
                                 type="submit"
-                                // disabled={!isInputValid}
+                                disabled={showLoading}
                                 className="btn btn-primary text-upper">
                                 Create new Sketch
                             </button>
+                        </div>
+                        <div>
+                            {showLoading &&
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>}
                         </div>
                     </div>
 

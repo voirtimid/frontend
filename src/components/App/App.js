@@ -29,13 +29,11 @@ class App extends React.Component {
     loadJobs() {
         JobService.getAllJobs().then(response => {
             const loadedJobs = response.data;
-            const localData = loadedJobs.map(j => {
-                return {
-                    EndTime: new Date(j.endDateTime),
-                    StartTime: new Date(j.startDateTime),
-                    Subject: j.jobName
-                }
-            });
+            const localData = loadedJobs.map(j => ({
+                EndTime: new Date(j.endDateTime),
+                StartTime: new Date(j.startDateTime),
+                Subject: j.jobName
+            }));
             this.setState(() => ({
                 jobs: loadedJobs,
                 data: localData
