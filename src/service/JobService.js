@@ -40,6 +40,10 @@ class JobService {
     static updateDates(jobId) {
         return axios.get(`/api/jobs/updateDates/${jobId}`);
     }
+
+    static getJobsWithSketch(sketchName) {
+        return axios.get(`/api/jobs/getJobsFor/${sketchName}`);
+    }
 }
 
 export default JobService;
