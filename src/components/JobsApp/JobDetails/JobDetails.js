@@ -3,6 +3,9 @@ import {useParams} from "react-router";
 import JobService from "../../../service/JobService";
 import Task from "../../Tasks/Task/Task";
 import TaskService from "../../../service/TaskService";
+import Job from "../Job/Job";
+import JobsList from "../JobsList/JobsList";
+import {Link} from "react-router-dom";
 
 const JobDetails = (props) => {
 
@@ -87,9 +90,13 @@ const JobDetails = (props) => {
     return (
         <Fragment>
             <h4 className="text-upper text-left row">Tasks for the job: <strong>{job.jobName}</strong></h4>
+
             <div className="row">
                 {tasksTable}
             </div>
+            <Link className="btn btn-sm btn-outline-dark" to={"/jobs/" + job.jobId + "/addTask"}>
+                <span><strong>Add Task</strong></span>
+            </Link>
         </Fragment>
     );
 

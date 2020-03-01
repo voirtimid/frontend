@@ -1,36 +1,50 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useHistory} from "react-router-dom";
 import moment from "moment";
+import JobService from "../../../service/JobService";
+import TaskService from "../../../service/TaskService";
 
 const Job = (props) => {
+
+    const history = useHistory();
+
+    const [allTasksCompleted, setAllTasksCompleted] = useState(false);
+
+    const completeJob = () => {
+        props.onComplete(props.job.jobId);
+        history.push("/jobs");
+    };
+
+    useEffect(() => {
+        JobService.getAllTasksForJob(props.job.jobId).then(response => {
+            const tasks = response.data.map(task => task.finished);
+            const finished = tasks.every(el => el === true);
+            setAllTasksCompleted(finished);
+
+        })
+    }, []);
+
     return (
         <tr>
-            <td>{props.job.jobName}</td>
-            <td><a href={`/sketches/${props.job.sketch.sketchId}`}>{props.job.sketch.sketchName}</a></td>
-            {/*<td>{props.job.startDateTime}</td>*/}
-            <td>{ moment(props.job.startDate).format("DD-MMM-YYYY")}</td>
-            <td>{ moment(props.job.endDate).format("DD-MMM-YYYY")}</td>
-            <td>{props.job.estimatedHours}</td>
+            <td>{props.job.sketch.sketchName}</td>
+            <td><a href={`/sketches/${props.job.sketch.sketchId}`}>{props.job.sketch.drawing}</a></td>
             <td>{props.job.numberOfPieces}</td>
-            <td>{props.job.sketch.minutesForPiece}</td>
-            <td>{(props.job.isFinished && "FINISHED") || "NOT FINISHED"}</td>
+            <td>{moment(props.job.jobCreated).format("DD-MMM-YYYY")}</td>
+            <td>{ moment(props.job.plannedStartDate).format("DD-MMM-YYYY")} / {(props.job.realStartDate && moment(props.job.realStartDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
+            <td>{ moment(props.job.plannedEndDate).format("DD-MMM-YYYY")} /  {(props.job.realEndDate && moment(props.job.realEndDate).format("DD-MMM-YYYY")) || "Not yet finished"}</td>
+            <td>{props.job.plannedHours} / {props.job.realHours}</td>
+            <td>{props.job.plannedTimeForPiece} / {props.job.realTimeForPiece}</td>
+            <td>{props.job.tasks.length}</td>
             <td>
-                <Link className="btn btn-sm btn-secondary"
-                      to={"/jobs/" + props.job.jobId + "/edit"}>
-                    <span className="fa fa-edit"/>
-                    <span><strong>Edit</strong></span>
-                </Link>
-                <button className="btn btn-sm btn-outline-secondary"
-                        onClick={() => props.onDelete(props.job.jobId)}>
-                    <span className="fa fa-remove"/>
-                    <span><strong>Remove</strong></span>
+                <button type="button"
+                        className="btn btn-secondary btn-sm"
+                        disabled={!allTasksCompleted}
+                        onClick={() => completeJob()}>
+                    Complete Job
                 </button>
-                <Link className="btn btn-sm btn-outline-dark"
-                      to={"/jobs/" + props.job.jobId + "/details"}>
-                    <span><strong>Details</strong></span>
-                </Link>
-                <Link className="btn btn-sm btn-outline-dark" to={"/jobs/" + props.job.jobId + "/addTask"}>
-                    <span><strong>Add Task</strong></span>
+                <Link className="btn btn-secondary btn-sm"
+                      to={"/jobs/" + props.job.jobId + "/tasks"}>
+                    <span><strong>Tasks</strong></span>
                 </Link>
             </td>
         </tr>

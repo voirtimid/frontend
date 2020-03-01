@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import FileService from "../../../service/FileService";
 import SketchService from "../../../service/SketchService";
 import JobService from "../../../service/JobService";
 
-const SketchAdd = (props) => {
+const SketchesNewVersion = (props) => {
 
     const history = useHistory();
 
@@ -16,23 +16,15 @@ const SketchAdd = (props) => {
         numberOfPiecesError: ""
     };
 
-    const emptySketch = {
-        drawing: drawing,
-        sketchName: "",
-        companyName: "",
-        companyInfo: "",
-        usedTools: "",
-        numberOfPieces: "",
-        imageFilename: "",
-        technologyFilename: "",
-        myTechnologyFilename: "",
-        measuringListFilename: "",
-        myMeasuringListFilename: ""
-    };
-
-    const [sketch, setSketch] = useState(emptySketch);
+    const [sketch, setSketch] = useState({});
     const [validate, setValidate] = useState(validation);
     const [showLoading, setShowLoading] = useState(false);
+
+    useEffect(() => {
+        SketchService.getSketchByName(drawing).then(response => {
+            setSketch(response.data);
+        })
+    }, []);
 
     const isValid = () => {
         let drawingNameError = "";
@@ -47,7 +39,7 @@ const SketchAdd = (props) => {
         if (!sketch.numberOfPieces) {
             numberOfPiecesError = "Enter number of pieces";
         }
-        if (drawingNameError || sketchNameError || numberOfPiecesError) {
+        if (drawingNameError || sketchNameError) {
             setValidate({
                 ...validation,
                 drawingNameError: drawingNameError,
@@ -81,7 +73,7 @@ const SketchAdd = (props) => {
         formData.append('file', file);
 
         setShowLoading(true);
-        FileService.uploadFile(formData, sketch.drawing).then(response => {
+        FileService.uploadFile(formData, sketch.sketchName).then(response => {
             setShowLoading(false);
         }).catch(reason => {
             alert(`REASON ${reason}`);
@@ -151,7 +143,6 @@ const SketchAdd = (props) => {
                                    placeholder="Sketch Name" value={sketch.sketchName} onChange={handleInputChange}/>
                         </div>
                     </div>
-
                     <hr/>
 
                     <div className="form-group row">
@@ -202,7 +193,7 @@ const SketchAdd = (props) => {
                     <div className="form-group row">
                         <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
                         <div className="col-sm-6">
-                            {/*<a href={FileService.downloadFile(sketch.imageFilename, sketch.drawing)} download target="_blank">{sketch.imageFilename}</a>*/}
+                            {sketch.imageFilename}
                             <input type="file" className="form-control" id="imageFilename" name="imageFilename"
                                    placeholder="Image File" onChange={onFileChangeHandler}/>
                         </div>
@@ -214,7 +205,7 @@ const SketchAdd = (props) => {
                         <label htmlFor="technologyFilename"
                                className="col-sm-4 offset-sm-1 text-left">Technology</label>
                         <div className="col-sm-6">
-                            {/*<a href={FileService.downloadFile(sketch.technologyFilename, sketch.drawing)} download target="_blank">{sketch.technologyFilename}</a>*/}
+                            {sketch.technologyFilename}
                             <input type="file" className="form-control" id="technologyFilename"
                                    name="technologyFilename"
                                    placeholder="Technology" onChange={onFileChangeHandler}/>
@@ -227,7 +218,7 @@ const SketchAdd = (props) => {
                         <label htmlFor="myTechnologyFilename" className="col-sm-4 offset-sm-1 text-left">My
                             Technology</label>
                         <div className="col-sm-6">
-                            {/*<a href={FileService.downloadFile(sketch.myTechnologyFilename, sketch.drawing)} download target="_blank">{sketch.myTechnologyFilename}</a>*/}
+                            {sketch.myTechnologyFilename === "" || "No file yet. Upload file"}
                             <input type="file" className="form-control" id="myTechnologyFilename"
                                    name="myTechnologyFilename"
                                    placeholder="My Technology" onChange={onFileChangeHandler}/>
@@ -240,7 +231,7 @@ const SketchAdd = (props) => {
                         <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring
                             List</label>
                         <div className="col-sm-6">
-                            {/*<a href={FileService.downloadFile(sketch.measuringListFilename, sketch.drawing)} download target="_blank">{sketch.measuringListFilename}</a>*/}
+                            {sketch.measuringListFilename}
                             <input type="file" className="form-control" id="measuringListFilename"
                                    name="measuringListFilename"
                                    placeholder="Measuring List" onChange={onFileChangeHandler}/>
@@ -250,11 +241,10 @@ const SketchAdd = (props) => {
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="myMeasuringListFilename" className="col-sm-4 offset-sm-1 text-left">My
-                            Measuring
+                        <label htmlFor="myMeasuringListFilename" className="col-sm-4 offset-sm-1 text-left">My Measuring
                             List</label>
                         <div className="col-sm-6">
-                            {/*<a href={FileService.downloadFile(sketch.myMeasuringListFilename, sketch.drawing)} download target="_blank">{sketch.myMeasuringListFilename}</a>*/}
+                            {sketch.myMeasuringListFilename}
                             <input type="file" className="form-control" id="myMeasuringListFilename"
                                    name="myMeasuringListFilename"
                                    placeholder="My Measuring List" onChange={onFileChangeHandler}/>
@@ -268,7 +258,7 @@ const SketchAdd = (props) => {
                             className="offset-sm-1 col-sm-3  text-center">
                             <button
                                 type="submit"
-                                disabled={showLoading}
+                                disabled={showLoading || sketch.drawing === drawing}
                                 className="btn btn-primary text-upper">
                                 Next step
                             </button>
@@ -288,4 +278,4 @@ const SketchAdd = (props) => {
 
 };
 
-export default SketchAdd;
+export default SketchesNewVersion;

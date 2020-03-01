@@ -9,6 +9,10 @@ class FileService {
     static readFile(cncId) {
         return axios.get(`/upload/${cncId}`);
     }
+
+    static downloadFile(fileName, destination) {
+        return axios.get(`/upload/downloadFile/${destination}/${fileName}`)
+    }
 }
 
 export default FileService;

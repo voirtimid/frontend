@@ -5,6 +5,7 @@ import MachineService from "../../../service/MachineService";
 import FileService from "../../../service/FileService";
 import CncService from "../../../service/CncService";
 import TaskService from "../../../service/TaskService";
+import JobService from "../../../service/JobService";
 import moment from "moment";
 
 const JobAddTask = (props) => {
@@ -13,28 +14,31 @@ const JobAddTask = (props) => {
     const jobId = useParams().jobId;
 
     const emptyTask = {
-        taskName: "",
         jobId: jobId,
         machineId: "",
         employeeId: "",
-        cncCodeId: "",
-        startDate: "",
-        endDate: "",
-        totalWorkTime: 0,
-        measuringList: "",
-        usedTools: "",
-        pieceByMinute: "",
-        priceByPiece: "",
-        totalGain: "",
+        cncCodeId: 1,
+        plannedStartDate: "",
+        plannedEndDate: "",
+        plannedHours: 0,
+        minutesForPiece: "",
         isFinished: false,
         workInProgress: false
     };
 
     const [task, setTask] = useState(emptyTask);
+    const [job, setJob] = useState({});
     const [employees, setEmployees] = useState([]);
     const [machines, setMachines] = useState([]);
     const [validate, setValidate] = useState("");
     const [firstSlotAvailable, setFirsSlotAvailable] = useState("");
+
+
+    useEffect(() => {
+        JobService.getJob(jobId).then(response => {
+            setJob(response.data);
+        })
+    }, []);
 
     useEffect(() => {
         EmployeeService.getAllEmployees().then(response => {
@@ -47,33 +51,6 @@ const JobAddTask = (props) => {
             setMachines(response.data);
         })
     }, []);
-
-    const isMachineSelected = () => {
-        if (task.machineId) {
-            TaskService.getFirstAvailableSlot(task.machineId).then(response => {
-                console.log(response);
-            })
-        }
-    };
-
-
-    const isValid = () => {
-        const startDateTime = moment(`${task.startDate} ${task.startTime}`, 'YYYY-MM-DD HH:mm:ss').format().split("+")[0];
-        const endDateTime = moment(`${task.endDate} ${task.endTime}`, 'YYYY-MM-DD HH:mm:ss').format().split("+")[0];
-        const dateTimeDTO = {
-            startDateTime: startDateTime,
-            endDateTime: endDateTime
-        };
-
-        TaskService.checkIfSlotIsAvailable(dateTimeDTO).then(response => {
-            console.log(response.data);
-            if (!response.data) {
-                setValidate("Time slot is not available");
-                return false;
-            }
-            return true;
-        })
-    };
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -158,50 +135,80 @@ const JobAddTask = (props) => {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
+        const newTask = {
+            ...task,
+            plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
+        };
+
         const taskDTO = {
-            task: task,
+            task: newTask,
             jobId: jobId,
             employeeId: task.employeeId,
             machineId: task.machineId,
             cncCodeId: task.cncCodeId,
-            startDate: task.startDate,
-            endDate: task.endDate
+            plannedStartDate: task.plannedStartDate,
+            plannedEndDate: task.plannedEndDate,
+            plannedMinutesForPiece: task.minutesForPiece
         };
 
         props.onCreate(jobId, taskDTO);
         history.push("/jobs");
     };
 
+
+    const addNewTask = () => {
+        const newTask = {
+            ...task,
+            plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
+        };
+
+        const taskDTO = {
+            task: newTask,
+            jobId: jobId,
+            employeeId: task.employeeId,
+            machineId: task.machineId,
+            cncCodeId: task.cncCodeId,
+            plannedStartDate: task.plannedStartDate,
+            plannedEndDate: task.plannedEndDate,
+            plannedMinutesForPiece: task.minutesForPiece
+        };
+
+        props.onCreate(jobId, taskDTO);
+
+        const nextTask = {
+            ...emptyTask,
+            cncCodeId: 1,
+            machineId: task.machineId,
+            employeeId: task.employeeId
+        };
+
+        setTask(nextTask);
+
+        history.push(`/jobs/${jobId}/addTask`);
+
+    };
+
     return (
-        <div>
-            <h4>Add Task</h4>
-            <form className='card' encType='multipart/form-data' onSubmit={onFormSubmit}>
-                <div className="card-body">
-                    <div className="form-group row">
-                        <label htmlFor="taskName" className="col-sm-4 offset-sm-1 text-left">Task Name</label>
-                        <div className="col-sm-6">
-                            <input type="text" className="form-control" id="taskName" name="taskName"
-                                   placeholder="Task Name" value={task.taskName} onChange={handleInputChange}/>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <div className="form-group row">
-                        <label htmlFor="employeeId" className="col-sm-4 offset-sm-1 text-left">Choose employee for the
-                            task</label>
-                        <div className="col-sm-6">
-                            {employeesDropDown}
-                        </div>
-                    </div>
-
-                    <hr/>
-
+        <div className="card">
+            <div className="card-body">
+                <h4 className="card-title">Add Task</h4>
+                <form encType='multipart/form-data' onSubmit={onFormSubmit}>
                     <div className="form-group row">
                         <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the
                             task</label>
                         <div className="col-sm-6">
                             {machinesDropDown}
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div className="form-group row">
+                        <label htmlFor="employeeId" className="col-sm-4 offset-sm-1 text-left">Choose employee for
+                            the
+                            task</label>
+                        <div className="col-sm-6">
+                            {employeesDropDown}
                         </div>
                     </div>
 
@@ -218,26 +225,48 @@ const JobAddTask = (props) => {
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
-                        <div className="col-sm-6 form-inline">
-                            <div style={{fontSize: 12, color: "red"}}>
-                                {validate}
-                            </div>
-                            <input type="date" className="form-control" id="startDate" name="startDate" min={firstSlotAvailable}
-                                   placeholder="Start Date" value={task.startDate} onChange={handleInputChange}/>
+                        <label htmlFor="minutesForPiece" className="col-sm-4 offset-sm-1 text-left">Minutes for piece</label>
+                        <div className="col-sm-6">
+                            <input type="number" min="1" className="form-control" id="minutesForPiece" name="minutesForPiece"
+                                   placeholder="Minutes for piece" value={task.minutesForPiece} onChange={handleInputChange}/>
                         </div>
                     </div>
 
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
+                        <label htmlFor="plannedHours" className="col-sm-4 offset-sm-1 text-left">Working days needed</label>
+                        <div className="col-sm-6">
+                            <input type="text" disabled className="form-control" id="plannedHours" name="plannedHours"
+                                   placeholder="Working days needed" value={Math.ceil((parseInt(task.minutesForPiece) * job.numberOfPieces / 60) / 7) + " days, or " + (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1) + " hours"} onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div className="form-group row">
+                        <label htmlFor="plannedStartDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
                         <div className="col-sm-6 form-inline">
                             <div style={{fontSize: 12, color: "red"}}>
                                 {validate}
                             </div>
-                            <input type="date" className="form-control" id="endDate" name="endDate" min={task.startDate}
-                                   placeholder="End Date" value={task.endDate} onChange={handleInputChange}/>
+                            <input type="date" className="form-control" id="plannedStartDate" name="plannedStartDate"
+                                   min={firstSlotAvailable}
+                                   placeholder="Start Date" value={task.plannedStartDate} onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div className="form-group row">
+                        <label htmlFor="plannedEndDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
+                        <div className="col-sm-6 form-inline">
+                            <div style={{fontSize: 12, color: "red"}}>
+                                {validate}
+                            </div>
+                            <input type="date" className="form-control" id="plannedEndDate" name="plannedEndDate"
+                                   min={task.plannedStartDate}
+                                   placeholder="End Date" value={task.plannedEndDate} onChange={handleInputChange}/>
                         </div>
                     </div>
 
@@ -245,7 +274,18 @@ const JobAddTask = (props) => {
 
                     <div className="form-group row">
                         <div
-                            className="offset-sm-1 col-sm-3  text-center">
+                            className="col-sm-4  text-center">
+                            <button
+                                type="button"
+                                onClick={() => addNewTask()}
+                                // disabled={!isInputValid}
+                                className="btn btn-primary text-upper">
+                                Create next Task
+                            </button>
+                        </div>
+
+                        <div
+                            className="col-sm-4  text-center">
                             <button
                                 type="submit"
                                 // disabled={!isInputValid}
@@ -255,7 +295,7 @@ const JobAddTask = (props) => {
                         </div>
 
                         <div
-                            className="offset-sm-1 col-sm-3  text-center">
+                            className="col-sm-4  text-center">
                             <button
                                 onClick={() => cancelGoBack()}
                                 type="button"
@@ -264,9 +304,9 @@ const JobAddTask = (props) => {
                             </button>
                         </div>
                     </div>
-                </div>
 
-            </form>
+                </form>
+            </div>
 
         </div>
     );

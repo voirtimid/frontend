@@ -5,6 +5,15 @@ class JobService {
         return axios.get("/api/jobs");
     }
 
+    static getAllJobsPaged(page, size) {
+        return axios.get(`/api/jobs/paged`, {
+            headers: {
+                'page': page,
+                'size': size
+            }
+        })
+    }
+
     static getAllTasksInProgress() {
         return axios.get(`/api/jobs/status/false`)
     }
@@ -41,8 +50,12 @@ class JobService {
         return axios.get(`/api/jobs/updateDates/${jobId}`);
     }
 
-    static getJobsWithSketch(sketchName) {
-        return axios.get(`/api/jobs/getJobsFor/${sketchName}`);
+    static getJobsWithSketch(drawing) {
+        return axios.get(`/api/jobs/getJobsFor/${drawing}`);
+    }
+
+    static completeJob(jobId) {
+        return axios.get(`/api/jobs/${jobId}/complete`)
     }
 }
 

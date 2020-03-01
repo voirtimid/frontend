@@ -5,10 +5,10 @@ import Header from "../Header/Header";
 import MachinesApp from "../MachinesApp/MachinesApp";
 import EmployeesApp from "../EmployeesApp/EmployeesApp";
 import JobsApp from "../JobsApp/JobsApp";
-import CalendarApp from "../CalendarApp/CalendarApp";
 import JobService from "../../service/JobService";
 import UserManagementApp from "../UserManagementApp/UserManagementApp";
 import SketchesApp from "../SketchesApp/SketchesApp";
+import GanttChart from "../GanttChart/GanttChart";
 
 class App extends React.Component {
 
@@ -29,8 +29,8 @@ class App extends React.Component {
         JobService.getAllJobs().then(response => {
             const loadedJobs = response.data;
             const localData = loadedJobs.map(j => ({
-                EndTime: new Date(j.endDateTime),
-                StartTime: new Date(j.startDateTime),
+                EndTime: new Date(j.plannedEndDate),
+                StartTime: new Date(j.plannedStartDate),
                 Subject: j.jobName
             }));
             this.setState(() => ({
@@ -58,8 +58,8 @@ class App extends React.Component {
                         <Route path={"/jobs"}>
                             <JobsApp />
                         </Route>
-                        <Route path={"/calendar"}>
-                            <CalendarApp data={this.state.data}/>
+                        <Route path={"/gantt"}>
+                            <GanttChart />
                         </Route>
 
                         <Route path={"/login"}>

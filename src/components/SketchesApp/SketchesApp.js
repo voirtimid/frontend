@@ -4,6 +4,7 @@ import SketchSearch from "./SketchSearch/SketchSearch";
 import SketchAdd from "./SketchAdd/SketchAdd";
 import SketchDetails from "./SketchDetails/SketchDetails";
 import JobAdd from "../JobsApp/JobAdd/JobAdd";
+import SketchesNewVersion from "./SketchesNewVersion/SketchesNewVersion";
 
 class SketchesApp extends React.Component {
 
@@ -22,7 +23,8 @@ class SketchesApp extends React.Component {
                     <Switch>
                         <Route path={"/sketches"} exact render={() => <SketchSearch  />}/>
                         <Route path={"/sketches/new"} exact render={() => <SketchAdd />}/>
-                        <Route path={"/sketches/new/:sketchName"} exact render={() => <SketchAdd />}/>
+                        <Route path={"/sketches/new/version/:drawing"} exact render={() => <SketchesNewVersion />}/>
+                        <Route path={"/sketches/new/:drawing"} exact render={() => <SketchAdd />}/>
                         <Route path={"/sketches/:sketchId/new"} exact render={() => <JobAdd />}/>
                         <Route path={"/sketches/:sketchId"} exact render={() => <SketchDetails />}/>
                     </Switch>

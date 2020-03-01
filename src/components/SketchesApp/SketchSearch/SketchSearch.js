@@ -3,26 +3,29 @@ import SketchService from "../../../service/SketchService";
 import {useHistory} from "react-router";
 import FileService from "../../../service/FileService";
 import "./SketchSearch.css"
-import {Constants} from "../../../Constants/Constants";
 import {Link} from "react-router-dom";
 import Job from "../../JobsApp/Job/Job";
 import JobService from "../../../service/JobService";
+import {Constants} from "../../../Constants/Constants";
 
 const SketchSearch = (props) => {
 
     const history = useHistory();
 
     const validation = {
-        sketchNameError: ""
+        drawingNameError: "",
+        sketchNameError: "",
+        numberOfPiecesError: ""
     };
 
-    const [sketchName, setSketchName] = useState("");
+    const [drawing, setDrawing] = useState("");
     const [validate, setValidate] = useState(validation);
     const [sketches, setSketches] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [sketch, setSketch] = useState({});
     const [exist, setExist] = useState(false);
     const [jobs, setJobs] = useState([]);
+    const [showLoading, setShowLoading] = useState(false);
 
 
     useEffect(() => {
@@ -32,14 +35,24 @@ const SketchSearch = (props) => {
     }, []);
 
     const isValid = () => {
+        let drawingNameError = "";
         let sketchNameError = "";
+        let numberOfPiecesError = "";
+        if (!sketch.drawing) {
+            drawingNameError = "Drawing is not entered";
+        }
         if (!sketch.sketchName) {
             sketchNameError = "Sketch name is not entered";
         }
-        if (sketchNameError) {
+        if (!sketch.numberOfPieces) {
+            numberOfPiecesError = "Enter number of pieces";
+        }
+        if (drawingNameError || sketchNameError || numberOfPiecesError) {
             setValidate({
                 ...validation,
-                sketchNameError: sketchNameError
+                drawingNameError: drawingNameError,
+                sketchNameError: sketchNameError,
+                numberOfPiecesError: numberOfPiecesError
             });
             return false;
         }
@@ -47,9 +60,8 @@ const SketchSearch = (props) => {
     };
 
     const suggestionSelected = (value) => {
-        setSketchName(value);
+        setDrawing(value);
         setSuggestions([]);
-
     };
 
     const handleInputChange = (event) => {
@@ -81,8 +93,11 @@ const SketchSearch = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
+        setShowLoading(true);
         FileService.uploadFile(formData, sketch.sketchName).then(response => {
-            alert('File Upload Successfully');
+            setShowLoading(false);
+        }).catch(reason => {
+            alert(`REASON ${reason}`);
         });
 
         const target = e.target;
@@ -105,30 +120,59 @@ const SketchSearch = (props) => {
         e.preventDefault();
 
         if (isValid()) {
-
             SketchService.updateSketch(sketch.sketchId, sketch).then(response => {
-                console.log(response.data);
-                history.push(`/sketches/${response.data.sketchId}/new`)
+                const newSketch = response.data;
+
+                const jobToAdd = {
+                    jobName: newSketch.drawing + " " + newSketch.sketchName,
+                    numberOfPieces: sketch.numberOfPieces
+                };
+
+                const jobDTO = {
+                    job: jobToAdd,
+                    sketchId: newSketch.sketchId
+                };
+
+                JobService.createJob(jobDTO).then(response => {
+                    const newJob = response.data;
+                    history.push(`/jobs/${newJob.jobId}/addTask`)
+                });
             })
         }
     };
 
-    const jobsWithSketch = jobs.map(job => <Job key={job.jobId} job={job} onDelete={props.onDelete} />);
+    const jobsWithSketch = jobs.map(job => <Job key={job.jobId} job={job} onDelete={props.onDelete}/>);
+
+    const createNewVersion = () => {
+        history.push("/sketches/new/version/" + drawing);
+    };
 
     let editSketch = (
         <div>
             <div className="card">
                 <div className="card-body">
-                    <h4 className="card-title">Edit Sketch</h4>
+                    <h4 className="card-title">Enter number of pieces and edit Sketch</h4>
                     <form onSubmit={onEditSketch}>
                         <div className="form-group row">
-                            <div
-                                className="offset-sm-1 col-sm-3  text-center">
+                            <div className="col-sm-3  text-center">
                                 <button
                                     type="submit"
-                                    // disabled={!isInputValid}
+                                    disabled={exist === false || showLoading}
                                     className="btn btn-primary text-upper">
                                     Continue with this Sketch
+                                </button>
+                            </div>
+                            {showLoading &&
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>}
+                            <div className="col-sm-3  text-center">
+                                <button type="button"
+                                        className="btn btn-primary"
+                                        disabled={exist === false || showLoading}
+                                        onClick={() => createNewVersion()}>
+                                    Create new version
+
                                 </button>
                             </div>
                         </div>
@@ -136,12 +180,29 @@ const SketchSearch = (props) => {
                         <hr/>
 
                         <div className="form-group row">
-                            <label htmlFor="sketchName" className="col-sm-4 offset-sm-1 text-left">Sketch Name</label>
+                            <label htmlFor="numberOfPieces" className="col-sm-4 offset-sm-1 text-left">Number of
+                                pieces</label>
                             <div className="col-sm-6">
                                 <div style={{fontSize: 12, color: "red"}}>
-                                    {validate.sketchNameError}
+                                    {validate.numberOfPiecesError}
                                 </div>
-                                <input type="text" disabled className="form-control" id="sketchName" name="sketchName"
+                                <input type="number" className="form-control" id="numberOfPieces" name="numberOfPieces"
+                                       placeholder="Number of pieces" min="1" value={sketch.numberOfPieces}
+                                       onChange={handleInputChange}/>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.drawingNameError}
+                        </div>
+                        <div className="form-group row">
+                            <label htmlFor="drawing" className="col-sm-4 offset-sm-1 text-left">Drawing Code</label>
+                            <div className="form-inline col-sm-6">
+                                <input type="text" className="form-control" disabled id="drawing" name="drawing"
+                                       placeholder="Drawing code" value={sketch.drawing} onChange={handleInputChange}/>
+                                <input type="text" className="form-control" disabled id="sketchName" name="sketchName"
                                        placeholder="Sketch Name" value={sketch.sketchName}
                                        onChange={handleInputChange}/>
                             </div>
@@ -181,22 +242,9 @@ const SketchSearch = (props) => {
                         <hr/>
 
                         <div className="form-group row">
-                            <label htmlFor="minutesForPiece" className="col-sm-4 offset-sm-1 text-left">Потребно време
-                                за изработка во минути</label>
-                            <div className="col-sm-6">
-                                <input type="number" className="form-control" id="minutesForPiece"
-                                       name="minutesForPiece"
-                                       placeholder="Piece in minute" value={sketch.minutesForPiece}
-                                       onChange={handleInputChange}/>
-                            </div>
-                        </div>
-
-                        <hr/>
-
-                        <div className="form-group row">
                             <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
                             <div className="col-sm-6">
-                                <a href={Constants.getFilePath(sketchName, sketch.imageFilename)} target="_blank">{sketch.imageFilename}</a>
+                                {/*<a href={FileService.downloadFile(sketch.imageFilename, sketch.drawing)} download target="_blank">{sketch.imageFilename}</a>*/}
                                 <input type="file" className="form-control" id="imageFilename" name="imageFilename"
                                        placeholder="Image File" onChange={onFileChangeHandler}/>
                             </div>
@@ -208,7 +256,7 @@ const SketchSearch = (props) => {
                             <label htmlFor="technologyFilename"
                                    className="col-sm-4 offset-sm-1 text-left">Technology</label>
                             <div className="col-sm-6">
-                                <a href={Constants.getFilePath(sketchName, sketch.technologyFilename)} target="_blank">{sketch.technologyFilename}</a>
+                                {/*<a href={FileService.downloadFile(sketch.technologyFilename, sketch.drawing)} download target="_blank">{sketch.technologyFilename}</a>*/}
                                 <input type="file" className="form-control" id="technologyFilename"
                                        name="technologyFilename"
                                        placeholder="Technology" onChange={onFileChangeHandler}/>
@@ -221,7 +269,7 @@ const SketchSearch = (props) => {
                             <label htmlFor="myTechnologyFilename" className="col-sm-4 offset-sm-1 text-left">My
                                 Technology</label>
                             <div className="col-sm-6">
-                                {sketch.myTechnologyFilename}
+                                {/*<a href={FileService.downloadFile(sketch.myTechnologyFilename, sketch.drawing)} download target="_blank">{sketch.myTechnologyFilename}</a>*/}
                                 <input type="file" className="form-control" id="myTechnologyFilename"
                                        name="myTechnologyFilename"
                                        placeholder="My Technology" onChange={onFileChangeHandler}/>
@@ -234,7 +282,7 @@ const SketchSearch = (props) => {
                             <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring
                                 List</label>
                             <div className="col-sm-6">
-                                {sketch.measuringListFilename}
+                                {/*<a href={FileService.downloadFile(sketch.measuringListFilename, sketch.drawing)} download target="_blank">{sketch.measuringListFilename}</a>*/}
                                 <input type="file" className="form-control" id="measuringListFilename"
                                        name="measuringListFilename"
                                        placeholder="Measuring List" onChange={onFileChangeHandler}/>
@@ -248,21 +296,10 @@ const SketchSearch = (props) => {
                                 Measuring
                                 List</label>
                             <div className="col-sm-6">
-                                {sketch.myMeasuringListFilename}
+                                {/*<a href={FileService.downloadFile(sketch.myMeasuringListFilename, sketch.drawing)} download target="_blank">{sketch.myMeasuringListFilename}</a>*/}
                                 <input type="file" className="form-control" id="myMeasuringListFilename"
                                        name="myMeasuringListFilename"
                                        placeholder="My Measuring List" onChange={onFileChangeHandler}/>
-                            </div>
-                        </div>
-
-                        <hr/>
-
-                        <div className="form-group row">
-                            <label htmlFor="gcodeFilename" className="col-sm-4 offset-sm-1 text-left">GCode File</label>
-                            <div className="col-sm-6">
-                                {sketch.gcodeFilename}
-                                <input type="file" className="form-control" id="gcodeFilename" name="gcodeFilename"
-                                       placeholder="GCode File" onChange={onFileChangeHandler}/>
                             </div>
                         </div>
 
@@ -273,10 +310,15 @@ const SketchSearch = (props) => {
                                 className="offset-sm-1 col-sm-3  text-center">
                                 <button
                                     type="submit"
-                                    // disabled={!isInputValid}
+                                    disabled={exist === false || showLoading}
                                     className="btn btn-primary text-upper">
-                                    Update Sketch and continue with creating job
+                                    Update Sketch and continue the procedure
                                 </button>
+
+                                {showLoading &&
+                                <div className="spinner-border" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div>}
                             </div>
                         </div>
 
@@ -289,14 +331,15 @@ const SketchSearch = (props) => {
                 <table className="table tr-history table-striped small">
                     <thead>
                     <tr>
-                        <th scope="col">Job Name</th>
-                        <th scope="col">Sketch Name</th>
-                        <th scope="col">Start date</th>
-                        <th scope="col">End date</th>
-                        <th scope="col">Estimated hours</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Drawing</th>
                         <th scope="col">Number of pieces</th>
-                        <th scope="col">Time for a Piece</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Created at: </th>
+                        <th scope="col">Planned/Actual Start</th>
+                        <th scope="col">Planned/Actual End</th>
+                        <th scope="col">Estimated/Actual Hours</th>
+                        <th scope="col">Estimated/Actual Time for Piece</th>
+                        <th scope="col">Number of tasks</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
@@ -312,12 +355,12 @@ const SketchSearch = (props) => {
 
     const handleInputChangeSearch = (event) => {
         const value = event.target.value;
-        setSketchName(value);
+        setDrawing(value);
 
         let suggestions = [];
         if (value.length > 0) {
             const regex = new RegExp(`${value}`, 'i');
-            suggestions = sketches.sort().filter(sketch => regex.test(sketch.sketchName));
+            suggestions = sketches.sort().filter(sketch => regex.test(sketch.drawing));
         }
         setSuggestions(suggestions);
     };
@@ -329,7 +372,7 @@ const SketchSearch = (props) => {
         return (
             <ul>
                 {suggestions.map((item) => <li key={item.sketchId}
-                                               onClick={() => suggestionSelected(item.sketchName)}>{item.sketchName}</li>)}
+                                               onClick={() => suggestionSelected(item.drawing)}>{item.drawing}</li>)}
             </ul>
         );
     };
@@ -337,16 +380,16 @@ const SketchSearch = (props) => {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        SketchService.getSketchByName(sketchName).then(response => {
+        SketchService.getSketchByName(drawing).then(response => {
             const sketch = response.data;
             // console.log(sketch);
             if (sketch === "") {
                 alert("Не постои цртеж со ова име. Креирајте нов цртеж");
-                history.push(`/sketches/new/` + sketchName)
+                history.push(`/sketches/new/` + drawing)
             } else {
                 setSketch(sketch);
                 setExist(true);
-                JobService.getJobsWithSketch(response.data.sketchName).then(response => {
+                JobService.getJobsWithSketch(response.data.drawing).then(response => {
                     setJobs(response.data);
                 })
             }
@@ -358,21 +401,20 @@ const SketchSearch = (props) => {
             <h4>Проект</h4>
 
             <form onSubmit={onFormSubmit} className="AutoCompleteText">
-                <input type="search" name="sketchName" id="sketchName" placeholder="Број на цртеж"
-                       onChange={handleInputChangeSearch} value={sketchName}/>
+                <input type="search" name="drawing" id="drawing" placeholder="Број на цртеж"
+                       onChange={handleInputChangeSearch} value={drawing}/>
                 {renderSuggestions()}
                 <input type="submit" value="Пребарај"/>
             </form>
 
             <br/>
             <Link to={"/sketches/new"}>
-                Креирај нов цртеж
+                Креирај нов проект
             </Link>
-            {/*<a href={"/sketches/new"}></a>*/}
             <br/>
 
             <br/>
-            {exist && editSketch}
+            {editSketch}
         </div>
     );
 

@@ -14,25 +14,37 @@ class JobsApp extends React.Component {
         super(props);
         this.state = {
             jobs: [],
-            task: {}
+            task: {},
+            pageSize:2,
+            page:0,
+            totalPages:0
+
         };
         this.createTask = this.createTask.bind(this);
         this.addTaskToJob = this.addTaskToJob.bind(this);
         this.updateJob = this.updateJob.bind(this);
         this.deleteJob = this.deleteJob.bind(this);
+        this.loadJobs = this.loadJobs.bind(this);
+        this.completeJob = this.completeJob.bind(this);
     }
 
     componentDidMount() {
         this.loadJobs();
     }
 
-    loadJobs() {
-        JobService.getAllTasksInProgress().then(response => {
-            this.setState(() => ({
-                jobs: response.data
-            }));
-        })
+    loadJobs(page = 0, size = 5) {
+        JobService.getAllJobsPaged(page, size).then(response => {
+            const jobs = response.data.content;
+            const toShow = jobs.filter(job => {return job.finished !== true});
+            this.setState({
+                    jobs: toShow,
+                    page: response.data.pageable.pageNumber,
+                    pageSize: response.data.pageable.size,
+                    totalPages: response.data.totalPages
+            });
+        });
     }
+
 
     createTask(jobId, task) {
         TaskService.createTask(task).then(response => {
@@ -94,15 +106,29 @@ class JobsApp extends React.Component {
         })
     }
 
+    completeJob(jobId) {
+        JobService.completeJob(jobId).then(response => {
+            const completed = response.data;
+            this.setState(prevState => {
+                const newJobs = prevState.jobs.filter(job => {
+                    return job.jobId !== completed.jobId
+                });
+                return {
+                    "jobs": newJobs
+                }
+            })
+        })
+    }
+
     render() {
         return (
             <main role="main" className="mt-3">
                 <div className="container">
                     <Switch>
-                        <Route path={"/jobs"} exact render={() => <JobsList jobs={this.state.jobs} onDelete={this.deleteJob}/>} />
+                        <Route path={"/jobs"} exact render={() => <JobsList onPageClick={this.loadJobs} jobs={this.state.jobs} onDelete={this.deleteJob} onComplete={this.completeJob} totalPages={this.state.totalPages}/>} />
                         <Route path={"/jobs/:jobId/edit"} exact render={() => <JobEdit onSubmit={this.updateJob}/>}/>
                         <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>
-                        <Route path={"/jobs/:jobId/details"} exact render={() => <JobDetails />}/>
+                        <Route path={"/jobs/:jobId/tasks"} exact render={() => <JobDetails />}/>
                         <Route path={"/jobs/:jobId/tasks/:taskId"} exact render={() => <TaskDetails/>}/>
                     </Switch>
                 </div>

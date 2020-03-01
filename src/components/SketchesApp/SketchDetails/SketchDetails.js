@@ -10,11 +10,14 @@ const SketchDetails = (props) => {
     const sketchId = useParams().sketchId;
 
     const validation = {
-        sketchNameError: ""
+        drawingNameError: "",
+        sketchNameError: "",
+        numberOfPiecesError: ""
     };
 
     const [sketch, setSketch] = useState({});
     const [validate, setValidate] = useState(validation);
+    const [showLoading, setShowLoading] = useState(false);
 
     useEffect(() => {
         SketchService.getSketchById(sketchId).then(response => {
@@ -23,14 +26,24 @@ const SketchDetails = (props) => {
     }, []);
 
     const isValid = () => {
+        let drawingNameError = "";
         let sketchNameError = "";
+        let numberOfPiecesError = "";
+        if (!sketch.drawing) {
+            drawingNameError = "Drawing is not entered";
+        }
         if (!sketch.sketchName) {
             sketchNameError = "Sketch name is not entered";
         }
-        if (sketchNameError) {
+        if (!sketch.numberOfPieces) {
+            numberOfPiecesError = "Enter number of pieces";
+        }
+        if (drawingNameError || sketchNameError || numberOfPiecesError) {
             setValidate({
                 ...validation,
-                sketchNameError: sketchNameError
+                drawingNameError: drawingNameError,
+                sketchNameError: sketchNameError,
+                numberOfPiecesError: numberOfPiecesError
             });
             return false;
         }
@@ -66,8 +79,11 @@ const SketchDetails = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
+        setShowLoading(true);
         FileService.uploadFile(formData).then(response => {
-            alert('File Upload Successfully');
+            setShowLoading(false);
+        }).catch(reason => {
+            alert(`REASON ${reason}`);
         });
 
         const target = e.target;
@@ -91,30 +107,35 @@ const SketchDetails = (props) => {
 
         if (isValid()) {
             SketchService.updateSketch(sketch.sketchId, sketch).then(response => {
-                console.log(response.data);
                 history.push(`/jobs`)
             })
         }
 
     };
 
+    const cancelGoBack = () => {
+        history.push("/jobs");
+    };
+
     return (
         <div>
             <h4 className="text-upper text-left">Edit Sketch</h4>
             <form className="card" onSubmit={onEditSketch}>
-
+                {showLoading &&
+                <div className="alert alert-info" role="alert">
+                    This is a info alert—check it out!
+                </div>}
                 <div className="form-group row">
-                    <label htmlFor="sketchName" className="col-sm-4 offset-sm-1 text-left">Sketch Name</label>
-                    <div className="col-sm-6">
-                        <div style={{fontSize: 12, color: "red"}}>
-                            {validate.sketchNameError}
-                        </div>
-                        <input type="text" className="form-control" id="sketchName" name="sketchName"
+                    <label htmlFor="drawing" className="col-sm-4 offset-sm-1 text-left">Drawing Code</label>
+                    <div className="form-inline col-sm-6">
+                        <input type="text" disabled className="form-control" id="drawing" name="drawing"
+                               placeholder="Drawing code" value={sketch.drawing} onChange={handleInputChange}/>
+                        <input type="text" disabled className="form-control" id="sketchName" name="sketchName"
                                placeholder="Sketch Name" value={sketch.sketchName} onChange={handleInputChange}/>
                     </div>
                 </div>
 
-                <hr />
+                <hr/>
 
                 <div className="form-group row">
                     <label htmlFor="companyName" className="col-sm-4 offset-sm-1 text-left">Company Name</label>
@@ -124,83 +145,17 @@ const SketchDetails = (props) => {
                     </div>
                 </div>
 
-                <hr />
+                <hr/>
 
                 <div className="form-group row">
                     <label htmlFor="companyInfo" className="col-sm-4 offset-sm-1 text-left">Company Info</label>
                     <div className="col-sm-6">
                         <textarea className="form-control" id="companyInfo" name="companyInfo"
-                                  placeholder="Company Info" value={sketch.companyInfo} onChange={handleInputChange} />
+                                  placeholder="Company Info" value={sketch.companyInfo} onChange={handleInputChange}/>
                     </div>
                 </div>
 
-                <hr />
-
-                <div className="form-group row">
-                    <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
-                    <div className="col-sm-6">
-                        {sketch.imageFilename}
-                        <input type="file" className="form-control" id="imageFilename" name="imageFilename"
-                               placeholder="Image File" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div className="form-group row">
-                    <label htmlFor="technologyFilename" className="col-sm-4 offset-sm-1 text-left">Technology</label>
-                    <div className="col-sm-6">
-                        {sketch.technologyFilename}
-                        <input type="file" className="form-control" id="technologyFilename" name="technologyFilename"
-                               placeholder="Technology" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div className="form-group row">
-                    <label htmlFor="myTechnologyFilename" className="col-sm-4 offset-sm-1 text-left">My Technology</label>
-                    <div className="col-sm-6">
-                        {sketch.myTechnologyFilename}
-                        <input type="file" className="form-control" id="myTechnologyFilename" name="myTechnologyFilename"
-                               placeholder="My Technology" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div className="form-group row">
-                    <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring List</label>
-                    <div className="col-sm-6">
-                        {sketch.measuringListFilename}
-                        <input type="file" className="form-control" id="measuringListFilename" name="measuringListFilename"
-                               placeholder="Measuring List" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div className="form-group row">
-                    <label htmlFor="myMeasuringListFilename" className="col-sm-4 offset-sm-1 text-left">My Measuring List</label>
-                    <div className="col-sm-6">
-                        {sketch.myMeasuringListFilename}
-                        <input type="file" className="form-control" id="myMeasuringListFilename" name="myMeasuringListFilename"
-                               placeholder="My Measuring List" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div className="form-group row">
-                    <label htmlFor="gcodeFilename" className="col-sm-4 offset-sm-1 text-left">GCode File</label>
-                    <div className="col-sm-6">
-                        {sketch.gcodeFilename}
-                        <input type="file" className="form-control" id="gcodeFilename" name="gcodeFilename"
-                               placeholder="GCode File" onChange={onFileChangeHandler}/>
-                    </div>
-                </div>
-
-                <hr />
+                <hr/>
 
                 <div className="form-group row">
                     <label htmlFor="usedTools" className="col-sm-4 offset-sm-1 text-left">Used Tools</label>
@@ -210,26 +165,96 @@ const SketchDetails = (props) => {
                     </div>
                 </div>
 
-                <hr />
+                <hr/>
 
                 <div className="form-group row">
-                    <label htmlFor="usedTools" className="col-sm-4 offset-sm-1 text-left">Piece in minute</label>
+                    <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
                     <div className="col-sm-6">
-                        <input type="number" className="form-control" id="pieceInMinute" name="pieceInMinute"
-                               placeholder="Piece in minute" value={sketch.pieceInMinute} onChange={handleInputChange}/>
+                        {/*<a href={FileService.downloadFile(sketch.imageFilename, sketch.drawing)} download target="_blank">{sketch.imageFilename}</a>*/}
+                        <input type="file" className="form-control" id="imageFilename" name="imageFilename"
+                               placeholder="Image File" onChange={onFileChangeHandler}/>
                     </div>
                 </div>
 
-                <hr />
+                <hr/>
+
+                <div className="form-group row">
+                    <label htmlFor="technologyFilename"
+                           className="col-sm-4 offset-sm-1 text-left">Technology</label>
+                    <div className="col-sm-6">
+                        {/*<a href={FileService.downloadFile(sketch.technologyFilename, sketch.drawing)} download target="_blank">{sketch.technologyFilename}</a>*/}
+                        <input type="file" className="form-control" id="technologyFilename"
+                               name="technologyFilename"
+                               placeholder="Technology" onChange={onFileChangeHandler}/>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div className="form-group row">
+                    <label htmlFor="myTechnologyFilename" className="col-sm-4 offset-sm-1 text-left">My
+                        Technology</label>
+                    <div className="col-sm-6">
+                        {/*<a href={FileService.downloadFile(sketch.myTechnologyFilename, sketch.drawing)} download target="_blank">{sketch.myTechnologyFilename}</a>*/}
+                        <input type="file" className="form-control" id="myTechnologyFilename"
+                               name="myTechnologyFilename"
+                               placeholder="My Technology" onChange={onFileChangeHandler}/>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div className="form-group row">
+                    <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring
+                        List</label>
+                    <div className="col-sm-6">
+                        {/*<a href={FileService.downloadFile(sketch.measuringListFilename, sketch.drawing)} download target="_blank">{sketch.measuringListFilename}</a>*/}
+                        <input type="file" className="form-control" id="measuringListFilename"
+                               name="measuringListFilename"
+                               placeholder="Measuring List" onChange={onFileChangeHandler}/>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div className="form-group row">
+                    <label htmlFor="myMeasuringListFilename" className="col-sm-4 offset-sm-1 text-left">My
+                        Measuring
+                        List</label>
+                    <div className="col-sm-6">
+                        {/*<a href={FileService.downloadFile(sketch.myMeasuringListFilename, sketch.drawing)} download target="_blank">{sketch.myMeasuringListFilename}</a>*/}
+                        <input type="file" className="form-control" id="myMeasuringListFilename"
+                               name="myMeasuringListFilename"
+                               placeholder="My Measuring List" onChange={onFileChangeHandler}/>
+                    </div>
+                </div>
+
+                <hr/>
 
                 <div className="form-group row">
                     <div
-                        className="offset-sm-1 col-sm-3  text-center">
+                        className="col-sm-4  text-center">
                         <button
                             type="submit"
-                            // disabled={!isInputValid}
+                            disabled={showLoading}
                             className="btn btn-primary text-upper">
                             Update Sketch
+                        </button>
+                    </div>
+                    <div className="col-sm-4  text-center">
+                        {showLoading &&
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>}
+                    </div>
+
+                    <div
+                        className="col-sm-4  text-center">
+                        <button
+                            onClick={() => cancelGoBack()}
+                            type="button"
+                            className="btn btn-danger text-upper">
+                            Назад кон налози
                         </button>
                     </div>
                 </div>
