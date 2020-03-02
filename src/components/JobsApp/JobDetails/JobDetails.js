@@ -12,6 +12,7 @@ const JobDetails = (props) => {
     const jobId = useParams().jobId;
     const[tasks, setTasks] = useState([]);
     const[job, setJob] = useState({});
+    const [sketch, setSketch] = useState({});
 
     useEffect(() => {
         JobService.getAllTasksForJob(jobId).then(response => {
@@ -21,7 +22,8 @@ const JobDetails = (props) => {
 
     useEffect(() => {
         JobService.getJob(jobId).then(response => {
-            setJob(response.data)
+            setJob(response.data);
+            setSketch(response.data.sketch);
         })
     }, []);
 
@@ -75,7 +77,11 @@ const JobDetails = (props) => {
                     <th scope="col">Task Name</th>
                     <th scope="col">Employee Name</th>
                     <th scope="col">Machine Name</th>
-                    <th scope="col">Total working time</th>
+                    <th scope="col">Planned/Actual Start</th>
+                    <th scope="col">Planned/Actual End</th>
+                    <th scope="col">Planned/Actual hours</th>
+                    <th scope="col">Planned/Actual minutes for piece</th>
+                    {/*<th scope="col">Total working time</th>*/}
                     <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -91,6 +97,9 @@ const JobDetails = (props) => {
         <Fragment>
             <h4 className="text-upper text-left row">Tasks for the job: <strong>{job.jobName}</strong></h4>
 
+            <div>
+                Project name: {sketch.drawing}
+            </div>
             <div className="row">
                 {tasksTable}
             </div>

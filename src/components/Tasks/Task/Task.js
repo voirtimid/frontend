@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import EmployeeService from "../../../service/EmployeeService";
 import MachineService from "../../../service/MachineService";
 import {useHistory} from "react-router";
+import moment from "moment";
 
 const Task = (props) => {
 
@@ -66,7 +67,11 @@ const Task = (props) => {
             <td>{task.taskName}</td>
             <td>{employeeName}</td>
             <td>{machineName}</td>
-            <td>{totalWorkTime}</td>
+            <td>{ moment(task.plannedStartDate).format("DD-MMM-YYYY")} / {(task.realStartDate && moment(task.realStartDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
+            <td>{ moment(task.plannedEndDate).format("DD-MMM-YYYY")} / {(task.realEndDate && moment(task.realEndDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
+            <td>{task.plannedHours} / {task.totalWorkTime}</td>
+            <td>{task.minutesForPiece} / {task.realMinutesForPiece}</td>
+            {/*<td>{totalWorkTime}</td>*/}
             <td>{(status && "Finished") || "Not Finished"}</td>
             <td>
                 <form onSubmit={onTaskDetails}>

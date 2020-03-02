@@ -32,7 +32,7 @@ const TaskDetails = (props) => {
     }, []);
 
     const cancelGoBack = () => {
-        history.push(`/jobs/${jobId}/details`);
+        history.push(`/jobs/${jobId}/tasks`);
     };
 
     return (

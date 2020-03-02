@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import Job from "../../JobsApp/Job/Job";
 import JobService from "../../../service/JobService";
 import {Constants} from "../../../Constants/Constants";
+import JobSearch from "../../JobsApp/JobSearch/JobSeaerch";
 
 const SketchSearch = (props) => {
 
@@ -141,7 +142,7 @@ const SketchSearch = (props) => {
         }
     };
 
-    const jobsWithSketch = jobs.map(job => <Job key={job.jobId} job={job} onDelete={props.onDelete}/>);
+    const jobsWithSketch = jobs.map(job => <JobSearch key={job.jobId} job={job} />);
 
     const createNewVersion = () => {
         history.push("/sketches/new/version/" + drawing);
