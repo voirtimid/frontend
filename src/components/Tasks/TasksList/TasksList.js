@@ -15,7 +15,7 @@ const TasksList = (props) => {
         })
     }, []);
 
-    const renderTasks = tasks.map(task => <Task key={task.taskId} task={task}/>);
+    const renderTasks = tasks.map(task => <Task key={task.taskId} task={task} history={false}/>);
 
     let tasksTable = (
         <div className="table-responsive">

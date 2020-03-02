@@ -50,6 +50,10 @@ class JobService {
         return axios.get(`/api/jobs/updateDates/${jobId}`);
     }
 
+    static updateRealDates(jobId) {
+        return axios.get(`/api/jobs/updateRealDates/${jobId}`);
+    }
+
     static getJobsWithSketch(drawing) {
         return axios.get(`/api/jobs/getJobsFor/${drawing}`);
     }

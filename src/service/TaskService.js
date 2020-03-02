@@ -22,6 +22,10 @@ class TaskService {
         return axios.put(`/api/tasks/${taskId}`, updatedTask);
     }
 
+    static updateTask_v2(taskDTO) {
+        return axios.put(`/api/tasks`, taskDTO);
+    }
+
     static deleteTask(taskId) {
         return axios.delete(`/api/tasks/${taskId}`);
     }

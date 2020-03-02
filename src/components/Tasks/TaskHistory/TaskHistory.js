@@ -5,7 +5,7 @@ import {useHistory} from "react-router";
 import moment from "moment";
 import {Link} from "react-router-dom";
 
-const Task = (props) => {
+const TaskHistory = (props) => {
 
     const history = useHistory();
 
@@ -78,4 +78,4 @@ const Task = (props) => {
     );
 };
 
-export default Task;
+export default TaskHistory;

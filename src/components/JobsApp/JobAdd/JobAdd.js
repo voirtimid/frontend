@@ -123,26 +123,6 @@ const JobAdd = (props) => {
 
                     <hr/>
 
-                    {/*<div className="form-group row">*/}
-                    {/*    <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>*/}
-                    {/*    <div className="col-sm-6 form-inline">*/}
-                    {/*        <input type="date" className="form-control" id="startDate" name="startDate"*/}
-                    {/*               placeholder="Start Date" value={job.startDate} onChange={handleInputChange}/>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
-                    {/*<hr/>*/}
-
-                    {/*<div className="form-group row">*/}
-                    {/*    <label htmlFor="endDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>*/}
-                    {/*    <div className="col-sm-6 form-inline">*/}
-                    {/*        <input type="date" className="form-control" id="endDate" name="endDate"*/}
-                    {/*               placeholder="End Date" value={job.endDate} onChange={handleInputChange}/>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
-                    {/*<hr/>*/}
-
                     <div className="form-group row">
                         <div
                             className="offset-sm-1 col-sm-3  text-center">

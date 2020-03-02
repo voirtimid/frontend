@@ -1,38 +1,37 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
-import EmployeeService from "../../../service/EmployeeService";
+import TaskService from "../../../service/TaskService";
 import MachineService from "../../../service/MachineService";
+import EmployeeService from "../../../service/EmployeeService";
 import FileService from "../../../service/FileService";
 import CncService from "../../../service/CncService";
-import TaskService from "../../../service/TaskService";
+import moment from "moment";
 import JobService from "../../../service/JobService";
 
-const JobAddTask = (props) => {
+const TaskEdit = (props) => {
 
     const history = useHistory();
+
+    const taskId = useParams().taskId;
     const jobId = useParams().jobId;
 
-    const emptyTask = {
-        jobId: jobId,
-        machineId: "",
-        employeeId: "",
-        cncCodeId: 1,
-        plannedStartDate: "",
-        plannedEndDate: "",
-        plannedHours: 0,
-        minutesForPiece: "",
-        isFinished: false,
-        workInProgress: false,
-        comment: ""
-    };
-
-    const [task, setTask] = useState(emptyTask);
+    const [task, setTask] = useState({});
     const [job, setJob] = useState({});
+    const [employee, setEmployee] = useState({});
+    const [machine, setMachine] = useState({});
+    const [cnc, setCnc] = useState({});
     const [employees, setEmployees] = useState([]);
     const [machines, setMachines] = useState([]);
-    const [validate, setValidate] = useState("");
-    const [firstSlotAvailable, setFirsSlotAvailable] = useState("");
 
+    useEffect(() => {
+        TaskService.getTask(taskId).then(response => {
+            const task = response.data;
+            setTask(task);
+            setEmployee(task.employee);
+            setMachine(task.machine);
+            setCnc(task.cncCode);
+        })
+    }, []);
 
     useEffect(() => {
         JobService.getJob(jobId).then(response => {
@@ -41,14 +40,14 @@ const JobAddTask = (props) => {
     }, []);
 
     useEffect(() => {
-        EmployeeService.getAllEmployees().then(response => {
-            setEmployees(response.data);
+        MachineService.getAllMachines().then(response => {
+            setMachines(response.data);
         })
     }, []);
 
     useEffect(() => {
-        MachineService.getAllMachines().then(response => {
-            setMachines(response.data);
+        EmployeeService.getAllEmployees().then(response => {
+            setEmployees(response.data);
         })
     }, []);
 
@@ -71,12 +70,6 @@ const JobAddTask = (props) => {
         };
 
         setTask(changedTask);
-
-        if (changedTask.machineId) {
-            TaskService.getFirstAvailableSlot(changedTask.machineId).then(response => {
-                setFirsSlotAvailable(response.data);
-            })
-        }
     };
 
     const onFileChangeHandler = (e) => {
@@ -110,13 +103,10 @@ const JobAddTask = (props) => {
         })
     };
 
-    const cancelGoBack = () => {
-        history.push("/jobs");
-    };
-
     let employeesDropDown = (
         <select name="employeeId" id="employeeId" onChange={handleInputChange}>
-            <option disabled value="" selected hidden>Select Employee</option>
+            <option value={employee.employeeId}
+                    selected={employee.employeeId}>{employee.firstName} {employee.lastName}</option>
             {employees.map(e => {
                 return <option key={e.employeeId} value={e.employeeId}>{e.firstName} {e.lastName}</option>
             })}
@@ -125,7 +115,7 @@ const JobAddTask = (props) => {
 
     let machinesDropDown = (
         <select name="machineId" id="machineId" onChange={handleInputChange}>
-            <option disabled value="" selected hidden>Select Machine</option>
+            <option value={machine.machineId} selected={machine.machineId}>{machine.name} - {machine.shortName}</option>
             {machines.map(m => {
                 return <option key={m.machineId} value={m.machineId}>{m.name} - {m.shortName}</option>
             })}
@@ -137,7 +127,7 @@ const JobAddTask = (props) => {
 
         const newTask = {
             ...task,
-            plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
+            realMinutesForPiece: (task.totalWorkTime / job.numberOfPieces) * 60
         };
 
         const taskDTO = {
@@ -151,48 +141,24 @@ const JobAddTask = (props) => {
             plannedMinutesForPiece: task.minutesForPiece
         };
 
-        props.onCreate(jobId, taskDTO);
-        history.push("/jobs");
+        TaskService.updateTask_v2(taskDTO).then(response => {
+            JobService.updateRealDates(jobId).then(response => {
+                const updatedJob = response.data;
+                history.push(`/jobs/${updatedJob.jobId}/tasks`);
+            });
+        })
     };
 
-
-    const addNewTask = () => {
-        const newTask = {
-            ...task,
-            plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
-        };
-
-        const taskDTO = {
-            task: newTask,
-            jobId: jobId,
-            employeeId: task.employeeId,
-            machineId: task.machineId,
-            cncCodeId: task.cncCodeId,
-            plannedStartDate: task.plannedStartDate,
-            plannedEndDate: task.plannedEndDate,
-            plannedMinutesForPiece: task.minutesForPiece
-        };
-
-        props.onCreate(jobId, taskDTO);
-
-        const nextTask = {
-            ...emptyTask,
-            cncCodeId: 1,
-            machineId: task.machineId,
-            employeeId: task.employeeId
-        };
-
-        setTask(nextTask);
-
-        history.push(`/jobs/${jobId}/addTask`);
-
+    const cancelGoBack = () => {
+        history.push(`/jobs/${job.jobId}/tasks`);
     };
 
     return (
         <div className="card">
             <div className="card-body">
-                <h4 className="card-title">Add Task</h4>
+                <h4 className="card-title">Edit: {task.taskName}</h4>
                 <form encType='multipart/form-data' onSubmit={onFormSubmit}>
+                    <hr/>
                     <div className="form-group row">
                         <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the
                             task</label>
@@ -217,6 +183,7 @@ const JobAddTask = (props) => {
                     <div className="form-group row">
                         <label htmlFor="cncFilename" className="col-sm-4 offset-sm-1 text-left">CNC code file</label>
                         <div className="col-sm-6">
+                            {cnc.cncFilename}
                             <input type="file" className="form-control" id="cncFilename" name="cncFilename"
                                    placeholder="CNC code file" onChange={onFileChangeHandler}/>
                         </div>
@@ -225,48 +192,76 @@ const JobAddTask = (props) => {
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="minutesForPiece" className="col-sm-4 offset-sm-1 text-left">Minutes for piece</label>
-                        <div className="col-sm-6">
-                            <input type="number" min="1" className="form-control" id="minutesForPiece" name="minutesForPiece"
-                                   placeholder="Minutes for piece" value={task.minutesForPiece} onChange={handleInputChange}/>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <div className="form-group row">
-                        <label htmlFor="plannedHours" className="col-sm-4 offset-sm-1 text-left">Working days needed</label>
-                        <div className="col-sm-6">
+                        <label htmlFor="plannedHours" className="col-sm-4 offset-sm-1 text-left">Planned Working
+                            hours</label>
+                        <div className="col-sm-3">
                             <input type="text" disabled className="form-control" id="plannedHours" name="plannedHours"
-                                   placeholder="Working days needed" value={Math.ceil((parseInt(task.minutesForPiece) * job.numberOfPieces / 60) / 7) + " days, or " + (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1) + " hours"} onChange={handleInputChange}/>
+                                   placeholder="Actual Working hours" value={task.plannedHours}
+                                   onChange={handleInputChange}/>
+                        </div>
+                        <br/>
+                        <label htmlFor="totalWorkTime" className="col-sm-4 offset-sm-1 text-left">Actual Working
+                            hours</label>
+                        <div className="col-sm-3">
+                            <input type="text" className="form-control" id="totalWorkTime" name="totalWorkTime"
+                                   placeholder="Actual Working hours" value={task.totalWorkTime}
+                                   onChange={handleInputChange}/>
                         </div>
                     </div>
 
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="plannedStartDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
-                        <div className="col-sm-6 form-inline">
-                            <div style={{fontSize: 12, color: "red"}}>
-                                {validate}
-                            </div>
-                            <input type="date" className="form-control" id="plannedStartDate" name="plannedStartDate"
-                                   min={firstSlotAvailable}
-                                   placeholder="Start Date" value={task.plannedStartDate} onChange={handleInputChange}/>
+                        <label htmlFor="minutesForPiece" className="col-sm-4 offset-sm-1 text-left">Minutes for
+                            piece</label>
+                        <div className="col-sm-3">
+                            <input type="text" disabled className="form-control" id="minutesForPiece"
+                                   name="minutesForPiece"
+                                   placeholder="Real Minutes for piece" value={task.minutesForPiece}
+                                   onChange={handleInputChange}/>
+                        </div>
+                        <br/>
+                        <label htmlFor="realMinutesForPiece" className="col-sm-4 offset-sm-1 text-left">Real Minutes for
+                            piece</label>
+                        <div className="col-sm-3">
+                            <input type="number" disabled className="form-control" id="realMinutesForPiece"
+                                   name="realMinutesForPiece"
+                                   placeholder="Real Minutes for piece"
+                                   value={(task.totalWorkTime / job.numberOfPieces) * 60} onChange={handleInputChange}/>
                         </div>
                     </div>
 
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="plannedEndDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
-                        <div className="col-sm-6 form-inline">
-                            <div style={{fontSize: 12, color: "red"}}>
-                                {validate}
-                            </div>
-                            <input type="date" className="form-control" id="plannedEndDate" name="plannedEndDate"
-                                   min={task.plannedStartDate}
-                                   placeholder="End Date" value={task.plannedEndDate} onChange={handleInputChange}/>
+                        <label htmlFor="plannedStartDate" className="col-sm-4 offset-sm-1 text-left">Planned Start
+                            Date</label>
+                        <div className="col-sm-3">
+                            {moment(task.plannedStartDate).format("DD-MMM-YYYY")}
+                        </div>
+                        <br/>
+                        <label htmlFor="realStartDate" className="col-sm-4 offset-sm-1 text-left">Actual Start
+                            Date</label>
+                        <div className="col-sm-3">
+                            <input type="date" className="form-control" id="realStartDate" name="realStartDate"
+                                   placeholder="Actual Start Date" value={task.realStartDate}
+                                   onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div className="form-group row">
+                        <label htmlFor="plannedEndDate" className="col-sm-4 offset-sm-1 text-left">Planned End
+                            Date</label>
+                        <div className="col-sm-3">
+                            {moment(task.plannedEndDate).format("DD-MMM-YYYY")}
+                        </div>
+                        <br/>
+                        <label htmlFor="realEndDate" className="col-sm-4 offset-sm-1 text-left">Actual End Date</label>
+                        <div className="col-sm-3">
+                            <input type="date" className="form-control" id="realEndDate" name="realEndDate"
+                                   placeholder="Actual End Date" value={task.realEndDate} onChange={handleInputChange}/>
                         </div>
                     </div>
 
@@ -283,17 +278,6 @@ const JobAddTask = (props) => {
                     <hr/>
 
                     <div className="form-group row">
-                        <div
-                            className="col-sm-4  text-center">
-                            <button
-                                type="button"
-                                onClick={() => addNewTask()}
-                                // disabled={!isInputValid}
-                                className="btn btn-primary text-upper">
-                                Create next Task
-                            </button>
-                        </div>
-
                         <div
                             className="col-sm-4  text-center">
                             <button
@@ -323,4 +307,4 @@ const JobAddTask = (props) => {
 
 };
 
-export default JobAddTask;
+export default TaskEdit;

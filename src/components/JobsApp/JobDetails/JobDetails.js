@@ -3,8 +3,6 @@ import {useParams} from "react-router";
 import JobService from "../../../service/JobService";
 import Task from "../../Tasks/Task/Task";
 import TaskService from "../../../service/TaskService";
-import Job from "../Job/Job";
-import JobsList from "../JobsList/JobsList";
 import {Link} from "react-router-dom";
 
 const JobDetails = (props) => {
@@ -81,7 +79,6 @@ const JobDetails = (props) => {
                     <th scope="col">Planned/Actual End</th>
                     <th scope="col">Planned/Actual hours</th>
                     <th scope="col">Planned/Actual minutes for piece</th>
-                    {/*<th scope="col">Total working time</th>*/}
                     <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -97,14 +94,20 @@ const JobDetails = (props) => {
         <Fragment>
             <h4 className="text-upper text-left row">Tasks for the job: <strong>{job.jobName}</strong></h4>
 
-            <div>
-                Project name: {sketch.drawing}
-            </div>
+            <h5 className="text-upper text-left row">
+                Project name:
+                <Link to={`/sketches/${sketch.sketchId}`}>
+                    {sketch.drawing}
+                </Link>
+            </h5>
             <div className="row">
                 {tasksTable}
             </div>
             <Link className="btn btn-sm btn-outline-dark" to={"/jobs/" + job.jobId + "/addTask"}>
                 <span><strong>Add Task</strong></span>
+            </Link>
+            <Link className="btn btn-sm btn-primary" to={"/jobs"}>
+                <span><strong>Back to Jobs</strong></span>
             </Link>
         </Fragment>
     );
