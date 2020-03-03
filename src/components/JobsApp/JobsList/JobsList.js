@@ -19,7 +19,7 @@ const JobsList = (props) => {
                                breakLabel={<span className="gap">...</span>}
                                breakClassName={"break-me"}
                                pageCount={props.totalPages}
-                               marginPagesDisplayed={2}
+                               marginPagesDisplayed={5}
                                pageRangeDisplayed={5}
                                pageClassName={"page-item"}
                                pageLinkClassName={"page-link"}

@@ -19,15 +19,15 @@ const Job = (props) => {
             <td><a href={`/sketches/${props.job.sketch.sketchId}`}>{props.job.sketch.drawing}</a></td>
             <td>{props.job.numberOfPieces}</td>
             <td>{moment(props.job.jobCreated).format("DD-MMM-YYYY")}</td>
-            <td>{ moment(props.job.plannedStartDate).format("DD-MMM-YYYY")} / {(props.job.realStartDate && moment(props.job.realStartDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
-            <td>{ moment(props.job.plannedEndDate).format("DD-MMM-YYYY")} /  {(props.job.realEndDate && moment(props.job.realEndDate).format("DD-MMM-YYYY")) || "Not yet finished"}</td>
+            <td>{ (props.job.plannedStartDate && moment(props.job.plannedStartDate).format("DD-MMM-YYYY")) || "No tasks yet"} / {(props.job.realStartDate && moment(props.job.realStartDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
+            <td>{ (props.job.plannedEndDate && moment(props.job.plannedEndDate).format("DD-MMM-YYYY")) || "No tasks yet"} /  {(props.job.realEndDate && moment(props.job.realEndDate).format("DD-MMM-YYYY")) || "Not yet finished"}</td>
             <td>{props.job.plannedHours} / {props.job.realHours}</td>
             <td>{props.job.plannedTimeForPiece} / {props.job.realTimeForPiece}</td>
             <td>{finishedTasks} / {props.job.tasks.length}</td>
             <td>
                 <button type="button"
                         className="btn btn-secondary btn-sm"
-                        disabled={finishedTasks !== props.job.tasks.length}
+                        disabled={(finishedTasks !== props.job.tasks.length) || (props.job.tasks.length === 0)}
                         onClick={() => completeJob()}>
                     Complete Job
                 </button>

@@ -16,7 +16,7 @@ const JobSearch = (props) => {
             <td>{props.job.tasks.length}</td>
             <td>
                 <Link className="btn btn-secondary btn-sm"
-                      to={"/jobs/" + props.job.jobId + "/history"}>
+                      to={"/jobs/history/" + props.job.jobId}>
                     <span><strong>Details</strong></span>
                 </Link>
             </td>

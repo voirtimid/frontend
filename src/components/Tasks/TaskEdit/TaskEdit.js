@@ -142,6 +142,7 @@ const TaskEdit = (props) => {
         };
 
         TaskService.updateTask_v2(taskDTO).then(response => {
+            const updatedTask = response.data;
             JobService.updateRealDates(jobId).then(response => {
                 const updatedJob = response.data;
                 history.push(`/jobs/${updatedJob.jobId}/tasks`);
@@ -192,6 +193,40 @@ const TaskEdit = (props) => {
                     <hr/>
 
                     <div className="form-group row">
+                        <label htmlFor="plannedStartDate" className="col-sm-4 offset-sm-1 text-left">Planned Start
+                            Date</label>
+                        <div className="col-sm-3">
+                            {moment(task.plannedStartDate).format("DD-MMM-YYYY")}
+                        </div>
+                        <br/>
+                        <label htmlFor="realStartDate" className="col-sm-4 offset-sm-1 text-left">Actual Start
+                            Date</label>
+                        <div className="col-sm-3">
+                            <input type="date" className="form-control" id="realStartDate" name="realStartDate"
+                                   placeholder="Actual Start Date" value={task.realStartDate}
+                                   onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div className="form-group row">
+                        <label htmlFor="plannedEndDate" className="col-sm-4 offset-sm-1 text-left">Planned End
+                            Date</label>
+                        <div className="col-sm-3">
+                            {moment(task.plannedEndDate).format("DD-MMM-YYYY")}
+                        </div>
+                        <br/>
+                        <label htmlFor="realEndDate" className="col-sm-4 offset-sm-1 text-left">Actual End Date</label>
+                        <div className="col-sm-3">
+                            <input type="date" className="form-control" id="realEndDate" name="realEndDate"
+                                   placeholder="Actual End Date" value={task.realEndDate} onChange={handleInputChange}/>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div className="form-group row">
                         <label htmlFor="plannedHours" className="col-sm-4 offset-sm-1 text-left">Planned Working
                             hours</label>
                         <div className="col-sm-3">
@@ -224,44 +259,10 @@ const TaskEdit = (props) => {
                         <label htmlFor="realMinutesForPiece" className="col-sm-4 offset-sm-1 text-left">Real Minutes for
                             piece</label>
                         <div className="col-sm-3">
-                            <input type="number" disabled className="form-control" id="realMinutesForPiece"
+                            <input type="text" disabled className="form-control" id="realMinutesForPiece"
                                    name="realMinutesForPiece"
                                    placeholder="Real Minutes for piece"
                                    value={(task.totalWorkTime / job.numberOfPieces) * 60} onChange={handleInputChange}/>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <div className="form-group row">
-                        <label htmlFor="plannedStartDate" className="col-sm-4 offset-sm-1 text-left">Planned Start
-                            Date</label>
-                        <div className="col-sm-3">
-                            {moment(task.plannedStartDate).format("DD-MMM-YYYY")}
-                        </div>
-                        <br/>
-                        <label htmlFor="realStartDate" className="col-sm-4 offset-sm-1 text-left">Actual Start
-                            Date</label>
-                        <div className="col-sm-3">
-                            <input type="date" className="form-control" id="realStartDate" name="realStartDate"
-                                   placeholder="Actual Start Date" value={task.realStartDate}
-                                   onChange={handleInputChange}/>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <div className="form-group row">
-                        <label htmlFor="plannedEndDate" className="col-sm-4 offset-sm-1 text-left">Planned End
-                            Date</label>
-                        <div className="col-sm-3">
-                            {moment(task.plannedEndDate).format("DD-MMM-YYYY")}
-                        </div>
-                        <br/>
-                        <label htmlFor="realEndDate" className="col-sm-4 offset-sm-1 text-left">Actual End Date</label>
-                        <div className="col-sm-3">
-                            <input type="date" className="form-control" id="realEndDate" name="realEndDate"
-                                   placeholder="Actual End Date" value={task.realEndDate} onChange={handleInputChange}/>
                         </div>
                     </div>
 

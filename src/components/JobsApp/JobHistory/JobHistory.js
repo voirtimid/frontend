@@ -4,6 +4,7 @@ import JobService from "../../../service/JobService";
 import moment from "moment";
 import {Link} from "react-router-dom";
 import Task from "../../Tasks/Task/Task";
+import TaskHistory from "../../Tasks/TaskHistory/TaskHistory";
 
 const JobHistory = (props) => {
 
@@ -26,7 +27,7 @@ const JobHistory = (props) => {
     }, []);
 
 
-    const renderTasks = tasks.map(task => <Task key={task.taskId} task={task} history={true}/>);
+    const renderTasks = tasks.map(task => <TaskHistory key={task.taskId} jobId={jobId} task={task} history={true}/>);
 
     return (
         <div>

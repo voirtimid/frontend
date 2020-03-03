@@ -59,7 +59,7 @@ const TaskHistory = (props) => {
             <td>{task.minutesForPiece.toFixed(1)} / {task.realMinutesForPiece.toFixed(1)}</td>
             <td>{(status && "Finished") || "Not Finished"}</td>
             <td>
-                <Link to={`/jobs/${props.jobId}/tasks/${task.taskId}`} className="btn btn-secondary btn-sm">
+                <Link to={`/jobs/history/${props.jobId}/tasks/${task.taskId}`} className="btn btn-secondary btn-sm">
                     Details
                 </Link>
                 {!status &&

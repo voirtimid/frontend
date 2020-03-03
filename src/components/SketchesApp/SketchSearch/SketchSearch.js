@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
-import SketchService from "../../../service/SketchService";
-import {useHistory} from "react-router";
-import FileService from "../../../service/FileService";
-import "./SketchSearch.css"
 import {Link} from "react-router-dom";
-import Job from "../../JobsApp/Job/Job";
-import JobService from "../../../service/JobService";
-import {Constants} from "../../../Constants/Constants";
+import {useHistory} from "react-router";
+import "./SketchSearch.css"
 import JobSearch from "../../JobsApp/JobSearch/JobSeaerch";
+import SketchService from "../../../service/SketchService";
+import FileService from "../../../service/FileService";
+import JobService from "../../../service/JobService";
 
 const SketchSearch = (props) => {
 

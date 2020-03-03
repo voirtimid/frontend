@@ -4,7 +4,7 @@ import TaskService from "../../../service/TaskService";
 import FileService from "../../../service/FileService";
 import moment from "moment";
 
-const TaskDetails = (props) => {
+const TaskDetailsHistory = (props) => {
 
     const history = useHistory();
 
@@ -32,7 +32,7 @@ const TaskDetails = (props) => {
     }, []);
 
     const cancelGoBack = () => {
-        history.push(`/jobs/${jobId}/tasks`);
+        history.push(`/jobs/history/${jobId}`);
     };
 
     return (
@@ -171,4 +171,4 @@ const TaskDetails = (props) => {
     );
 };
 
-export default TaskDetails;
+export default TaskDetailsHistory;

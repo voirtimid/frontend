@@ -32,6 +32,7 @@ const JobAddTask = (props) => {
     const [machines, setMachines] = useState([]);
     const [validate, setValidate] = useState("");
     const [firstSlotAvailable, setFirsSlotAvailable] = useState("");
+    const [showLoading, setShowLoading] = useState(false);
 
 
     useEffect(() => {
@@ -87,8 +88,11 @@ const JobAddTask = (props) => {
         const formData = new FormData();
         formData.append('file', file);
 
+        setShowLoading(true);
         FileService.uploadFile(formData, "cnc").then(response => {
-            alert('File Upload Successfully');
+            setShowLoading(false);
+        }).catch(reason => {
+            alert(`REASON ${reason}`);
         });
 
         const target = e.target;
@@ -193,6 +197,10 @@ const JobAddTask = (props) => {
             <div className="card-body">
                 <h4 className="card-title">Add Task</h4>
                 <form encType='multipart/form-data' onSubmit={onFormSubmit}>
+                    {showLoading &&
+                    <div className="alert alert-info" role="alert">
+                        This is a info alert—check it out!
+                    </div>}
                     <div className="form-group row">
                         <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the
                             task</label>
@@ -235,10 +243,10 @@ const JobAddTask = (props) => {
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="plannedHours" className="col-sm-4 offset-sm-1 text-left">Working days needed</label>
+                        <label htmlFor="plannedHours" className="col-sm-4 offset-sm-1 text-left">Working hours needed</label>
                         <div className="col-sm-6">
                             <input type="text" disabled className="form-control" id="plannedHours" name="plannedHours"
-                                   placeholder="Working days needed" value={Math.ceil((parseInt(task.minutesForPiece) * job.numberOfPieces / 60) / 7) + " days, or " + (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1) + " hours"} onChange={handleInputChange}/>
+                                   placeholder="Working days needed" value={(parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1) + " hours"} onChange={handleInputChange}/>
                         </div>
                     </div>
 
@@ -298,10 +306,16 @@ const JobAddTask = (props) => {
                             className="col-sm-4  text-center">
                             <button
                                 type="submit"
-                                // disabled={!isInputValid}
+                                disabled={showLoading}
                                 className="btn btn-primary text-upper">
                                 Save
                             </button>
+                        </div>
+                        <div>
+                            {showLoading &&
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>}
                         </div>
 
                         <div

@@ -95,7 +95,7 @@ const JobDetails = (props) => {
             <h4 className="text-upper text-left row">Tasks for the job: <strong>{job.jobName}</strong></h4>
 
             <h5 className="text-upper text-left row">
-                Project name:
+                Drawing:
                 <Link to={`/sketches/${sketch.sketchId}`}>
                     {sketch.drawing}
                 </Link>

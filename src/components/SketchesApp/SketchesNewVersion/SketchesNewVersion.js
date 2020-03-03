@@ -19,6 +19,7 @@ const SketchesNewVersion = (props) => {
     const [sketch, setSketch] = useState({});
     const [validate, setValidate] = useState(validation);
     const [showLoading, setShowLoading] = useState(false);
+    const [numberOfPieces, setNumberOfPieces] = useState(0);
 
     useEffect(() => {
         SketchService.getSketchByName(drawing).then(response => {
@@ -36,7 +37,7 @@ const SketchesNewVersion = (props) => {
         if (!sketch.sketchName) {
             sketchNameError = "Sketch name is not entered";
         }
-        if (!sketch.numberOfPieces) {
+        if (!numberOfPieces) {
             numberOfPiecesError = "Enter number of pieces";
         }
         if (drawingNameError || sketchNameError) {
@@ -56,12 +57,17 @@ const SketchesNewVersion = (props) => {
         const name = target.name;
         const value = target.value;
 
-        const changedSketch = {
-            ...sketch,
-            [name]: value
-        };
+        if (name === "numberOfPieces") {
+            setNumberOfPieces(value);
+        } else {
 
-        setSketch(changedSketch);
+            const changedSketch = {
+                ...sketch,
+                [name]: value
+            };
+
+            setSketch(changedSketch);
+        }
     };
 
     const onFileChangeHandler = (e) => {
@@ -98,13 +104,18 @@ const SketchesNewVersion = (props) => {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
+        const sketchToSave = {
+            ...sketch,
+            sketchId: ""
+        };
+
         if (isValid()) {
-            SketchService.createNewSketch(sketch).then(response => {
+            SketchService.createNewSketch(sketchToSave).then(response => {
                 const newSketch = response.data;
 
                 const jobToAdd = {
                     jobName: newSketch.drawing + " " + newSketch.sketchName,
-                    numberOfPieces: sketch.numberOfPieces
+                    numberOfPieces: numberOfPieces
                 };
 
                 const jobDTO = {
@@ -183,7 +194,7 @@ const SketchesNewVersion = (props) => {
                                 {validate.numberOfPiecesError}
                             </div>
                             <input type="number" className="form-control" id="numberOfPieces" name="numberOfPieces"
-                                   placeholder="Number of pieces" min="1" value={sketch.numberOfPieces}
+                                   placeholder="Number of pieces" min="1" value={numberOfPieces}
                                    onChange={handleInputChange}/>
                         </div>
                     </div>
