@@ -3,6 +3,7 @@ import {useHistory, useParams} from "react-router";
 import TaskService from "../../../service/TaskService";
 import FileService from "../../../service/FileService";
 import moment from "moment";
+import {Constants} from "../../../Constants/Constants";
 
 const TaskDetailsHistory = (props) => {
 
@@ -21,18 +22,19 @@ const TaskDetailsHistory = (props) => {
         TaskService.getTask(taskId).then(response => {
             const task = response.data;
             setTask(task);
+            console.log(task);
             setEmployee(task.employee);
             setMachine(task.machine);
             setCnc(task.cncCode);
             FileService.readFile(task.cncCode.cncId).then(response => {
                 setCncFileContent(response.data);
-            })
+            });
 
         })
     }, []);
 
     const cancelGoBack = () => {
-        history.push(`/jobs/history/${jobId}`);
+        history.push(`/history/jobs/${jobId}`);
     };
 
     return (
@@ -63,7 +65,7 @@ const TaskDetailsHistory = (props) => {
                 <div className="form-group row">
                     <label htmlFor="cncFilename" className="col-sm-4 offset-sm-1 text-left">CNC code file</label>
                     <div className="col-sm-6">
-                        {cnc.cncFilename}
+                        <a href={Constants.getFilePath("cnc", cnc.cncFilename)} download target="_blank">{cnc.cncFilename}</a>
                     </div>
                 </div>
 

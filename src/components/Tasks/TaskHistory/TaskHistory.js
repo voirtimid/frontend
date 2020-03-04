@@ -1,30 +1,12 @@
 import React, {useEffect, useState} from "react";
 import EmployeeService from "../../../service/EmployeeService";
 import MachineService from "../../../service/MachineService";
-import {useHistory} from "react-router";
 import moment from "moment";
 import {Link} from "react-router-dom";
 
 const TaskHistory = (props) => {
 
-    const history = useHistory();
-
     const [task] = useState(props.task);
-
-    const calculateTotalWorkingTime = () => {
-        let seconds = Math.floor(task.totalWorkTime / 1000000000);
-        let minutes = 0;
-        let hours = 0;
-        if (seconds > 60) {
-            minutes = Math.floor(seconds / 60);
-            seconds %= 60;
-            if (minutes > 60) {
-                hours = Math.floor(minutes / 60);
-                minutes %= 60;
-            }
-        }
-        return `${hours}H:${minutes}M:${seconds}S`;
-    };
 
     const [employeeName, setEmployeeName] = useState("");
     const [machineName, setMachineName] = useState("");
@@ -59,7 +41,7 @@ const TaskHistory = (props) => {
             <td>{task.minutesForPiece.toFixed(1)} / {task.realMinutesForPiece.toFixed(1)}</td>
             <td>{(status && "Finished") || "Not Finished"}</td>
             <td>
-                <Link to={`/jobs/history/${props.jobId}/tasks/${task.taskId}`} className="btn btn-secondary btn-sm">
+                <Link to={`/history/jobs/${props.jobId}/tasks/${task.taskId}`} className="btn btn-secondary btn-sm">
                     Details
                 </Link>
                 {!status &&

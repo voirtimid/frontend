@@ -64,14 +64,22 @@ const Task = (props) => {
                 </Link>
                 {!status &&
                 <Link to={`/jobs/${props.jobId}/tasks/${task.taskId}/edit`} className="btn btn-secondary btn-sm">
+                    <span className="fa fa-edit"/>
                     Update task
                 </Link>
                 }
                 {!status &&
                 <form onSubmit={onTaskFinished}>
-                    <button className="btn btn-sm btn-secondary">Complete Task
+                    <button className="btn btn-sm btn-success">Complete Task
                     </button>
                 </form>
+                }
+                {!status &&
+                <button className="btn btn-sm btn-outline-danger"
+                        onClick={() => props.onDelete(task.taskId)}>
+                    <span className="fa fa-remove"/>
+                    <span><strong>Remove</strong></span>
+                </button>
                 }
             </td>
         </tr>

@@ -8,8 +8,8 @@ const EmployeesList = (props) => {
 
     let employeesTable = (
         <div className="table-responsive">
-            <table className="table tr-history table-striped small">
-                <thead>
+            <table className="table table-bordered table-hover">
+                <thead className="thead-light">
                 <tr>
                     <th scope="col">First Name</th>
                     <th scope="col">Last name</th>
@@ -24,17 +24,16 @@ const EmployeesList = (props) => {
     );
 
     return (
-        <Fragment>
+        <div>
             <h4 className="text-upper text-left row">Employees</h4>
+            <Link className="btn btn-outline-secondary mb-3 row" to={"/employees/new"}>
+                <span><strong>Add new employee</strong></span>
+            </Link>
 
             <div className="row">
                 {employeesTable}
             </div>
-
-            <Link className="btn btn-outline-secondary mb-3 row" to={"/employees/new"}>
-                <span><strong>Add new employee</strong></span>
-            </Link>
-        </Fragment>
+        </div>
     );
 
 };

@@ -14,11 +14,11 @@ class JobService {
         })
     }
 
-    static getAllTasksInProgress() {
+    static getAllJobsInProgress() {
         return axios.get(`/api/jobs/status/false`)
     }
 
-    static getAllFinishedTasks() {
+    static getAllFinishedJobs() {
         return axios.get(`/api/jobs/status/true`)
     }
 

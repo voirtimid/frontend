@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import SketchService from "../../../service/SketchService";
 import FileService from "../../../service/FileService";
+import {Constants} from "../../../Constants/Constants";
 
 const SketchDetails = (props) => {
 
@@ -118,9 +119,9 @@ const SketchDetails = (props) => {
     };
 
     return (
-        <div>
-            <h4 className="text-upper text-left">Edit Sketch</h4>
-            <form className="card" onSubmit={onEditSketch}>
+        <div className="card">
+            <h4 className="card-title">Edit Sketch</h4>
+            <form className="card-body" onSubmit={onEditSketch}>
                 {showLoading &&
                 <div className="alert alert-info" role="alert">
                     This is a info alert—check it out!
@@ -170,7 +171,7 @@ const SketchDetails = (props) => {
                 <div className="form-group row">
                     <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
                     <div className="col-sm-6">
-                        {/*<a href={FileService.downloadFile(sketch.imageFilename, sketch.drawing)} download target="_blank">{sketch.imageFilename}</a>*/}
+                        <a href={Constants.getFilePath(sketch.drawing, sketch.imageFilename)} download target="_blank">{sketch.imageFilename}</a>
                         <input type="file" className="form-control" id="imageFilename" name="imageFilename"
                                placeholder="Image File" onChange={onFileChangeHandler}/>
                     </div>
@@ -182,7 +183,7 @@ const SketchDetails = (props) => {
                     <label htmlFor="technologyFilename"
                            className="col-sm-4 offset-sm-1 text-left">Technology</label>
                     <div className="col-sm-6">
-                        {/*<a href={FileService.downloadFile(sketch.technologyFilename, sketch.drawing)} download target="_blank">{sketch.technologyFilename}</a>*/}
+                        <a href={Constants.getFilePath(sketch.drawing, sketch.technologyFilename)} download target="_blank">{sketch.technologyFilename}</a>
                         <input type="file" className="form-control" id="technologyFilename"
                                name="technologyFilename"
                                placeholder="Technology" onChange={onFileChangeHandler}/>
@@ -195,7 +196,7 @@ const SketchDetails = (props) => {
                     <label htmlFor="myTechnologyFilename" className="col-sm-4 offset-sm-1 text-left">My
                         Technology</label>
                     <div className="col-sm-6">
-                        {/*<a href={FileService.downloadFile(sketch.myTechnologyFilename, sketch.drawing)} download target="_blank">{sketch.myTechnologyFilename}</a>*/}
+                        <a href={Constants.getFilePath(sketch.drawing, sketch.myTechnologyFilename)} download target="_blank">{sketch.myTechnologyFilename}</a>
                         <input type="file" className="form-control" id="myTechnologyFilename"
                                name="myTechnologyFilename"
                                placeholder="My Technology" onChange={onFileChangeHandler}/>
@@ -208,7 +209,7 @@ const SketchDetails = (props) => {
                     <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring
                         List</label>
                     <div className="col-sm-6">
-                        {/*<a href={FileService.downloadFile(sketch.measuringListFilename, sketch.drawing)} download target="_blank">{sketch.measuringListFilename}</a>*/}
+                        <a href={Constants.getFilePath(sketch.drawing, sketch.measuringListFilename)} download target="_blank">{sketch.measuringListFilename}</a>
                         <input type="file" className="form-control" id="measuringListFilename"
                                name="measuringListFilename"
                                placeholder="Measuring List" onChange={onFileChangeHandler}/>
@@ -222,7 +223,7 @@ const SketchDetails = (props) => {
                         Measuring
                         List</label>
                     <div className="col-sm-6">
-                        {/*<a href={FileService.downloadFile(sketch.myMeasuringListFilename, sketch.drawing)} download target="_blank">{sketch.myMeasuringListFilename}</a>*/}
+                        <a href={Constants.getFilePath(sketch.drawing, sketch.myMeasuringListFilename)} download target="_blank">{sketch.myMeasuringListFilename}</a>
                         <input type="file" className="form-control" id="myMeasuringListFilename"
                                name="myMeasuringListFilename"
                                placeholder="My Measuring List" onChange={onFileChangeHandler}/>

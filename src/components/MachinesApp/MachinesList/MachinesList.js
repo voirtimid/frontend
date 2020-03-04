@@ -8,8 +8,8 @@ const MachinesList = (props) => {
 
     let machinesTable = (
         <div className="table-responsive">
-            <table className="table tr-history table-striped small">
-                <thead>
+            <table className="table table-bordered table-hover">
+                <thead className="thead-light">
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Short name</th>
@@ -28,14 +28,13 @@ const MachinesList = (props) => {
     return (
         <Fragment>
             <h4 className="text-upper text-left row">Machines</h4>
+            <Link className="btn btn-outline-secondary mb-3 row" to={"/machines/new"}>
+                <span><strong>Add new machine</strong></span>
+            </Link>
 
             <div className="row">
                 {machinesTable}
             </div>
-
-            <Link className="btn btn-outline-secondary mb-3 row" to={"/machines/new"}>
-                <span><strong>Add new machine</strong></span>
-            </Link>
         </Fragment>
     );
 

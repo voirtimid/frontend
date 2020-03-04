@@ -8,8 +8,6 @@ import TaskService from "../../service/TaskService";
 import TaskDetails from "../Tasks/TaskDetails/TaskDetails";
 import JobEdit from "./JobEdit/JobEdit";
 import TaskEdit from "../Tasks/TaskEdit/TaskEdit";
-import JobHistory from "./JobHistory/JobHistory";
-import TaskDetailsHistory from "../Tasks/TaskDetailsHistory/TaskDetailsHistory";
 
 class JobsApp extends React.Component {
 
@@ -133,8 +131,6 @@ class JobsApp extends React.Component {
                         <Route path={"/jobs/:jobId/tasks"} exact render={() => <JobDetails />}/>
                         <Route path={"/jobs/:jobId/tasks/:taskId"} exact render={() => <TaskDetails />}/>
                         <Route path={"/jobs/:jobId/tasks/:taskId/edit"} exact render={() => <TaskEdit />}/>
-                        <Route path={"/jobs/history/:jobId"} exact render={() => <JobHistory />}/>
-                        <Route path={"/jobs/history/:jobId/tasks/:taskId"} exact render={() => <TaskDetailsHistory />}/>
                     </Switch>
                 </div>
             </main>

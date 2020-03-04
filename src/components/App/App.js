@@ -9,6 +9,7 @@ import JobService from "../../service/JobService";
 import UserManagementApp from "../UserManagementApp/UserManagementApp";
 import SketchesApp from "../SketchesApp/SketchesApp";
 import GanttChart from "../GanttChart/GanttChart";
+import JobsHistoryApp from "../JobsHistoryApp/JobsHistoryApp";
 
 class App extends React.Component {
 
@@ -57,6 +58,9 @@ class App extends React.Component {
                         </Route>
                         <Route path={"/jobs"}>
                             <JobsApp />
+                        </Route>
+                        <Route path={"/history"}>
+                            <JobsHistoryApp />
                         </Route>
                         <Route path={"/gantt"}>
                             <GanttChart />

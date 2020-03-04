@@ -19,8 +19,8 @@ const TasksList = (props) => {
 
     let tasksTable = (
         <div className="table-responsive">
-            <table className="table tr-history table-striped small">
-                <thead>
+            <table className="table table-bordered table-hover">
+                <thead className="thead-light">
                 <tr>
                     <th scope="col">Task Name</th>
                     <th scope="col">Employee Name</th>

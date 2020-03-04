@@ -120,7 +120,7 @@ const EmployeeEdit = (props) => {
                         <button
                             type="submit"
                             // disabled={!isInputValid}
-                            className="btn btn-primary text-upper">
+                            className="btn btn-primary text-upper"><span className="fa fa-save"/>
                             Save
                         </button>
                     </div>

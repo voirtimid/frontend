@@ -2,9 +2,8 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import JobService from "../../../service/JobService";
 import moment from "moment";
-import {Link} from "react-router-dom";
-import Task from "../../Tasks/Task/Task";
 import TaskHistory from "../../Tasks/TaskHistory/TaskHistory";
+import {Link} from "react-router-dom";
 
 const JobHistory = (props) => {
 
@@ -31,9 +30,11 @@ const JobHistory = (props) => {
 
     return (
         <div>
+            <h4 className="text-upper text-left" >Job name: {job.jobName}</h4>
+
             <div className="table-responsive">
-                <table className="table tr-history table-striped small">
-                    <thead>
+                <table className="table table-bordered table-hover">
+                    <thead className="thead-light" >
                     <tr>
                         <th scope="col">Item</th>
                         <th scope="col">Drawing</th>
@@ -65,8 +66,8 @@ const JobHistory = (props) => {
                 <h3>Tasks</h3>
 
                 <div className="table-responsive">
-                    <table className="table tr-history table-striped small">
-                        <thead>
+                    <table className="table table-bordered table-hover">
+                        <thead className="thead-light">
                         <tr>
                             <th scope="col">Task Name</th>
                             <th scope="col">Employee Name</th>
@@ -83,6 +84,12 @@ const JobHistory = (props) => {
                         {renderTasks}
                         </tbody>
                     </table>
+                </div>
+
+                <div>
+                    <Link to={`/history/jobs`} className="btn btn-secondary">
+                        Back to history
+                    </Link>
                 </div>
 
 

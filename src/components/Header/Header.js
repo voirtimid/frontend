@@ -5,6 +5,7 @@ const Header = (props) => {
 
     return (
         <header>
+            {/*style={{backgroundColor: "#cce6ff"}}*/}
             <nav className="navbar navbar-expand-md navbar-dark navbar-fixed bg-dark">
                 <a className="navbar-brand" href="/">MetalKat</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
@@ -16,15 +17,15 @@ const Header = (props) => {
                             <Link className="nav-link" to={"/jobs"}>Работни налози</Link>
                         </li>
                         <li className="nav-item">
+                            <Link className="nav-link" to={"/history/jobs"}>Извештаи</Link>
+                        </li>
+                        <li className="nav-item">
                             <Link className="nav-link" to={"/employees"}>Employees</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to={"/machines"}>Machines</Link>
                         </li>
                     </ul>
-                    <form className="form-inline mt-2 mt-md-0 ml-3">
-                        <Link className="btn btn-outline-info my-2 my-sm-0" to={"/login"}>Login</Link>
-                    </form>
                 </div>
             </nav>
         </header>

@@ -3,6 +3,7 @@ import {useHistory, useParams} from "react-router";
 import TaskService from "../../../service/TaskService";
 import FileService from "../../../service/FileService";
 import moment from "moment";
+import {Constants} from "../../../Constants/Constants";
 
 const TaskDetails = (props) => {
 
@@ -63,7 +64,7 @@ const TaskDetails = (props) => {
                 <div className="form-group row">
                     <label htmlFor="cncFilename" className="col-sm-4 offset-sm-1 text-left">CNC code file</label>
                     <div className="col-sm-6">
-                        {cnc.cncFilename}
+                        <a href={Constants.getFilePath("cnc", cnc.cncFilename)} download>{cnc.cncFilename}</a>
                     </div>
                 </div>
 

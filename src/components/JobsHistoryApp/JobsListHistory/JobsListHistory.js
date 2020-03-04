@@ -1,11 +1,17 @@
-import React, {Fragment} from "react";
-import Job from "../Job/Job";
+import React, {Fragment, useEffect} from "react";
 import {Link} from "react-router-dom";
 import ReactPaginate from "react-paginate"
+import JobSearch from "../../JobsApp/JobSearch/JobSeaerch";
 
-const JobsList = (props) => {
+const JobsListHistory = (props) => {
 
-    const jobs = props.jobs.map(job => <Job key={job.jobId} job={job} onDelete={props.onDelete} onComplete={props.onComplete} />);
+    const jobs = props.jobs.map(job => <JobSearch key={job.jobId} job={job} />);
+
+    // useEffect(() => {
+    //     document.ready(function () {
+    //         '#jobsTabe'.DataTable();
+    //     });
+    // }, []);
 
     const handlePageClick = (e) => {
         props.onPageClick(e.selected)
@@ -37,7 +43,7 @@ const JobsList = (props) => {
 
     let jobsTable = (
         <div className="table-responsive">
-            <table className="table table-bordered table-hover">
+            <table id="jobsTable" className="table table-bordered table-hover">
                 <thead className="thead-light">
                 <tr>
                     <th scope="col">Item</th>
@@ -61,10 +67,7 @@ const JobsList = (props) => {
 
     return (
         <Fragment>
-            <h4 className="text-upper text-left">Работни налози</h4>
-            <Link className="btn btn-outline-secondary mb-3 row" to={"/sketches"}>
-                <span><strong>Креирај нов работен налог</strong></span>
-            </Link>
+            <h4 className="text-upper text-left">Завршени Работни налози</h4>
             <div>
 
                 <div className={"row"}>
@@ -77,4 +80,4 @@ const JobsList = (props) => {
     );
 };
 
-export default JobsList;
+export default JobsListHistory;

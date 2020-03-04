@@ -65,12 +65,23 @@ const JobDetails = (props) => {
         })
     };
 
-    const tasksView = tasks.map(task => <Task key={task.taskId} jobId={jobId} task={task} onSubmit={updateTasks} onTaskFinished={closeTask}/>);
+    const deleteTask = (taskId) => {
+        TaskService.deleteTask(taskId).then(response => {
+            const deletedTask = response.data;
+            console.log(deletedTask);
+            const newTasks = tasks.filter(task => {
+                return task.taskId !== deletedTask.taskId;
+            });
+            setTasks(newTasks);
+        })
+    };
+
+    const tasksView = tasks.map(task => <Task key={task.taskId} jobId={jobId} task={task} onSubmit={updateTasks} onTaskFinished={closeTask} onDelete={deleteTask}/>);
 
     let tasksTable = (
         <div className="table-responsive">
-            <table className="table tr-history table-striped small">
-                <thead>
+            <table className="table table-bordered table-hover">
+                <thead className="thead-light">
                 <tr>
                     <th scope="col">Task Name</th>
                     <th scope="col">Employee Name</th>
@@ -106,7 +117,7 @@ const JobDetails = (props) => {
             <Link className="btn btn-sm btn-outline-dark" to={"/jobs/" + job.jobId + "/addTask"}>
                 <span><strong>Add Task</strong></span>
             </Link>
-            <Link className="btn btn-sm btn-primary" to={"/jobs"}>
+            <Link className="btn btn-sm btn-secondary" to={"/jobs"}>
                 <span><strong>Back to Jobs</strong></span>
             </Link>
         </Fragment>
