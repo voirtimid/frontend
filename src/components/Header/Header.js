@@ -7,7 +7,7 @@ const Header = (props) => {
         <header>
             {/*style={{backgroundColor: "#cce6ff"}}*/}
             <nav className="navbar navbar-expand-md navbar-dark navbar-fixed bg-dark">
-                <a className="navbar-brand" href="/">MetalKat</a>
+                <a className="navbar-brand" href="/">MetalCut</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                         aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 </button>
