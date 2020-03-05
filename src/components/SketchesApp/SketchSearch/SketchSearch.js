@@ -6,7 +6,7 @@ import JobSearch from "../../JobsApp/JobSearch/JobSeaerch";
 import SketchService from "../../../service/SketchService";
 import FileService from "../../../service/FileService";
 import JobService from "../../../service/JobService";
-import {Constants} from "../../../Constants/Constants";
+import FileDownload from "js-file-download";
 
 const SketchSearch = (props) => {
 
@@ -244,7 +244,9 @@ const SketchSearch = (props) => {
                         <div className="form-group row">
                             <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
                             <div className="col-sm-6">
-                                <a href={Constants.getFilePath(sketch.drawing, sketch.imageFilename)} download target="_blank">{sketch.imageFilename}</a>
+                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.imageFilename, sketch.drawing).then(response => {
+                                    FileDownload(response.data, sketch.imageFilename);
+                                })}>{sketch.imageFilename}</button>
                                 <input type="file" className="form-control" id="imageFilename" name="imageFilename"
                                        placeholder="Image File" onChange={onFileChangeHandler}/>
                             </div>
@@ -256,7 +258,9 @@ const SketchSearch = (props) => {
                             <label htmlFor="technologyFilename"
                                    className="col-sm-4 offset-sm-1 text-left">Technology</label>
                             <div className="col-sm-6">
-                                <a href={Constants.getFilePath(sketch.drawing, sketch.technologyFilename)} download target="_blank">{sketch.technologyFilename}</a>
+                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.technologyFilename, sketch.drawing).then(response => {
+                                    FileDownload(response.data, sketch.technologyFilename);
+                                })}>{sketch.technologyFilename}</button>
                                 <input type="file" className="form-control" id="technologyFilename"
                                        name="technologyFilename"
                                        placeholder="Technology" onChange={onFileChangeHandler}/>
@@ -269,7 +273,9 @@ const SketchSearch = (props) => {
                             <label htmlFor="myTechnologyFilename" className="col-sm-4 offset-sm-1 text-left">My
                                 Technology</label>
                             <div className="col-sm-6">
-                                <a href={Constants.getFilePath(sketch.drawing, sketch.myTechnologyFilename)} download target="_blank">{sketch.myTechnologyFilename}</a>
+                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.myTechnologyFilename, sketch.drawing).then(response => {
+                                    FileDownload(response.data, sketch.myTechnologyFilename);
+                                })}>{sketch.myTechnologyFilename}</button>
                                 <input type="file" className="form-control" id="myTechnologyFilename"
                                        name="myTechnologyFilename"
                                        placeholder="My Technology" onChange={onFileChangeHandler}/>
@@ -282,7 +288,9 @@ const SketchSearch = (props) => {
                             <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring
                                 List</label>
                             <div className="col-sm-6">
-                                <a href={Constants.getFilePath(sketch.drawing, sketch.measuringListFilename)} download target="_blank">{sketch.measuringListFilename}</a>
+                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.measuringListFilename, sketch.drawing).then(response => {
+                                    FileDownload(response.data, sketch.measuringListFilename);
+                                })}>{sketch.measuringListFilename}</button>
                                 <input type="file" className="form-control" id="measuringListFilename"
                                        name="measuringListFilename"
                                        placeholder="Measuring List" onChange={onFileChangeHandler}/>
@@ -296,7 +304,9 @@ const SketchSearch = (props) => {
                                 Measuring
                                 List</label>
                             <div className="col-sm-6">
-                                <a href={Constants.getFilePath(sketch.drawing, sketch.myMeasuringListFilename)} download target="_blank">{sketch.myMeasuringListFilename}</a>
+                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.myMeasuringListFilename, sketch.drawing).then(response => {
+                                    FileDownload(response.data, sketch.myMeasuringListFilename);
+                                })}>{sketch.myMeasuringListFilename}</button>
                                 <input type="file" className="form-control" id="myMeasuringListFilename"
                                        name="myMeasuringListFilename"
                                        placeholder="My Measuring List" onChange={onFileChangeHandler}/>

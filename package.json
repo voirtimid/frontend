@@ -13,6 +13,7 @@
     "bootstrap": "^4.4.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
+    "js-file-download": "^0.4.10",
     "mdbreact": "^4.25.3",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",

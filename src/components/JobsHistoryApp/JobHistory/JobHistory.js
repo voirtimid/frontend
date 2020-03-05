@@ -26,7 +26,7 @@ const JobHistory = (props) => {
     }, []);
 
 
-    const renderTasks = tasks.map(task => <TaskHistory key={task.taskId} jobId={jobId} task={task} history={true}/>);
+    const renderTasks = tasks.map(task => <TaskHistory key={task.taskId} jobId={jobId} task={task} />);
 
     return (
         <div>

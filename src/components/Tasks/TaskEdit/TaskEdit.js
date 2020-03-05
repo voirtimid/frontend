@@ -127,7 +127,7 @@ const TaskEdit = (props) => {
 
         const newTask = {
             ...task,
-            realMinutesForPiece: (task.totalWorkTime / job.numberOfPieces) * 60
+            realMinutesForPiece: ((task.totalWorkTime / job.numberOfPieces) * 60).toFixed(1)
         };
 
         const taskDTO = {
@@ -141,13 +141,10 @@ const TaskEdit = (props) => {
             plannedMinutesForPiece: task.minutesForPiece
         };
 
-        TaskService.updateTask_v2(taskDTO).then(response => {
-            const updatedTask = response.data;
-            JobService.updateRealDates(jobId).then(response => {
-                const updatedJob = response.data;
-                history.push(`/jobs/${updatedJob.jobId}/tasks`);
-            });
-        })
+        props.onSubmit(taskDTO);
+        // history.push(`/jobs/${jobId}/tasks`);
+        history.push(`/jobs`);
+
     };
 
     const cancelGoBack = () => {
@@ -262,7 +259,7 @@ const TaskEdit = (props) => {
                             <input type="text" disabled className="form-control" id="realMinutesForPiece"
                                    name="realMinutesForPiece"
                                    placeholder="Real Minutes for piece"
-                                   value={(task.totalWorkTime / job.numberOfPieces) * 60} onChange={handleInputChange}/>
+                                   value={((task.totalWorkTime / job.numberOfPieces) * 60).toFixed(1)} onChange={handleInputChange}/>
                         </div>
                     </div>
 

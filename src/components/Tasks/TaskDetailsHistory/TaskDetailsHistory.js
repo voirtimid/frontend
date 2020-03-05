@@ -3,7 +3,7 @@ import {useHistory, useParams} from "react-router";
 import TaskService from "../../../service/TaskService";
 import FileService from "../../../service/FileService";
 import moment from "moment";
-import {Constants} from "../../../Constants/Constants";
+import FileDownload from "js-file-download";
 
 const TaskDetailsHistory = (props) => {
 
@@ -65,7 +65,9 @@ const TaskDetailsHistory = (props) => {
                 <div className="form-group row">
                     <label htmlFor="cncFilename" className="col-sm-4 offset-sm-1 text-left">CNC code file</label>
                     <div className="col-sm-6">
-                        <a href={Constants.getFilePath("cnc", cnc.cncFilename)} download target="_blank">{cnc.cncFilename}</a>
+                        <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(cnc.cncFilename, "cnc").then(response => {
+                            FileDownload(response.data, cnc.cncFilename);
+                        })}>{cnc.cncFilename}</button>
                     </div>
                 </div>
 

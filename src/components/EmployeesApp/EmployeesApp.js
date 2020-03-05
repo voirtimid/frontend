@@ -5,6 +5,7 @@ import EmployeesList from "./EmployeesList/EmployeesList";
 import EmployeeAdd from "./EmployeeAdd/EmployeeAdd";
 import EmployeeEdit from "./EmployeeEdit/EmployeeEdit";
 import TasksList from "../Tasks/TasksList/TasksList";
+import TaskEmployeeDetails from "../Tasks/TaskEmployeeDetails/TaskEmployeeDetails";
 
 class EmployeesApp extends React.Component {
 
@@ -82,8 +83,7 @@ class EmployeesApp extends React.Component {
                         <Route path={"/employees/new"} exact render={() => <EmployeeAdd onCreate={this.createEmployee}/>}/>
                         <Route path={"/employees/:employeeId/edit"} exact render={() => <EmployeeEdit onSubmit={this.updateEmployee}/>}/>
                         <Route path={"/employees/:employeeId/tasks"} exact render={() => <TasksList />}/>
-
-                        {/*<Route path={"/pizzas/:pizzaName/details"} render={() => <PizzaDetails/>}/>*/}
+                        <Route path={"/employees/:employeeId/tasks/:taskId"} exact render={() => <TaskEmployeeDetails />}/>
                     </Switch>
                 </div>
             </main>

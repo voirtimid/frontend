@@ -10,7 +10,7 @@ const TaskHistory = (props) => {
 
     const [employeeName, setEmployeeName] = useState("");
     const [machineName, setMachineName] = useState("");
-    const [status, setStatus] = useState(props.task.finished);
+    const [status] = useState(props.task.finished);
 
     useEffect(() => {
         EmployeeService.getEmployee(props.task.employee.employeeId).then(response => {
@@ -24,12 +24,6 @@ const TaskHistory = (props) => {
         })
     }, []);
 
-    const onTaskFinished = (e) => {
-        e.preventDefault();
-        props.onTaskFinished(task.taskId);
-        setStatus(!status);
-    };
-
     return (
         <tr>
             <td>{task.taskName}</td>
@@ -37,24 +31,13 @@ const TaskHistory = (props) => {
             <td>{machineName}</td>
             <td>{moment(task.plannedStartDate).format("DD-MMM-YYYY")} / {(task.realStartDate && moment(task.realStartDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
             <td>{moment(task.plannedEndDate).format("DD-MMM-YYYY")} / {(task.realEndDate && moment(task.realEndDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
-            <td>{task.plannedHours} / {task.totalWorkTime}</td>
+            <td>{task.plannedHours.toFixed(1)} / {task.totalWorkTime.toFixed(1)}</td>
             <td>{task.minutesForPiece.toFixed(1)} / {task.realMinutesForPiece.toFixed(1)}</td>
             <td>{(status && "Finished") || "Not Finished"}</td>
             <td>
                 <Link to={`/history/jobs/${props.jobId}/tasks/${task.taskId}`} className="btn btn-secondary btn-sm">
                     Details
                 </Link>
-                {!status &&
-                <Link to={`/jobs/${props.jobId}/tasks/${task.taskId}/edit`} className="btn btn-secondary btn-sm">
-                    Update task
-                </Link>
-                }
-                {!status &&
-                <form onSubmit={onTaskFinished}>
-                    <button className="btn btn-sm btn-secondary">Complete Task
-                    </button>
-                </form>
-                }
             </td>
         </tr>
     );

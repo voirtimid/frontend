@@ -27,6 +27,8 @@ class JobsApp extends React.Component {
         this.deleteJob = this.deleteJob.bind(this);
         this.loadJobs = this.loadJobs.bind(this);
         this.completeJob = this.completeJob.bind(this);
+        this.updateTask = this.updateTask.bind(this);
+        this.closeTask = this.closeTask.bind(this);
     }
 
     componentDidMount() {
@@ -120,6 +122,31 @@ class JobsApp extends React.Component {
         })
     }
 
+    updateTask(taskDTO) {
+        TaskService.updateTask_v2(taskDTO).then(response => {
+            JobService.updateRealDates(taskDTO.jobId).then(response => {
+                const newJob = response.data;
+                this.setState(prevState => {
+                    const newJobs = prevState.jobs.map(j => {
+                        if (j.jobId === newJob.jobId) {
+                            return newJob;
+                        }
+                        return j;
+                    });
+                    return {
+                        "jobs": newJobs
+                    }
+                })
+            });
+        })
+    }
+
+    closeTask(taskId) {
+        TaskService.completeTask(taskId).then(response => {
+            this.loadJobs();
+        })
+    };
+
     render() {
         return (
             <main role="main" className="mt-3">
@@ -128,9 +155,9 @@ class JobsApp extends React.Component {
                         <Route path={"/jobs"} exact render={() => <JobsList onPageClick={this.loadJobs} jobs={this.state.jobs} onDelete={this.deleteJob} onComplete={this.completeJob} totalPages={this.state.totalPages}/>} />
                         <Route path={"/jobs/:jobId/edit"} exact render={() => <JobEdit onSubmit={this.updateJob}/>}/>
                         <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>
-                        <Route path={"/jobs/:jobId/tasks"} exact render={() => <JobDetails />}/>
+                        <Route path={"/jobs/:jobId/tasks"} exact render={() => <JobDetails onCompleteTask={this.closeTask} />}/>
                         <Route path={"/jobs/:jobId/tasks/:taskId"} exact render={() => <TaskDetails />}/>
-                        <Route path={"/jobs/:jobId/tasks/:taskId/edit"} exact render={() => <TaskEdit />}/>
+                        <Route path={"/jobs/:jobId/tasks/:taskId/edit"} exact render={() => <TaskEdit onSubmit={this.updateTask} />}/>
                     </Switch>
                 </div>
             </main>

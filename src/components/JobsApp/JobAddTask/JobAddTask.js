@@ -26,11 +26,19 @@ const JobAddTask = (props) => {
         comment: ""
     };
 
+    const validation = {
+        employeeError: "",
+        machineError: "",
+        minutesError: "",
+        startDateError: "",
+        endDateError: "",
+    };
+
     const [task, setTask] = useState(emptyTask);
     const [job, setJob] = useState({});
     const [employees, setEmployees] = useState([]);
     const [machines, setMachines] = useState([]);
-    const [validate, setValidate] = useState("");
+    const [validate, setValidate] = useState(validation);
     const [firstSlotAvailable, setFirsSlotAvailable] = useState("");
     const [showLoading, setShowLoading] = useState(false);
 
@@ -53,6 +61,41 @@ const JobAddTask = (props) => {
         })
     }, []);
 
+    const isValid = () => {
+        let employeeError = "";
+        let machineError = "";
+        let minutesError = "";
+        let startDateError = "";
+        let endDateError = "";
+        if (!task.employeeId) {
+            employeeError = "Employee is not chosen";
+        }
+        if (!task.machineId) {
+            machineError = "Machine is not chosen";
+        }
+        if (!task.minutesForPiece) {
+            minutesError = "Minutes for piece is not entered";
+        }
+        if(!task.plannedStartDate) {
+            startDateError = "Start date is not entered";
+        }
+        if(!task.plannedEndDate) {
+            endDateError = "Start date is not entered";
+        }
+        if (employeeError || machineError || minutesError || startDateError || endDateError) {
+            setValidate({
+                ...validation,
+                employeeError: employeeError,
+                machineError: machineError,
+                minutesError: minutesError,
+                startDateError: startDateError,
+                endDateError: endDateError
+            });
+            return false;
+        }
+        return true;
+    };
+
     const handleInputChange = (event) => {
         const target = event.target;
         const name = target.name;
@@ -72,6 +115,8 @@ const JobAddTask = (props) => {
         };
 
         setTask(changedTask);
+
+        console.log(changedTask);
 
         if (changedTask.machineId) {
             TaskService.getFirstAvailableSlot(changedTask.machineId).then(response => {
@@ -139,56 +184,66 @@ const JobAddTask = (props) => {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        const newTask = {
-            ...task,
-            plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
-        };
+        debugger;
 
-        const taskDTO = {
-            task: newTask,
-            jobId: jobId,
-            employeeId: task.employeeId,
-            machineId: task.machineId,
-            cncCodeId: task.cncCodeId,
-            plannedStartDate: task.plannedStartDate,
-            plannedEndDate: task.plannedEndDate,
-            plannedMinutesForPiece: task.minutesForPiece
-        };
+        if (isValid()) {
 
-        props.onCreate(jobId, taskDTO);
-        history.push("/jobs");
+            const newTask = {
+                ...task,
+                plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
+            };
+
+            const taskDTO = {
+                task: newTask,
+                jobId: jobId,
+                employeeId: task.employeeId,
+                machineId: task.machineId,
+                cncCodeId: task.cncCodeId,
+                plannedStartDate: task.plannedStartDate,
+                plannedEndDate: task.plannedEndDate,
+                plannedMinutesForPiece: task.minutesForPiece
+            };
+
+            props.onCreate(jobId, taskDTO);
+            history.push("/jobs");
+        }
     };
 
 
     const addNewTask = () => {
-        const newTask = {
-            ...task,
-            plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
-        };
 
-        const taskDTO = {
-            task: newTask,
-            jobId: jobId,
-            employeeId: task.employeeId,
-            machineId: task.machineId,
-            cncCodeId: task.cncCodeId,
-            plannedStartDate: task.plannedStartDate,
-            plannedEndDate: task.plannedEndDate,
-            plannedMinutesForPiece: task.minutesForPiece
-        };
+        debugger;
 
-        props.onCreate(jobId, taskDTO);
+        if (isValid()) {
+            const newTask = {
+                ...task,
+                plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
+            };
 
-        const nextTask = {
-            ...emptyTask,
-            cncCodeId: 1,
-            machineId: task.machineId,
-            employeeId: task.employeeId
-        };
+            const taskDTO = {
+                task: newTask,
+                jobId: jobId,
+                employeeId: task.employeeId,
+                machineId: task.machineId,
+                cncCodeId: task.cncCodeId,
+                plannedStartDate: task.plannedStartDate,
+                plannedEndDate: task.plannedEndDate,
+                plannedMinutesForPiece: task.minutesForPiece
+            };
 
-        setTask(nextTask);
+            props.onCreate(jobId, taskDTO);
 
-        history.push(`/jobs/${jobId}/addTask`);
+            const nextTask = {
+                ...emptyTask,
+                cncCodeId: 1,
+                machineId: task.machineId,
+                employeeId: task.employeeId
+            };
+
+            setTask(nextTask);
+
+            history.push(`/jobs/${jobId}/addTask`);
+        }
 
     };
 
@@ -202,6 +257,9 @@ const JobAddTask = (props) => {
                         This is a info alert—check it out!
                     </div>}
                     <div className="form-group row">
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.machineError}
+                        </div>
                         <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the
                             task</label>
                         <div className="col-sm-6">
@@ -212,6 +270,9 @@ const JobAddTask = (props) => {
                     <hr/>
 
                     <div className="form-group row">
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.employeeError}
+                        </div>
                         <label htmlFor="employeeId" className="col-sm-4 offset-sm-1 text-left">Choose employee for
                             the
                             task</label>
@@ -233,6 +294,9 @@ const JobAddTask = (props) => {
                     <hr/>
 
                     <div className="form-group row">
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.minutesError}
+                        </div>
                         <label htmlFor="minutesForPiece" className="col-sm-4 offset-sm-1 text-left">Minutes for piece</label>
                         <div className="col-sm-6">
                             <input type="number" min="1" className="form-control" id="minutesForPiece" name="minutesForPiece"
@@ -256,7 +320,7 @@ const JobAddTask = (props) => {
                         <label htmlFor="plannedStartDate" className="col-sm-4 offset-sm-1 text-left">Start Date</label>
                         <div className="col-sm-6 form-inline">
                             <div style={{fontSize: 12, color: "red"}}>
-                                {validate}
+                                {validate.startDateError}
                             </div>
                             <input type="date" className="form-control" id="plannedStartDate" name="plannedStartDate"
                                    min={firstSlotAvailable}
@@ -270,7 +334,7 @@ const JobAddTask = (props) => {
                         <label htmlFor="plannedEndDate" className="col-sm-4 offset-sm-1 text-left">End Date</label>
                         <div className="col-sm-6 form-inline">
                             <div style={{fontSize: 12, color: "red"}}>
-                                {validate}
+                                {validate.endDateError}
                             </div>
                             <input type="date" className="form-control" id="plannedEndDate" name="plannedEndDate"
                                    min={task.plannedStartDate}

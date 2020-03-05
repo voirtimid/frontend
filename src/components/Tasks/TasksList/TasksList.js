@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from "react";
-import Task from "../Task/Task";
 import {useParams} from "react-router";
 import EmployeeService from "../../../service/EmployeeService";
+import TaskEmployee from "../TaskEmployee/TaskEmployee";
 
 const TasksList = (props) => {
 
@@ -15,7 +15,7 @@ const TasksList = (props) => {
         })
     }, []);
 
-    const renderTasks = tasks.map(task => <Task key={task.taskId} task={task} history={false}/>);
+    const renderTasks = tasks.map(task => <TaskEmployee key={task.taskId} task={task} />);
 
     let tasksTable = (
         <div className="table-responsive">
@@ -25,7 +25,10 @@ const TasksList = (props) => {
                     <th scope="col">Task Name</th>
                     <th scope="col">Employee Name</th>
                     <th scope="col">Machine Name</th>
-                    <th scope="col">Total working time</th>
+                    <th scope="col">Planned/Actual Start</th>
+                    <th scope="col">Planned/Actual End</th>
+                    <th scope="col">Planned/Actual hours</th>
+                    <th scope="col">Planned/Actual minutes for piece</th>
                     <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                 </tr>

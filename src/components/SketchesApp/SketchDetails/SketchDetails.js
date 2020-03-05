@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import SketchService from "../../../service/SketchService";
 import FileService from "../../../service/FileService";
-import {Constants} from "../../../Constants/Constants";
+import FileDownload from "js-file-download";
 
 const SketchDetails = (props) => {
 
@@ -10,14 +10,7 @@ const SketchDetails = (props) => {
 
     const sketchId = useParams().sketchId;
 
-    const validation = {
-        drawingNameError: "",
-        sketchNameError: "",
-        numberOfPiecesError: ""
-    };
-
     const [sketch, setSketch] = useState({});
-    const [validate, setValidate] = useState(validation);
     const [showLoading, setShowLoading] = useState(false);
 
     useEffect(() => {
@@ -25,31 +18,6 @@ const SketchDetails = (props) => {
             setSketch(response.data);
         })
     }, []);
-
-    const isValid = () => {
-        let drawingNameError = "";
-        let sketchNameError = "";
-        let numberOfPiecesError = "";
-        if (!sketch.drawing) {
-            drawingNameError = "Drawing is not entered";
-        }
-        if (!sketch.sketchName) {
-            sketchNameError = "Sketch name is not entered";
-        }
-        if (!sketch.numberOfPieces) {
-            numberOfPiecesError = "Enter number of pieces";
-        }
-        if (drawingNameError || sketchNameError || numberOfPiecesError) {
-            setValidate({
-                ...validation,
-                drawingNameError: drawingNameError,
-                sketchNameError: sketchNameError,
-                numberOfPiecesError: numberOfPiecesError
-            });
-            return false;
-        }
-        return true;
-    };
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -106,11 +74,9 @@ const SketchDetails = (props) => {
     const onEditSketch = (e) => {
         e.preventDefault();
 
-        if (isValid()) {
-            SketchService.updateSketch(sketch.sketchId, sketch).then(response => {
-                history.push(`/jobs`)
-            })
-        }
+        SketchService.updateSketch(sketch.sketchId, sketch).then(response => {
+            history.push(`/jobs`)
+        })
 
     };
 
@@ -171,7 +137,9 @@ const SketchDetails = (props) => {
                 <div className="form-group row">
                     <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
                     <div className="col-sm-6">
-                        <a href={Constants.getFilePath(sketch.drawing, sketch.imageFilename)} download target="_blank">{sketch.imageFilename}</a>
+                        <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.imageFilename, sketch.drawing).then(response => {
+                            FileDownload(response.data, sketch.imageFilename);
+                        })}>{sketch.imageFilename}</button>
                         <input type="file" className="form-control" id="imageFilename" name="imageFilename"
                                placeholder="Image File" onChange={onFileChangeHandler}/>
                     </div>
@@ -183,7 +151,9 @@ const SketchDetails = (props) => {
                     <label htmlFor="technologyFilename"
                            className="col-sm-4 offset-sm-1 text-left">Technology</label>
                     <div className="col-sm-6">
-                        <a href={Constants.getFilePath(sketch.drawing, sketch.technologyFilename)} download target="_blank">{sketch.technologyFilename}</a>
+                        <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.technologyFilename, sketch.drawing).then(response => {
+                            FileDownload(response.data, sketch.technologyFilename);
+                        })}>{sketch.technologyFilename}</button>
                         <input type="file" className="form-control" id="technologyFilename"
                                name="technologyFilename"
                                placeholder="Technology" onChange={onFileChangeHandler}/>
@@ -196,7 +166,9 @@ const SketchDetails = (props) => {
                     <label htmlFor="myTechnologyFilename" className="col-sm-4 offset-sm-1 text-left">My
                         Technology</label>
                     <div className="col-sm-6">
-                        <a href={Constants.getFilePath(sketch.drawing, sketch.myTechnologyFilename)} download target="_blank">{sketch.myTechnologyFilename}</a>
+                        <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.myTechnologyFilename, sketch.drawing).then(response => {
+                            FileDownload(response.data, sketch.myTechnologyFilename);
+                        })}>{sketch.myTechnologyFilename}</button>
                         <input type="file" className="form-control" id="myTechnologyFilename"
                                name="myTechnologyFilename"
                                placeholder="My Technology" onChange={onFileChangeHandler}/>
@@ -209,7 +181,9 @@ const SketchDetails = (props) => {
                     <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring
                         List</label>
                     <div className="col-sm-6">
-                        <a href={Constants.getFilePath(sketch.drawing, sketch.measuringListFilename)} download target="_blank">{sketch.measuringListFilename}</a>
+                        <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.measuringListFilename, sketch.drawing).then(response => {
+                            FileDownload(response.data, sketch.measuringListFilename);
+                        })}>{sketch.measuringListFilename}</button>
                         <input type="file" className="form-control" id="measuringListFilename"
                                name="measuringListFilename"
                                placeholder="Measuring List" onChange={onFileChangeHandler}/>
@@ -223,7 +197,9 @@ const SketchDetails = (props) => {
                         Measuring
                         List</label>
                     <div className="col-sm-6">
-                        <a href={Constants.getFilePath(sketch.drawing, sketch.myMeasuringListFilename)} download target="_blank">{sketch.myMeasuringListFilename}</a>
+                        <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.myMeasuringListFilename, sketch.drawing).then(response => {
+                            FileDownload(response.data, sketch.myMeasuringListFilename);
+                        })}>{sketch.myMeasuringListFilename}</button>
                         <input type="file" className="form-control" id="myMeasuringListFilename"
                                name="myMeasuringListFilename"
                                placeholder="My Measuring List" onChange={onFileChangeHandler}/>

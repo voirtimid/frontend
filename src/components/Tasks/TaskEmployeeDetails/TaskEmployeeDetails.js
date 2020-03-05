@@ -5,7 +5,7 @@ import FileService from "../../../service/FileService";
 import moment from "moment";
 import FileDownload from 'js-file-download';
 
-const TaskDetails = (props) => {
+const TaskEmployeeDetails = (props) => {
 
     const history = useHistory();
 
@@ -33,7 +33,7 @@ const TaskDetails = (props) => {
     }, []);
 
     const cancelGoBack = () => {
-        history.push(`/jobs/${jobId}/tasks`);
+        history.push(`/employees/${employee.employeeId}/tasks`);
     };
 
     return (
@@ -174,4 +174,4 @@ const TaskDetails = (props) => {
     );
 };
 
-export default TaskDetails;
+export default TaskEmployeeDetails;

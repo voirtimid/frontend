@@ -5,7 +5,6 @@ import MachineService from "../../service/MachineService";
 import MachineAdd from "./MachineAdd/MachineAdd";
 import MachineEdit from "./MachineEdit/MachineEdit";
 import MachineCalendar from "../CalendarApp/MachineCalendar/MachineCalendar";
-import TaskService from "../../service/TaskService";
 
 class MachinesApp extends React.Component {
 

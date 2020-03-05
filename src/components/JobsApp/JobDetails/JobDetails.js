@@ -26,44 +26,44 @@ const JobDetails = (props) => {
     }, []);
 
 
-    const updateTasks = (workInProgress, taskId) => {
-        if (workInProgress) {
-            TaskService.endWorkingOnTask(taskId).then(response => {
-                const updatedTask = response.data;
-                const newTasks = tasks.map(t => {
-                    if (t.taskId === updatedTask.taskId) {
-                        return updatedTask;
-                    }
-                    return t;
-                });
-                setTasks(newTasks);
-            })
-        } else {
-            TaskService.startWorkingOnTask(taskId).then(response => {
-                const updatedTask = response.data;
-                const newTasks = tasks.map(t => {
-                    if (t.taskId === updatedTask.taskId) {
-                        return updatedTask;
-                    }
-                    return t;
-                });
-                setTasks(newTasks);
-            })
-        }
-    };
+    // const updateTasks = (workInProgress, taskId) => {
+    //     if (workInProgress) {
+    //         TaskService.endWorkingOnTask(taskId).then(response => {
+    //             const updatedTask = response.data;
+    //             const newTasks = tasks.map(t => {
+    //                 if (t.taskId === updatedTask.taskId) {
+    //                     return updatedTask;
+    //                 }
+    //                 return t;
+    //             });
+    //             setTasks(newTasks);
+    //         })
+    //     } else {
+    //         TaskService.startWorkingOnTask(taskId).then(response => {
+    //             const updatedTask = response.data;
+    //             const newTasks = tasks.map(t => {
+    //                 if (t.taskId === updatedTask.taskId) {
+    //                     return updatedTask;
+    //                 }
+    //                 return t;
+    //             });
+    //             setTasks(newTasks);
+    //         })
+    //     }
+    // };
 
-    const closeTask = (taskId) => {
-        TaskService.completeTask(taskId).then(response => {
-            const updatedTask = response.data;
-            const newTasks = tasks.map(t => {
-                if (t.taskId === updatedTask.taskId) {
-                    return updatedTask;
-                }
-                return t;
-            });
-            setTasks(newTasks);
-        })
-    };
+    // const closeTask = (taskId) => {
+    //     TaskService.completeTask(taskId).then(response => {
+    //         const updatedTask = response.data;
+    //         const newTasks = tasks.map(t => {
+    //             if (t.taskId === updatedTask.taskId) {
+    //                 return updatedTask;
+    //             }
+    //             return t;
+    //         });
+    //         setTasks(newTasks);
+    //     })
+    // };
 
     const deleteTask = (taskId) => {
         TaskService.deleteTask(taskId).then(response => {
@@ -76,7 +76,7 @@ const JobDetails = (props) => {
         })
     };
 
-    const tasksView = tasks.map(task => <Task key={task.taskId} jobId={jobId} task={task} onSubmit={updateTasks} onTaskFinished={closeTask} onDelete={deleteTask}/>);
+    const tasksView = tasks.map(task => <Task key={task.taskId} jobId={jobId} task={task} onCompleteTask={props.onCompleteTask} onDelete={deleteTask}/>);
 
     let tasksTable = (
         <div className="table-responsive">
@@ -122,8 +122,6 @@ const JobDetails = (props) => {
             </Link>
         </Fragment>
     );
-
-
 
 };
 
