@@ -70,6 +70,10 @@ class JobService {
     static completeJob(jobId) {
         return axios.get(`/api/jobs/${jobId}/complete`)
     }
+
+    static getAllFilteredJobs(dateDTO) {
+        return axios.post(`/api/jobs/filtered`, dateDTO);
+    }
 }
 
 export default JobService;

@@ -18,6 +18,7 @@ class JobsHistoryApp extends React.Component {
 
         };
         this.loadJobs = this.loadJobs.bind(this);
+        this.updateJobs = this.updateJobs.bind(this);
     }
 
     componentDidMount() {
@@ -38,12 +39,22 @@ class JobsHistoryApp extends React.Component {
         });
     }
 
+    updateJobs(dateDTO) {
+
+        JobService.getAllFilteredJobs(dateDTO).then(response => {
+            this.setState(() => ({
+                jobs: response.data
+            }))
+        })
+
+    }
+
     render() {
         return (
             <main role="main" className="mt-3">
                 <div className="container">
                     <Switch>
-                        <Route path={"/history/jobs"} exact render={() => <JobsListHistory onPageClick={this.loadJobs} jobs={this.state.jobs} totalPages={this.state.totalPages}/>} />
+                        <Route path={"/history/jobs"} exact render={() => <JobsListHistory onSubmit={this.updateJobs} onClearFilters={this.loadJobs} onPageClick={this.loadJobs} jobs={this.state.jobs} totalPages={this.state.totalPages}/>} />
                         <Route path={"/history/jobs/:jobId"} exact render={() => <JobHistory />}/>
                         <Route path={"/history/jobs/:jobId/tasks/:taskId"} exact render={() => <TaskDetailsHistory />}/>
                     </Switch>
