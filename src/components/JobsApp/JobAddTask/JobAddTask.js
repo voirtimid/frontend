@@ -76,10 +76,10 @@ const JobAddTask = (props) => {
         if (!task.minutesForPiece) {
             minutesError = "Minutes for piece is not entered";
         }
-        if(!task.plannedStartDate) {
+        if (!task.plannedStartDate) {
             startDateError = "Start date is not entered";
         }
-        if(!task.plannedEndDate) {
+        if (!task.plannedEndDate) {
             endDateError = "Start date is not entered";
         }
         if (employeeError || machineError || minutesError || startDateError || endDateError) {
@@ -257,28 +257,32 @@ const JobAddTask = (props) => {
                         This is a info alert—check it out!
                     </div>}
                     <div className="form-group row">
+                        <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the
+                            task</label>
+                        <span>
                         <div style={{fontSize: 12, color: "red"}}>
                             {validate.machineError}
                         </div>
-                        <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the
-                            task</label>
                         <div className="col-sm-6">
                             {machinesDropDown}
                         </div>
+                            </span>
                     </div>
 
                     <hr/>
 
                     <div className="form-group row">
-                        <div style={{fontSize: 12, color: "red"}}>
-                            {validate.employeeError}
-                        </div>
                         <label htmlFor="employeeId" className="col-sm-4 offset-sm-1 text-left">Choose employee for
                             the
                             task</label>
+                        <span>
+                            <div style={{fontSize: 12, color: "red"}}>
+                            {validate.employeeError}
+                        </div>
                         <div className="col-sm-6">
                             {employeesDropDown}
                         </div>
+                            </span>
                     </div>
 
                     <hr/>
@@ -294,23 +298,29 @@ const JobAddTask = (props) => {
                     <hr/>
 
                     <div className="form-group row">
-                        <div style={{fontSize: 12, color: "red"}}>
-                            {validate.minutesError}
-                        </div>
-                        <label htmlFor="minutesForPiece" className="col-sm-4 offset-sm-1 text-left">Minutes for piece</label>
+                        <label htmlFor="minutesForPiece" className="col-sm-4 offset-sm-1 text-left">Minutes for
+                            piece</label>
                         <div className="col-sm-6">
-                            <input type="number" min="1" className="form-control" id="minutesForPiece" name="minutesForPiece"
-                                   placeholder="Minutes for piece" value={task.minutesForPiece} onChange={handleInputChange}/>
+                            <div style={{fontSize: 12, color: "red"}}>
+                                {validate.minutesError}
+                            </div>
+                            <input type="number" min="1" className="form-control" id="minutesForPiece"
+                                   name="minutesForPiece"
+                                   placeholder="Minutes for piece" value={task.minutesForPiece}
+                                   onChange={handleInputChange}/>
                         </div>
                     </div>
 
                     <hr/>
 
                     <div className="form-group row">
-                        <label htmlFor="plannedHours" className="col-sm-4 offset-sm-1 text-left">Working hours needed</label>
+                        <label htmlFor="plannedHours" className="col-sm-4 offset-sm-1 text-left">Working hours
+                            needed</label>
                         <div className="col-sm-6">
                             <input type="text" disabled className="form-control" id="plannedHours" name="plannedHours"
-                                   placeholder="Working days needed" value={(parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1) + " hours"} onChange={handleInputChange}/>
+                                   placeholder="Working days needed"
+                                   value={(parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1) + " hours"}
+                                   onChange={handleInputChange}/>
                         </div>
                     </div>
 

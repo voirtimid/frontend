@@ -42,8 +42,12 @@ class JobsHistoryApp extends React.Component {
     updateJobs(dateDTO) {
 
         JobService.getAllFilteredJobs(dateDTO).then(response => {
+            console.log(response.data);
             this.setState(() => ({
-                jobs: response.data
+                jobs: response.data.content,
+                page: response.data.pageable.pageNumber,
+                pageSize: response.data.pageable.pageSize,
+                totalPages: response.data.totalPages
             }))
         })
 

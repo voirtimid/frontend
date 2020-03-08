@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ReactPaginate from "react-paginate"
 import JobSearch from "../../JobsApp/JobSearch/JobSeaerch";
 
@@ -13,12 +13,6 @@ const JobsListHistory = (props) => {
     };
 
     const [filterJob, setFilterJob] = useState(emptyFilterJobs);
-
-    // useEffect(() => {
-    //     document.ready(function () {
-    //         '#jobsTabe'.DataTable();
-    //     });
-    // }, []);
 
     const handlePageClick = (e) => {
         props.onPageClick(e.selected)
@@ -50,7 +44,7 @@ const JobsListHistory = (props) => {
 
     let jobsTable = (
         <div className="table-responsive">
-            <table id="jobsTable" className="table table-bordered table-hover">
+            <table className="table table-bordered table-hover">
                 <thead className="thead-light">
                 <tr>
                     <th scope="col">Item</th>
