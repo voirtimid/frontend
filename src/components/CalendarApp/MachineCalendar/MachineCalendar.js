@@ -22,7 +22,6 @@ const MachineCalendar = (props) => {
             const localData = response.data.map(task => {
                 const startDateParts = task.plannedStartDate.split("-");
                 const endDateParts = task.plannedEndDate.split("-");
-                console.log(startDateParts);
                 return {
                     StartTime: new Date(parseInt(startDateParts[0]), parseInt(startDateParts[1]) - 1, parseInt(startDateParts[2]), 8, 0),
                     EndTime: new Date(parseInt(endDateParts[0]), parseInt(endDateParts[1]) - 1, parseInt(endDateParts[2]), 20, 0),

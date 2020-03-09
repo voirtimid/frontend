@@ -14,7 +14,8 @@ const Job = (props) => {
     };
 
     return (
-        <tr>
+        <tr className={((moment(props.job.plannedStartDate).format("DD-MMM-YYYY") < moment(new Date()).format("DD-MMM-YYYY")) && "table-danger")
+                        || ((moment(props.job.plannedStartDate).format("DD-MMM-YYYY") === moment(new Date()).format("DD-MMM-YYYY")) && "table-warning")}>
             <td>{props.job.sketch.sketchName}</td>
             <td><a href={`/sketches/${props.job.sketch.sketchId}`}>{props.job.sketch.drawing}</a></td>
             <td>{props.job.numberOfPieces}</td>

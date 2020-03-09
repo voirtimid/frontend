@@ -144,7 +144,6 @@ const TaskEdit = (props) => {
         props.onSubmit(taskDTO);
         // history.push(`/jobs/${jobId}/tasks`);
         history.push(`/jobs`);
-
     };
 
     const cancelGoBack = () => {
@@ -216,7 +215,7 @@ const TaskEdit = (props) => {
                         <br/>
                         <label htmlFor="realEndDate" className="col-sm-4 offset-sm-1 text-left">Actual End Date</label>
                         <div className="col-sm-3">
-                            <input type="date" className="form-control" id="realEndDate" name="realEndDate"
+                            <input type="date" className="form-control" id="realEndDate" name="realEndDate" min={task.realStartDate}
                                    placeholder="Actual End Date" value={task.realEndDate} onChange={handleInputChange}/>
                         </div>
                     </div>

@@ -27,11 +27,8 @@ class JobsHistoryApp extends React.Component {
 
     loadJobs(page = 0, size = 5) {
         JobService.getAllJobsHistoryPaged(page, size).then(response => {
-            console.log(response.data);
-
             const jobs = response.data.content;
             const toShow = jobs.filter(job => {return job.finished === true});
-
             this.setState({
                 jobs: toShow,
                 page: response.data.pageable.pageNumber,
@@ -44,7 +41,6 @@ class JobsHistoryApp extends React.Component {
     updateJobs(dateDTO) {
 
         JobService.getAllFilteredJobs(dateDTO).then(response => {
-            console.log(response.data);
             this.setState(() => ({
                 jobs: response.data.content,
                 page: response.data.pageable.pageNumber,

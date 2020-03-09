@@ -10,6 +10,7 @@ import UserManagementApp from "../UserManagementApp/UserManagementApp";
 import SketchesApp from "../SketchesApp/SketchesApp";
 import GanttChart from "../GanttChart/GanttChart";
 import JobsHistoryApp from "../JobsHistoryApp/JobsHistoryApp";
+import CalendarApp from "../CalendarApp/CalendarApp";
 
 class App extends React.Component {
 
@@ -64,6 +65,9 @@ class App extends React.Component {
                         </Route>
                         <Route path={"/gantt"}>
                             <GanttChart />
+                        </Route>
+                        <Route path={"/calendar"}>
+                            <CalendarApp />
                         </Route>
 
                         <Route path={"/login"}>

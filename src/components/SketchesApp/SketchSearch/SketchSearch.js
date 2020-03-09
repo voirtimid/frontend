@@ -146,9 +146,45 @@ const SketchSearch = (props) => {
 
     let editSketch = (
         <div>
+
+            <p>
+                <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                        aria-expanded="false" aria-controls="collapseExample">
+                    Show past orders
+                </button>
+            </p>
+            <div className="collapse" id="collapseExample">
+                <div className="card card-body">
+                    {jobs &&
+                    <div className="table-responsive">
+                        <table className="table table-bordered table-hover small">
+                            <thead className="thead-light">
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Drawing</th>
+                                <th scope="col">Number of pieces</th>
+                                <th scope="col">Created at: </th>
+                                <th scope="col">Planned/Actual Start</th>
+                                <th scope="col">Planned/Actual End</th>
+                                <th scope="col">Estimated/Actual Hours</th>
+                                <th scope="col">Estimated/Actual Time for Piece</th>
+                                <th scope="col">Number of tasks</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {jobsWithSketch}
+                            </tbody>
+                        </table>
+                    </div>
+                    }
+
+                </div>
+            </div>
+
             <div className="card">
                 <div className="card-body">
-                    <h4 className="card-title">Enter number of pieces and edit Sketch</h4>
+                    <h4 className="card-title">Sketch search result</h4>
                     <form onSubmit={onEditSketch}>
                         <div className="form-group row">
                             <div className="col-sm-3  text-center">
@@ -333,29 +369,29 @@ const SketchSearch = (props) => {
                 </div>
             </div>
 
-            {jobs &&
-            <div className="table-responsive">
-                <table className="table table-bordered table-hover small">
-                    <thead className="thead-light">
-                    <tr>
-                        <th scope="col">Item</th>
-                        <th scope="col">Drawing</th>
-                        <th scope="col">Number of pieces</th>
-                        <th scope="col">Created at: </th>
-                        <th scope="col">Planned/Actual Start</th>
-                        <th scope="col">Planned/Actual End</th>
-                        <th scope="col">Estimated/Actual Hours</th>
-                        <th scope="col">Estimated/Actual Time for Piece</th>
-                        <th scope="col">Number of tasks</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {jobsWithSketch}
-                    </tbody>
-                </table>
-            </div>
-            }
+            {/*{jobs &&*/}
+            {/*<div className="table-responsive">*/}
+            {/*    <table className="table table-bordered table-hover small">*/}
+            {/*        <thead className="thead-light">*/}
+            {/*        <tr>*/}
+            {/*            <th scope="col">Item</th>*/}
+            {/*            <th scope="col">Drawing</th>*/}
+            {/*            <th scope="col">Number of pieces</th>*/}
+            {/*            <th scope="col">Created at: </th>*/}
+            {/*            <th scope="col">Planned/Actual Start</th>*/}
+            {/*            <th scope="col">Planned/Actual End</th>*/}
+            {/*            <th scope="col">Estimated/Actual Hours</th>*/}
+            {/*            <th scope="col">Estimated/Actual Time for Piece</th>*/}
+            {/*            <th scope="col">Number of tasks</th>*/}
+            {/*            <th scope="col">Actions</th>*/}
+            {/*        </tr>*/}
+            {/*        </thead>*/}
+            {/*        <tbody>*/}
+            {/*        {jobsWithSketch}*/}
+            {/*        </tbody>*/}
+            {/*    </table>*/}
+            {/*</div>*/}
+            {/*}*/}
 
         </div>
     );
@@ -426,8 +462,7 @@ const SketchSearch = (props) => {
 
     return (
         <div>
-            <h4>Проект</h4>
-
+            <h4 className="m-3">Проект</h4>
             <form onSubmit={onFormSubmit} className="AutoCompleteText">
                 <input type="search" name="drawing" id="drawing" placeholder="Број на цртеж"
                        onChange={handleInputChangeSearch} value={drawing}/>

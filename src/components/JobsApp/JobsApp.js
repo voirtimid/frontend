@@ -133,10 +133,11 @@ class JobsApp extends React.Component {
                         }
                         return j;
                     });
+
                     return {
                         "jobs": newJobs
                     }
-                })
+                });
             });
         })
     }
