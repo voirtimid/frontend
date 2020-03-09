@@ -25,9 +25,10 @@ class MachinesApp extends React.Component {
 
     loadMachines()
     {
-        MachineService.getAllMachines().then(data => {
+        MachineService.getAllMachines().then(response => {
+            const machines = response.data.filter(machine => { return machine.deleted === false});
             this.setState(() => ({
-                machines: data.data
+                machines: machines
             }))
         })
     }

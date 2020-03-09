@@ -51,13 +51,15 @@ const JobAddTask = (props) => {
 
     useEffect(() => {
         EmployeeService.getAllEmployees().then(response => {
-            setEmployees(response.data);
+            const employees = response.data.filter(employee => {return employee.deleted === false});
+            setEmployees(employees);
         })
     }, []);
 
     useEffect(() => {
         MachineService.getAllMachines().then(response => {
-            setMachines(response.data);
+            const machines = response.data.filter(machine => { return machine.deleted === false});
+            setMachines(machines);
         })
     }, []);
 
@@ -183,8 +185,6 @@ const JobAddTask = (props) => {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
-
-        debugger;
 
         if (isValid()) {
 

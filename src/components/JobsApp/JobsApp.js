@@ -35,7 +35,7 @@ class JobsApp extends React.Component {
         this.loadJobs();
     }
 
-    loadJobs(page = 0, size = 8) {
+    loadJobs(page = 0, size = 5) {
         JobService.getAllJobsPaged(page, size).then(response => {
             const jobs = response.data.content;
             const toShow = jobs.filter(job => {return job.finished !== true});

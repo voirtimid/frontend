@@ -59,10 +59,7 @@ const SketchSearch = (props) => {
         return true;
     };
 
-    const suggestionSelected = (value) => {
-        setDrawing(value);
-        setSuggestions([]);
-    };
+
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -375,17 +372,7 @@ const SketchSearch = (props) => {
         setSuggestions(suggestions);
     };
 
-    const renderSuggestions = () => {
-        if (suggestions.length === 0) {
-            return null;
-        }
-        return (
-            <ul>
-                {suggestions.map((item) => <li key={item.sketchId}
-                                               onClick={() => suggestionSelected(item.drawing)}>{item.drawing}</li>)}
-            </ul>
-        );
-    };
+
 
     const onFormSubmit = (e) => {
         e.preventDefault();
@@ -404,6 +391,37 @@ const SketchSearch = (props) => {
                 })
             }
         });
+    };
+
+    const suggestionSelected = (value) => {
+        setDrawing(value);
+        setSuggestions([]);
+        SketchService.getSketchByName(value).then(response => {
+            const sketch = response.data;
+            // console.log(sketch);
+            if (sketch === "") {
+                alert("Не постои цртеж со ова име. Креирајте нов цртеж");
+                history.push(`/sketches/new/` + drawing)
+            } else {
+                setSketch(sketch);
+                setExist(true);
+                JobService.getJobsWithSketch(response.data.drawing).then(response => {
+                    setJobs(response.data);
+                })
+            }
+        });
+    };
+
+    const renderSuggestions = () => {
+        if (suggestions.length === 0) {
+            return null;
+        }
+        return (
+            <ul>
+                {suggestions.map((item) => <li key={item.sketchId}
+                                               onClick={() => suggestionSelected(item.drawing)}>{item.drawing}</li>)}
+            </ul>
+        );
     };
 
     return (

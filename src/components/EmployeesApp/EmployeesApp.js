@@ -26,8 +26,9 @@ class EmployeesApp extends React.Component {
 
     loadEmployees() {
         EmployeeService.getAllEmployees().then(response => {
+            const employees = response.data.filter(employee => {return employee.deleted === false});
             this.setState(() => ({
-                employees: response.data
+                employees: employees
             }));
         })
     }

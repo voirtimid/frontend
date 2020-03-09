@@ -25,8 +25,10 @@ class JobsHistoryApp extends React.Component {
         this.loadJobs();
     }
 
-    loadJobs(page = 0, size = 8) {
+    loadJobs(page = 0, size = 5) {
         JobService.getAllJobsHistoryPaged(page, size).then(response => {
+            console.log(response.data);
+
             const jobs = response.data.content;
             const toShow = jobs.filter(job => {return job.finished === true});
 
@@ -50,7 +52,6 @@ class JobsHistoryApp extends React.Component {
                 totalPages: response.data.totalPages
             }))
         })
-
     }
 
     render() {
