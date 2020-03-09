@@ -61,9 +61,9 @@ const JobsList = (props) => {
 
     return (
         <Fragment>
-            <h4 className="text-upper text-left">Работни налози</h4>
+            <h4 className="text-upper text-left">Orders</h4>
             <Link className="btn btn-outline-secondary mb-3 row" to={"/sketches"}>
-                <span><strong>Креирај нов работен налог</strong></span>
+                <span><strong>Create new order</strong></span>
             </Link>
             <div>
 

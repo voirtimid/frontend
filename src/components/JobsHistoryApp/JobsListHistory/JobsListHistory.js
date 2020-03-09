@@ -161,7 +161,9 @@ const JobsListHistory = (props) => {
                 </div>
             </div>
             <div>
-
+                Total closed orders: {props.jobs.length}
+            </div>
+            <div>
                 <div className={"row"}>
                     {jobsTable}
                 </div>

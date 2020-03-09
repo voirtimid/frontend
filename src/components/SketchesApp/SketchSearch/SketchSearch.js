@@ -368,31 +368,6 @@ const SketchSearch = (props) => {
                     </form>
                 </div>
             </div>
-
-            {/*{jobs &&*/}
-            {/*<div className="table-responsive">*/}
-            {/*    <table className="table table-bordered table-hover small">*/}
-            {/*        <thead className="thead-light">*/}
-            {/*        <tr>*/}
-            {/*            <th scope="col">Item</th>*/}
-            {/*            <th scope="col">Drawing</th>*/}
-            {/*            <th scope="col">Number of pieces</th>*/}
-            {/*            <th scope="col">Created at: </th>*/}
-            {/*            <th scope="col">Planned/Actual Start</th>*/}
-            {/*            <th scope="col">Planned/Actual End</th>*/}
-            {/*            <th scope="col">Estimated/Actual Hours</th>*/}
-            {/*            <th scope="col">Estimated/Actual Time for Piece</th>*/}
-            {/*            <th scope="col">Number of tasks</th>*/}
-            {/*            <th scope="col">Actions</th>*/}
-            {/*        </tr>*/}
-            {/*        </thead>*/}
-            {/*        <tbody>*/}
-            {/*        {jobsWithSketch}*/}
-            {/*        </tbody>*/}
-            {/*    </table>*/}
-            {/*</div>*/}
-            {/*}*/}
-
         </div>
     );
 
@@ -462,17 +437,17 @@ const SketchSearch = (props) => {
 
     return (
         <div>
-            <h4 className="m-3">Проект</h4>
+            <h4 className="m-3">Project</h4>
             <form onSubmit={onFormSubmit} className="AutoCompleteText">
-                <input type="search" name="drawing" id="drawing" placeholder="Број на цртеж"
+                <input type="search" name="drawing" id="drawing" placeholder="Drawing code"
                        onChange={handleInputChangeSearch} value={drawing}/>
                 {renderSuggestions()}
-                <input type="submit" value="Пребарај"/>
+                <input type="submit" value="Search"/>
             </form>
 
             <br/>
             <Link to={"/sketches/new"} className="btn btn-secondary">
-                Креирај нов проект
+                Create new project
             </Link>
             <br/>
 

@@ -370,7 +370,6 @@ const JobAddTask = (props) => {
                             <button
                                 type="button"
                                 onClick={() => addNewTask()}
-                                // disabled={!isInputValid}
                                 className="btn btn-primary text-upper">
                                 Create next Task
                             </button>

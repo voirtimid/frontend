@@ -14,10 +14,10 @@ const Header = (props) => {
                 <div className="collapse navbar-collapse" id="navbarCollapse">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <Link className="nav-link" to={"/jobs"}>Работни налози</Link>
+                            <Link className="nav-link" to={"/jobs"}>Orders</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to={"/history/jobs"}>Извештаи</Link>
+                            <Link className="nav-link" to={"/history/jobs"}>Past orders</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to={"/employees"}>Employees</Link>
