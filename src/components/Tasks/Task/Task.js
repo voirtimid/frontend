@@ -31,8 +31,15 @@ const Task = (props) => {
     };
 
     return (
-        <tr className={(status && "table-success") || (status && (((moment(task.plannedStartDate).format("DD-MMM-YYYY") < moment(new Date(2020, 3, 5)).format("DD-MMM-YYYY")) && "table-danger")
-        || ((moment(task.plannedStartDate).format("DD-MMM-YYYY") === moment(new Date()).format("DD-MMM-YYYY")) && "table-warning")))}>
+        <tr className={(status && "table-success")
+            ||
+            (task.realStartDate && (((moment(task.plannedEndDate).format("DD-MMM-YYYY") === moment(new Date()).format("DD-MMM-YYYY")) && "table-warning")
+                ||
+                (moment(task.plannedEndDate).isBefore(new Date()) && "table-danger")) )
+            ||
+            ((moment(task.plannedStartDate).format("DD-MMM-YYYY") === moment(new Date()).format("DD-MMM-YYYY")) && "table-warning")
+            ||
+            (moment(task.plannedStartDate).isBefore(new Date()) && "table-danger")}>
             <td>{task.taskName}</td>
             <td>{employeeName}</td>
             <td>{machineName}</td>
