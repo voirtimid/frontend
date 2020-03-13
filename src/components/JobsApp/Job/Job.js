@@ -8,19 +8,17 @@ const Job = (props) => {
 
     const [finishedTasks] = useState(props.job.tasks.filter(task => task.finished).length);
 
+    const [jobStatus] = useState(props.job.status);
+
     const completeJob = () => {
         props.onComplete(props.job.jobId);
         history.push("/jobs");
     };
 
     return (
-        <tr className={(props.job.realStartDate && (((moment(props.job.plannedEndDate).format("DD-MMM-YYYY") === moment(new Date()).format("DD-MMM-YYYY")) && "table-warning")
-            ||
-            (moment(props.job.plannedEndDate).isBefore(new Date()) && "table-danger")) )
-        ||
-        ((moment(props.job.plannedStartDate).format("DD-MMM-YYYY") === moment(new Date()).format("DD-MMM-YYYY")) && "table-warning")
-        ||
-        (moment(props.job.plannedStartDate).isBefore(new Date()) && "table-danger")}>
+        <tr className={(((jobStatus === "FINISHED") && "table-success")
+            || ((jobStatus === "BEHIND") && "table-danger")
+            || ((jobStatus === "TODAY") && "table-warning"))}>
             <td>{props.job.sketch.sketchName}</td>
             <td><a href={`/sketches/${props.job.sketch.sketchId}`}>{props.job.sketch.drawing}</a></td>
             <td>{props.job.numberOfPieces}</td>

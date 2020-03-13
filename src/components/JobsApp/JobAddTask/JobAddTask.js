@@ -118,8 +118,6 @@ const JobAddTask = (props) => {
 
         setTask(changedTask);
 
-        console.log(changedTask);
-
         if (changedTask.machineId) {
             TaskService.getFirstAvailableSlot(changedTask.machineId).then(response => {
                 setFirsSlotAvailable(response.data);

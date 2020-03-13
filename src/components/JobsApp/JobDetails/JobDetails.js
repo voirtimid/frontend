@@ -15,6 +15,7 @@ const JobDetails = (props) => {
     useEffect(() => {
         JobService.getAllTasksForJob(jobId).then(response => {
             setTasks(response.data);
+            console.log(response.data);
         })
     }, []);
 

@@ -12,6 +12,8 @@ const Task = (props) => {
     const [machineName, setMachineName] = useState("");
     const [status, setStatus] = useState(props.task.finished);
 
+    const [taskStatus] = useState(props.task.status);
+
     useEffect(() => {
         EmployeeService.getEmployee(props.task.employee.employeeId).then(response => {
             setEmployeeName(response.data.firstName + " " + response.data.lastName)
@@ -31,15 +33,9 @@ const Task = (props) => {
     };
 
     return (
-        <tr className={(status && "table-success")
-            ||
-            (task.realStartDate && (((moment(task.plannedEndDate).format("DD-MMM-YYYY") === moment(new Date()).format("DD-MMM-YYYY")) && "table-warning")
-                ||
-                (moment(task.plannedEndDate).isBefore(new Date()) && "table-danger")) )
-            ||
-            ((moment(task.plannedStartDate).format("DD-MMM-YYYY") === moment(new Date()).format("DD-MMM-YYYY")) && "table-warning")
-            ||
-            (moment(task.plannedStartDate).isBefore(new Date()) && "table-danger")}>
+        <tr className={(((taskStatus === "FINISHED") && "table-success")
+                        || ((taskStatus === "BEHIND") && "table-danger")
+                        || ((taskStatus === "TODAY") && "table-warning"))}>
             <td>{task.taskName}</td>
             <td>{employeeName}</td>
             <td>{machineName}</td>
