@@ -12,7 +12,7 @@ const Task = (props) => {
     const [machineName, setMachineName] = useState("");
     const [status, setStatus] = useState(props.task.finished);
 
-    const [taskStatus] = useState(props.task.status);
+    const [taskStatus, setTaskStatus] = useState(props.task.status);
 
     useEffect(() => {
         EmployeeService.getEmployee(props.task.employee.employeeId).then(response => {
@@ -30,6 +30,7 @@ const Task = (props) => {
         e.preventDefault();
         props.onCompleteTask(task.taskId);
         setStatus(!status);
+        setTaskStatus("FINISHED")
     };
 
     return (
