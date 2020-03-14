@@ -29,7 +29,7 @@ const CalendarApp = (props) => {
 
     return (
         <main role="main" className="mt-3">
-            <div className="container">
+            <div className="container-fluid w-75">
                 <ScheduleComponent height="800px" width="auto" currentView='Month'
                                    workHours={{highlight: true, start: '08:00', end: '20:00'}}
                                    eventSettings={loadData} readonly={true}>

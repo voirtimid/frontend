@@ -151,7 +151,7 @@ class JobsApp extends React.Component {
     render() {
         return (
             <main role="main" className="mt-3">
-                <div className="container">
+                <div className="container-fluid w-75">
                     <Switch>
                         <Route path={"/jobs"} exact render={() => <JobsList onPageClick={this.loadJobs} jobs={this.state.jobs} onDelete={this.deleteJob} onComplete={this.completeJob} totalPages={this.state.totalPages}/>} />
                         <Route path={"/jobs/:jobId/edit"} exact render={() => <JobEdit onSubmit={this.updateJob}/>}/>

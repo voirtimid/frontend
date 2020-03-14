@@ -53,7 +53,7 @@ class JobsHistoryApp extends React.Component {
     render() {
         return (
             <main role="main" className="mt-3">
-                <div className="container">
+                <div className="container-fluid w-75">
                     <Switch>
                         <Route path={"/history/jobs"} exact render={() => <JobsListHistory onSubmit={this.updateJobs} onClearFilters={this.loadJobs} onPageClick={this.loadJobs} jobs={this.state.jobs} totalPages={this.state.totalPages}/>} />
                         <Route path={"/history/jobs/:jobId"} exact render={() => <JobHistory />}/>

@@ -78,7 +78,7 @@ class MachinesApp extends React.Component {
     render() {
         return (
             <main role="main" className="mt-3">
-                <div className="container">
+                <div className="container-fluid w-75">
                     <Switch>
                         <Route path={"/machines"} exact
                                render={() => <MachinesList machines={this.state.machines} onDelete={this.deleteMachine} />}/>

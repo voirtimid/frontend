@@ -18,13 +18,12 @@ class SketchesApp extends React.Component {
     render() {
         return (
             <main>
-                <div className="container">
+                <div className="container-fluid w-75">
                     <Switch>
                         <Route path={"/sketches"} exact render={() => <SketchSearch  />}/>
                         <Route path={"/sketches/new"} exact render={() => <SketchAdd />}/>
                         <Route path={"/sketches/new/version/:drawing"} exact render={() => <SketchesNewVersion />}/>
                         <Route path={"/sketches/new/:drawing"} exact render={() => <SketchAdd />}/>
-                        {/*<Route path={"/sketches/:sketchId/new"} exact render={() => <JobAdd />}/>*/}
                         <Route path={"/sketches/:sketchId"} exact render={() => <SketchDetails />}/>
                     </Switch>
                 </div>

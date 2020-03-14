@@ -78,7 +78,7 @@ class EmployeesApp extends React.Component {
     render() {
         return (
             <main role="main" className="mt-3">
-                <div className="container">
+                <div className="container-fluid w-75">
                     <Switch>
                         <Route path={"/employees"} exact render={() => <EmployeesList employees={this.state.employees} onDelete={this.deleteEmployee} />}/>
                         <Route path={"/employees/new"} exact render={() => <EmployeeAdd onCreate={this.createEmployee}/>}/>
