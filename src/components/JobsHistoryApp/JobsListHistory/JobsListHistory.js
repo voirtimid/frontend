@@ -44,7 +44,7 @@ const JobsListHistory = (props) => {
 
     let jobsTable = (
         <div className="table-responsive">
-            <table className="table table-bordered table-hover">
+            <table id="historyJobsTable" className="table table-bordered table-hover">
                 <thead className="thead-light">
                 <tr>
                     <th scope="col">Item</th>

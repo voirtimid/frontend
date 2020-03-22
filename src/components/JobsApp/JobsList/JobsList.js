@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect} from "react";
 import Job from "../Job/Job";
 import {Link} from "react-router-dom";
 import ReactPaginate from "react-paginate"
@@ -37,7 +37,7 @@ const JobsList = (props) => {
 
     let jobsTable = (
         <div className="table-responsive">
-            <table className="table table-bordered table-hover">
+            <table id="jobsTable" className="table table-bordered table-hover">
                 <thead className="thead-light">
                 <tr>
                     <th scope="col">Item</th>

@@ -1,8 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
 import moment from "moment";
+import $ from "jquery";
 
 const JobSearch = (props) => {
+
+    useEffect(() => {
+        $(document).ready( function () {
+            $('#historyJobsTable').dataTable( {
+                "retrieve": true,
+                "paging": false,
+                "searching": false
+            });
+        });
+    }, []);
+
     return (
         <tr>
             <td>{props.job.sketch.sketchName}</td>

@@ -1,6 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import moment from "moment";
+import $ from "jquery";
+import dt from 'datatables.net'
 
 const Job = (props) => {
 
@@ -14,6 +16,16 @@ const Job = (props) => {
         props.onComplete(props.job.jobId);
         history.push("/jobs");
     };
+
+    useEffect(() => {
+        $(document).ready( function () {
+            $('#jobsTable').dataTable( {
+                "retrieve": true,
+                "paging": false,
+                "searching": false
+            });
+        });
+    }, []);
 
     return (
         <tr className={(((jobStatus === "FINISHED") && "table-success")
