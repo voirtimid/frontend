@@ -9,7 +9,8 @@ const JobsListHistory = (props) => {
     const emptyFilterJobs = {
         startDate: "",
         endDate: "",
-        forWhat: ""
+        forWhat: "",
+        sketchName: ""
     };
 
     const [filterJob, setFilterJob] = useState(emptyFilterJobs);
@@ -110,12 +111,25 @@ const JobsListHistory = (props) => {
                             <label htmlFor="forWhat" className="col-sm-4 offset-sm-1 text-left">Finished or Created</label>
                             <div className="col-sm-6 form-inline">
                                 <select name="forWhat" id="forWhat" onChange={handleInputChange}>
-                                    <option disabled value="" selected hidden>Select Attribute</option>
+                                    <option disabled value="Created" selected hidden>Select Attribute</option>
                                     <option value="created">Created</option>
                                     <option value="finished">Finished</option>
                                 </select>
                             </div>
                         </div>
+
+                        <hr />
+
+                        <div className="form-group row">
+                            <label htmlFor="sketchName" className="col-sm-4 offset-sm-1 text-left">Sketch Name</label>
+                            <div className="col-sm-6 form-inline">
+                                <input type="text" className="form-control" id="sketchName" name="sketchName"
+                                       placeholder="Sketch Name" value={filterJob.sketchName}
+                                       onChange={handleInputChange}/>
+                            </div>
+                        </div>
+
+                        <hr/>
 
                         <div className="form-group row">
                             <label htmlFor="startDate" className="col-sm-4 offset-sm-1 text-left">From Date</label>
