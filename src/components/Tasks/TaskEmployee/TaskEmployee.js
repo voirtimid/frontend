@@ -26,7 +26,7 @@ const TaskEmployee = (props) => {
     return (
         <tr>
             <td>{task.taskName}</td>
-            <td>{employeeName}</td>
+            {/*<td>{employeeName}</td>*/}
             <td>{machineName}</td>
             <td>{moment(task.plannedStartDate).format("DD-MMM-YYYY")} / {(task.realStartDate && moment(task.realStartDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
             <td>{moment(task.plannedEndDate).format("DD-MMM-YYYY")} / {(task.realEndDate && moment(task.realEndDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>

@@ -9,9 +9,17 @@ const TasksList = (props) => {
 
     const [tasks, setTasks] = useState([]);
 
+    const [employee, setEmployee] = useState({});
+
     useEffect(() => {
         EmployeeService.getAllTasksForEmployee(employeeId).then(response => {
             setTasks(response.data);
+        })
+    }, []);
+
+    useEffect(() => {
+        EmployeeService.getEmployee(employeeId).then(response => {
+            setEmployee(response.data);
         })
     }, []);
 
@@ -23,7 +31,7 @@ const TasksList = (props) => {
                 <thead className="thead-light">
                 <tr>
                     <th scope="col">Task Name</th>
-                    <th scope="col">Employee Name</th>
+                    {/*<th scope="col">Employee Name</th>*/}
                     <th scope="col">Machine Name</th>
                     <th scope="col">Planned/Actual Start</th>
                     <th scope="col">Planned/Actual End</th>
@@ -42,7 +50,7 @@ const TasksList = (props) => {
 
     return (
         <Fragment>
-            <h4 className="text-upper text-left row">Tasks for the employee: <strong>{employeeId}</strong></h4>
+            <h4 className="text-upper text-left row">Tasks for the employee: <strong>{employee.firstName} {employee.lastName}</strong></h4>
             <div className="row">
                 {tasksTable}
             </div>
