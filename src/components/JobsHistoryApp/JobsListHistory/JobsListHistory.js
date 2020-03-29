@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from "react";
 import ReactPaginate from "react-paginate"
 import JobSearch from "../../JobsApp/JobSearch/JobSeaerch";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'
+import JobService from "../../../service/JobService";
+import moment from "moment";
 
 const JobsListHistory = (props) => {
 
@@ -40,6 +44,55 @@ const JobsListHistory = (props) => {
                                containerClassName={"pagination justify-content-center"}
                                activeClassName={"active"}/>
             );
+        }
+    };
+
+    function getImageDimensions(file) {
+        return new Promise(function (resolved, rejected) {
+            let i = new Image();
+            i.onload = function () {
+                resolved({w: i.width, h: i.height, image: file})
+            };
+            i.src = file
+        })
+    }
+
+    const jobsToPDF = (jobs) => {
+        let doc = jsPDF();
+        const mappedJobs = jobs.map(job => [
+            job.jobName,
+            moment(job.jobCreated).format("DD-MMM-YYYY"),
+            moment(job.jobFinished).format("DD-MMM-YYYY"),
+            job.numberOfPieces.toString(),
+            `${moment(job.plannedStartDate).format("DD-MMM-YYYY")} / ${moment(job.realStartDate).format("DD-MMM-YYYY")}`,
+            `${moment(job.plannedEndDate).format("DD-MMM-YYYY")} / ${moment(job.realEndDate).format("DD-MMM-YYYY")}`,
+            `${job.plannedHours.toFixed(1)} / ${job.realHours.toFixed(1)}`,
+            `${job.plannedTimeForPiece.toFixed(1)} / ${job.realTimeForPiece.toFixed(1)}`,
+            job.tasks.length.toString()
+        ]);
+
+        doc.autoTable({
+            head: [['Job Name', 'Created', 'Finished', "# of pieces", "Start Dates", "End Dates", "Hours", "Time for piece", "# of tasks"]],
+            body: mappedJobs,
+        });
+
+        doc.save("download.pdf");
+    };
+
+    const exportDataToPDF = (all) => {
+        if (all) {
+            let promise;
+            if (filterJob.forWhat === "") {
+                promise = JobService.getAllFinishedJobs()
+            } else {
+                promise = JobService.getAllFilteredJobs(filterJob)
+            }
+            promise.then(response => {
+                const finishedJobs = response.data;
+                jobsToPDF(finishedJobs);
+            })
+        } else {
+            jobsToPDF(props.jobs);
         }
     };
 
@@ -108,7 +161,8 @@ const JobsListHistory = (props) => {
                     <form onSubmit={filterData}>
 
                         <div className="form-group row">
-                            <label htmlFor="forWhat" className="col-sm-4 offset-sm-1 text-left">Finished or Created</label>
+                            <label htmlFor="forWhat" className="col-sm-4 offset-sm-1 text-left">Finished or
+                                Created</label>
                             <div className="col-sm-6 form-inline">
                                 <select name="forWhat" id="forWhat" onChange={handleInputChange}>
                                     <option disabled value="Created" selected hidden>Select Attribute</option>
@@ -118,7 +172,7 @@ const JobsListHistory = (props) => {
                             </div>
                         </div>
 
-                        <hr />
+                        <hr/>
 
                         <div className="form-group row">
                             <label htmlFor="sketchName" className="col-sm-4 offset-sm-1 text-left">Sketch Name</label>
@@ -175,13 +229,21 @@ const JobsListHistory = (props) => {
                 </div>
             </div>
             <div>
-                Total closed orders: {props.jobs.length}
-            </div>
-            <div>
                 <div className={"row"}>
                     {jobsTable}
                 </div>
                 {paginate()}
+            </div>
+
+            <div className="form-group row">
+                <div className="col-6">
+                    <button type="button" className="btn btn-primary" onClick={() => exportDataToPDF(false)}> Export current page to PDF
+                    </button>
+                </div>
+                <div className="col-6">
+                    <button type="button" className="btn btn-primary" onClick={() => exportDataToPDF(true)}> Export all pages to PDF
+                    </button>
+                </div>
             </div>
 
         </div>

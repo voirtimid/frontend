@@ -142,8 +142,8 @@ const TaskEdit = (props) => {
         };
 
         props.onSubmit(taskDTO);
-        // history.push(`/jobs/${jobId}/tasks`);
-        history.push(`/jobs`);
+        // history.push(`/jobs?redirectTo=${jobId}`);
+        history.push(`/jobs/${jobId}/tasks`);
     };
 
     const cancelGoBack = () => {

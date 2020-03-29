@@ -71,8 +71,12 @@ class JobService {
         return axios.get(`/api/jobs/${jobId}/complete`)
     }
 
-    static getAllFilteredJobs(dateDTO) {
-        return axios.post(`/api/jobs/filtered`, dateDTO);
+    static getAllFilteredJobsPaged(filteredDto) {
+        return axios.post(`/api/jobs/filteredPaged`, filteredDto);
+    }
+
+    static getAllFilteredJobs(filteredDto) {
+        return axios.post(`/api/jobs/filtered`, filteredDto);
     }
 }
 

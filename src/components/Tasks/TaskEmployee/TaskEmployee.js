@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 
 const TaskEmployee = (props) => {
 
-    const [task] = useState(props.task);
+    const task = props.task;
 
     const [employeeName, setEmployeeName] = useState("");
     const [machineName, setMachineName] = useState("");

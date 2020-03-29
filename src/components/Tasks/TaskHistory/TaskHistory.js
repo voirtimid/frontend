@@ -6,11 +6,11 @@ import {Link} from "react-router-dom";
 
 const TaskHistory = (props) => {
 
-    const [task] = useState(props.task);
+    const task = props.task;
 
     const [employeeName, setEmployeeName] = useState("");
     const [machineName, setMachineName] = useState("");
-    const [status] = useState(props.task.finished);
+    const status = props.task.finished;
 
     useEffect(() => {
         EmployeeService.getEmployee(props.task.employee.employeeId).then(response => {

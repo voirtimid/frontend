@@ -156,9 +156,10 @@ class JobsApp extends React.Component {
                         <Route path={"/jobs"} exact render={() => <JobsList onPageClick={this.loadJobs} jobs={this.state.jobs} onDelete={this.deleteJob} onComplete={this.completeJob} totalPages={this.state.totalPages}/>} />
                         <Route path={"/jobs/:jobId/edit"} exact render={() => <JobEdit onSubmit={this.updateJob}/>}/>
                         <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>
-                        <Route path={"/jobs/:jobId/tasks"} exact render={() => <JobDetails onCompleteTask={this.closeTask} />}/>
+                        <Route path={"/jobs/:jobId/tasks"} exact render={() => <JobDetails jobs={this.state.jobs} onCompleteTask={this.closeTask} />}/>
                         <Route path={"/jobs/:jobId/tasks/:taskId"} exact render={() => <TaskDetails />}/>
                         <Route path={"/jobs/:jobId/tasks/:taskId/edit"} exact render={() => <TaskEdit onSubmit={this.updateTask} />}/>
+
                     </Switch>
                 </div>
             </main>

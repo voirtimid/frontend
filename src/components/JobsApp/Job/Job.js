@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
-import moment from "moment";
+import moment, {now} from "moment";
 import $ from "jquery";
 import dt from 'datatables.net'
 
@@ -8,9 +8,9 @@ const Job = (props) => {
 
     const history = useHistory();
 
-    const [finishedTasks] = useState(props.job.tasks.filter(task => task.finished).length);
+    const finishedTasks = props.job.tasks.filter(task => task.finished).length;
 
-    const [jobStatus] = useState(props.job.status);
+    const jobStatus = props.job.status;
 
     const completeJob = () => {
         props.onComplete(props.job.jobId);
@@ -25,12 +25,28 @@ const Job = (props) => {
                 "searching": false
             });
         });
+        console.log("bla")
     }, []);
 
+    const getClassName = () => {
+        switch (jobStatus) {
+            case "FINISHED":
+                return "table-success";
+            case "BEHIND":
+                return "table-danger";
+            case "TODAY":
+                return "table-warning";
+            default:
+                return ""
+        }
+    };
+
+    let className = getClassName();
+
+    console.log(`ClassName: ${className} JobStatus: ${jobStatus} Time: ${new Date()}`);
+
     return (
-        <tr className={(((jobStatus === "FINISHED") && "table-success")
-            || ((jobStatus === "BEHIND") && "table-danger")
-            || ((jobStatus === "TODAY") && "table-warning"))}>
+        <tr className={className}>
             <td>{props.job.sketch.sketchName}</td>
             <td><a href={`/sketches/${props.job.sketch.sketchId}`}>{props.job.sketch.drawing}</a></td>
             <td>{props.job.numberOfPieces}</td>

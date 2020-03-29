@@ -40,7 +40,7 @@ class JobsHistoryApp extends React.Component {
 
     updateJobs(dateDTO) {
 
-        JobService.getAllFilteredJobs(dateDTO).then(response => {
+        JobService.getAllFilteredJobsPaged(dateDTO).then(response => {
             this.setState(() => ({
                 jobs: response.data.content,
                 page: response.data.pageable.pageNumber,

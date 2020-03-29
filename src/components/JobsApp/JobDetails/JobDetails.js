@@ -15,9 +15,8 @@ const JobDetails = (props) => {
     useEffect(() => {
         JobService.getAllTasksForJob(jobId).then(response => {
             setTasks(response.data);
-            console.log(response.data);
         })
-    }, []);
+    }, [props.jobs]);
 
     useEffect(() => {
         JobService.getJob(jobId).then(response => {
@@ -36,12 +35,6 @@ const JobDetails = (props) => {
             setTasks(newTasks);
         })
     };
-    //
-    // const updateTasks = (jobId) => {
-    //     JobService.getAllTasksForJob(jobId).then(response => {
-    //
-    //     })
-    // };
 
     const tasksView = tasks.map(task => <Task key={task.taskId} jobId={jobId} task={task} onCompleteTask={props.onCompleteTask} onDelete={deleteTask}/>);
 
