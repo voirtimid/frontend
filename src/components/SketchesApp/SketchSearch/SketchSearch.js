@@ -26,6 +26,7 @@ const SketchSearch = (props) => {
     const [exist, setExist] = useState(false);
     const [jobs, setJobs] = useState([]);
     const [showLoading, setShowLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
 
     useEffect(() => {
@@ -93,6 +94,10 @@ const SketchSearch = (props) => {
         setShowLoading(true);
         FileService.uploadFile(formData, sketch.sketchName).then(response => {
             setShowLoading(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false)
+            }, 5000);
         }).catch(reason => {
             alert(`REASON ${reason}`);
         });
@@ -186,6 +191,10 @@ const SketchSearch = (props) => {
                 <div className="card-body">
                     <h4 className="card-title">Sketch search result</h4>
                     <form onSubmit={onEditSketch}>
+                        {showAlert &&
+                        <div className="alert alert-info" role="alert">
+                            The file is uploaded!
+                        </div>}
                         <div className="form-group row">
                             <div className="col-sm-3  text-center">
                                 <button

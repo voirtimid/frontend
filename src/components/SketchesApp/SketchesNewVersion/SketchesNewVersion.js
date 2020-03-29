@@ -21,6 +21,7 @@ const SketchesNewVersion = (props) => {
     const [tempName, setTempName] = useState("");
     const [validate, setValidate] = useState(validation);
     const [showLoading, setShowLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
     const [numberOfPieces, setNumberOfPieces] = useState(0);
 
     useEffect(() => {
@@ -87,6 +88,10 @@ const SketchesNewVersion = (props) => {
         setShowLoading(true);
         FileService.uploadFile(formData, tempName).then(response => {
             setShowLoading(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false)
+            }, 5000);
         }).catch(reason => {
             alert(`REASON ${reason}`);
         });
@@ -145,9 +150,9 @@ const SketchesNewVersion = (props) => {
                 <h4 className="card-title">Create new Sketch</h4>
 
                 <form onSubmit={onFormSubmit}>
-                    {showLoading &&
+                    {showAlert &&
                     <div className="alert alert-info" role="alert">
-                        This is a info alert—check it out!
+                        The file is uploaded!
                     </div>}
                     <hr/>
                     <div style={{fontSize: 12, color: "red"}}>

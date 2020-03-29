@@ -34,6 +34,7 @@ const SketchAdd = (props) => {
     const [sketch, setSketch] = useState(emptySketch);
     const [validate, setValidate] = useState(validation);
     const [showLoading, setShowLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     const isValid = () => {
         let drawingNameError = "";
@@ -84,6 +85,10 @@ const SketchAdd = (props) => {
         setShowLoading(true);
         FileService.uploadFile(formData, sketch.drawing).then(response => {
             setShowLoading(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false)
+            }, 5000);
         }).catch(reason => {
             alert(`REASON ${reason}`);
         });
@@ -135,9 +140,9 @@ const SketchAdd = (props) => {
                 <h4 className="card-title">Create new Sketch</h4>
 
                 <form onSubmit={onFormSubmit}>
-                    {showLoading &&
+                    {showAlert &&
                     <div className="alert alert-info" role="alert">
-                        This is a info alert—check it out!
+                        The file is uploaded!
                     </div>}
                     <hr/>
                     <div style={{fontSize: 12, color: "red"}}>

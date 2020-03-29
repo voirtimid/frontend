@@ -41,6 +41,7 @@ const JobAddTask = (props) => {
     const [validate, setValidate] = useState(validation);
     const [firstSlotAvailable, setFirsSlotAvailable] = useState("");
     const [showLoading, setShowLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
 
     useEffect(() => {
@@ -136,6 +137,10 @@ const JobAddTask = (props) => {
         setShowLoading(true);
         FileService.uploadFile(formData, "cnc").then(response => {
             setShowLoading(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false)
+            }, 5000);
         }).catch(reason => {
             alert(`REASON ${reason}`);
         });
@@ -250,9 +255,9 @@ const JobAddTask = (props) => {
             <div className="card-body">
                 <h4 className="card-title">Add Task</h4>
                 <form encType='multipart/form-data' onSubmit={onFormSubmit}>
-                    {showLoading &&
+                    {showAlert &&
                     <div className="alert alert-info" role="alert">
-                        This is a info alert—check it out!
+                        The file is uploaded!
                     </div>}
                     <div className="form-group row">
                         <label htmlFor="machineId" className="col-sm-4 offset-sm-1 text-left">Choose machine for the

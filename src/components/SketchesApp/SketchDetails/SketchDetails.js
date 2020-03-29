@@ -12,6 +12,7 @@ const SketchDetails = (props) => {
 
     const [sketch, setSketch] = useState({});
     const [showLoading, setShowLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         SketchService.getSketchById(sketchId).then(response => {
@@ -51,6 +52,10 @@ const SketchDetails = (props) => {
         setShowLoading(true);
         FileService.uploadFile(formData).then(response => {
             setShowLoading(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false)
+            }, 5000);
         }).catch(reason => {
             alert(`REASON ${reason}`);
         });
@@ -88,9 +93,9 @@ const SketchDetails = (props) => {
         <div className="card">
             <h4 className="card-title">Edit Sketch</h4>
             <form className="card-body" onSubmit={onEditSketch}>
-                {showLoading &&
+                {showAlert &&
                 <div className="alert alert-info" role="alert">
-                    This is a info alert—check it out!
+                    The file is uploaded!
                 </div>}
                 <div className="form-group row">
                     <label htmlFor="drawing" className="col-sm-4 offset-sm-1 text-left">Drawing Code</label>
