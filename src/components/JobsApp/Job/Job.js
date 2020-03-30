@@ -25,7 +25,6 @@ const Job = (props) => {
                 "searching": false
             });
         });
-        console.log("bla")
     }, []);
 
     const getClassName = () => {
@@ -42,8 +41,6 @@ const Job = (props) => {
     };
 
     let className = getClassName();
-
-    console.log(`ClassName: ${className} JobStatus: ${jobStatus} Time: ${new Date()}`);
 
     return (
         <tr className={className}>
