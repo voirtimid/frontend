@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Inject, ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, ViewsDirective, ViewDirective} from "@syncfusion/ej2-react-schedule";
+import { Inject, ScheduleComponent, Day, Week, WorkWeek, Month, Agenda} from "@syncfusion/ej2-react-schedule";
 import TaskService from "../../service/TaskService";
 
 const CalendarApp = (props) => {

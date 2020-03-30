@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {Link, useHistory} from "react-router-dom";
-import moment, {now} from "moment";
+import moment from "moment";
 import $ from "jquery";
-import dt from 'datatables.net'
+import 'datatables.net'
 
 const Job = (props) => {
 

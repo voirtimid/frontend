@@ -193,6 +193,7 @@ const JobAddTask = (props) => {
 
             const newTask = {
                 ...task,
+                // eslint-disable-next-line radix
                 plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
             };
 
@@ -220,6 +221,7 @@ const JobAddTask = (props) => {
         if (isValid()) {
             const newTask = {
                 ...task,
+                // eslint-disable-next-line radix
                 plannedHours: (parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1)
             };
 

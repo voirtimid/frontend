@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import ReactPaginate from "react-paginate"
 import JobSearch from "../../JobsApp/JobSearch/JobSeaerch";
 import jsPDF from 'jspdf';
@@ -46,16 +46,6 @@ const JobsListHistory = (props) => {
             );
         }
     };
-
-    function getImageDimensions(file) {
-        return new Promise(function (resolved, rejected) {
-            let i = new Image();
-            i.onload = function () {
-                resolved({w: i.width, h: i.height, image: file})
-            };
-            i.src = file
-        })
-    }
 
     const jobsToPDF = (jobs) => {
         let doc = jsPDF();

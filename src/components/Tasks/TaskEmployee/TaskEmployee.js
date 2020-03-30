@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import EmployeeService from "../../../service/EmployeeService";
 import MachineService from "../../../service/MachineService";
 import moment from "moment";
 import {Link} from "react-router-dom";
@@ -8,14 +7,7 @@ const TaskEmployee = (props) => {
 
     const task = props.task;
 
-    const [employeeName, setEmployeeName] = useState("");
     const [machineName, setMachineName] = useState("");
-
-    useEffect(() => {
-        EmployeeService.getEmployee(props.task.employee.employeeId).then(response => {
-            setEmployeeName(response.data.firstName + " " + response.data.lastName)
-        })
-    }, []);
 
     useEffect(() => {
         MachineService.getMachine(props.task.machine.machineId).then(response => {
@@ -26,7 +18,6 @@ const TaskEmployee = (props) => {
     return (
         <tr>
             <td>{task.taskName}</td>
-            {/*<td>{employeeName}</td>*/}
             <td>{machineName}</td>
             <td>{moment(task.plannedStartDate).format("DD-MMM-YYYY")} / {(task.realStartDate && moment(task.realStartDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>
             <td>{moment(task.plannedEndDate).format("DD-MMM-YYYY")} / {(task.realEndDate && moment(task.realEndDate).format("DD-MMM-YYYY")) || "Not yet started"}</td>

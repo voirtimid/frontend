@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect} from "react";
+import React, {Fragment} from "react";
 import Job from "../Job/Job";
 import {Link} from "react-router-dom";
 import ReactPaginate from "react-paginate"

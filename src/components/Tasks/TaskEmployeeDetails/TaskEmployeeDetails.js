@@ -4,7 +4,6 @@ import TaskService from "../../../service/TaskService";
 import FileService from "../../../service/FileService";
 import moment from "moment";
 import FileDownload from 'js-file-download';
-import JobService from "../../../service/JobService";
 import SketchService from "../../../service/SketchService";
 
 const TaskEmployeeDetails = (props) => {
