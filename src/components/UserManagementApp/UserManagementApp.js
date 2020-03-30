@@ -1,30 +1,50 @@
-import React, {useEffect} from "react";
+import React, {useState} from "react";
+import RegisterForm from "./RegisterForm/RegisterForm";
+import LoginForm from "./LoginForm/LoginForm";
 
 const UserManagementApp = (props) => {
 
+    const [shouldRegister, setShouldRegister] = useState(false);
+
+    const handleRegisterSubmit = (userDTO) => {
+
+    };
+
+    const handleLoginSubmit = (userDTO) => {
+
+    };
+
+
+    const renderPage = () => {
+        if (shouldRegister) {
+            return <RegisterForm onRegister={handleRegisterSubmit()} />;
+        } else {
+            return <LoginForm onLogin={handleLoginSubmit()}/>;
+        }
+    };
+
+    const textToShow = () => {
+        if (shouldRegister) {
+            return "Already have an account. Please Login!";
+        } else {
+            return "Do not have an account. Please click here to register!";
+        }
+    };
+
+    const changePageStatus = () => setShouldRegister(!shouldRegister);
+
     return (
-        <div className="container w-75">
-            <h4>Login/Sign up page!</h4>
-            <form className="card">
+        <div className="container">
+            <div className="card m-lg-5">
                 <div className="card-body">
-                <div className="form-group row">
-                    <label htmlFor="firstName" className="col-sm-4 offset-sm-1 text-left">First Name</label>
-                    <div className="col-sm-6">
-                        <input type="text" className="form-control" id="firstName" name="firstName"/>
-                               {/*// placeholder="First Name" value={employee.firstName} onChange={handleInputChange}/>*/}
-                    </div>
+                    <h4 className="card-title">MetalCut Login page!</h4>
+                    {renderPage()}
+
+                    <button type="button"
+                            onClick={() => changePageStatus()}
+                            className="btn-link">{textToShow()}</button>
                 </div>
-                <div className="form-group row">
-                    <label htmlFor="lastName" className="col-sm-4 offset-sm-1 text-left">Last Name</label>
-                    <div className="col-sm-6">
-                        <input type="text" className="form-control" id="lastName" name="lastName"/>
-                               {/*placeholder="Short Name" value={employee.lastName} onChange={handleInputChange}/>*/}
-                    </div>
-                </div>
-                <button type="submit" className="btn btn-black">Login</button>
-                <button type="submit" className="btn btn-secondary">Register</button>
-                </div>
-            </form>
+            </div>
         </div>
     );
 

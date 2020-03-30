@@ -39,6 +39,12 @@ const TaskEmployeeDetails = (props) => {
         history.push(`/employees/${employee.employeeId}/tasks`);
     };
 
+    const startWorking = () => {
+        TaskService.startWorkingOnTask(taskId).then(response => {
+
+        });
+    };
+
     return (
         <div className="card">
             <div className="card-body">
@@ -283,6 +289,13 @@ const TaskEmployeeDetails = (props) => {
                         type="button"
                         className="btn btn-danger text-upper">
                         Go Back
+                    </button>
+
+                    <button
+                        onClick={() => startWorking()}
+                        type="button"
+                        className="btn btn-danger text-upper">
+                        {(task.workInProgress && "Stop working") || "Start working"}
                     </button>
                 </div>
             </div>

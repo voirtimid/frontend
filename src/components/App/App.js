@@ -71,7 +71,7 @@ class App extends React.Component {
                         </Route>
 
                         <Route path={"/login"}>
-                            <UserManagementApp user={this.state.data}/>
+                            <UserManagementApp user={this.state.user}/>
                         </Route>
                     </Switch>
                 </Router>
