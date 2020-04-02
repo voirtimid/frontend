@@ -81,7 +81,7 @@ const JobAddTask = (props) => {
             startDateError = "Start date is not entered";
         }
         if (!task.plannedEndDate) {
-            endDateError = "Start date is not entered";
+            endDateError = "End date is not entered";
         }
         if (employeeError || machineError || minutesError || startDateError || endDateError) {
             setValidate({
@@ -250,6 +250,16 @@ const JobAddTask = (props) => {
 
     };
 
+    const getWorkingHoursNeeded = () => {
+        let workingHoursNeeded = 0;
+
+        if (task.minutesForPiece.length !== 0) {
+            workingHoursNeeded = parseInt(task.minutesForPiece) * job.numberOfPieces / 60;
+        }
+
+        return workingHoursNeeded.toFixed(1);
+    };
+
     return (
         <div className="card">
             <div className="card-body">
@@ -321,8 +331,8 @@ const JobAddTask = (props) => {
                             needed</label>
                         <div className="col-sm-6">
                             <input type="text" disabled className="form-control" id="plannedHours" name="plannedHours"
-                                   placeholder="Working days needed"
-                                   value={(parseInt(task.minutesForPiece) * job.numberOfPieces / 60).toFixed(1) + " hours"}
+                                   placeholder="Working hours needed"
+                                   value={getWorkingHoursNeeded() + " hours"}
                                    onChange={handleInputChange}/>
                         </div>
                     </div>
