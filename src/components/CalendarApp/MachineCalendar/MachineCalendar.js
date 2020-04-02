@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Agenda, Day, Inject, Month, ScheduleComponent, Week, WorkWeek} from "@syncfusion/ej2-react-schedule";
 import {useParams} from "react-router";
 import TaskService from "../../../service/TaskService";
@@ -37,16 +37,14 @@ const MachineCalendar = (props) => {
     };
 
     return (
-        <main role="main" className="mt-3">
-            <div className="container-fluid w-75">
-                <h4>Calendar for machine: {machine.name} - {machine.shortName}</h4>
-                <ScheduleComponent height="800px" width="auto" currentView='Month'
-                                   workHours={{highlight: true, start: '08:00', end: '20:00'}}
-                                   eventSettings={loadData} readonly={true}>
-                    <Inject services={[Day, Week, WorkWeek, Month, Agenda]}/>
-                </ScheduleComponent>
-            </div>
-        </main>
+        <Fragment>
+            <h4>Calendar for machine: {machine.name} - {machine.shortName}</h4>
+            <ScheduleComponent height="800px" width="auto" currentView='Month'
+                               workHours={{highlight: true, start: '08:00', end: '20:00'}}
+                               eventSettings={loadData} readonly={true}>
+                <Inject services={[Day, Week, WorkWeek, Month, Agenda]}/>
+            </ScheduleComponent>
+        </Fragment>
     );
 };
 
