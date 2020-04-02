@@ -52,15 +52,13 @@ const JobAddTask = (props) => {
 
     useEffect(() => {
         EmployeeService.getAllEmployees().then(response => {
-            const employees = response.data.filter(employee => {return employee.deleted === false});
-            setEmployees(employees);
+            setEmployees(response.data);
         })
     }, []);
 
     useEffect(() => {
         MachineService.getAllMachines().then(response => {
-            const machines = response.data.filter(machine => { return machine.deleted === false});
-            setMachines(machines);
+            setMachines(response.data);
         })
     }, []);
 
