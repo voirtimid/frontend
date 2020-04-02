@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import EmployeeService from "../../../service/EmployeeService";
 
@@ -89,7 +89,7 @@ const EmployeeEdit = (props) => {
     };
 
     return (
-        <div>
+        <Fragment>
             <h4 className="text-upper text-left">Edit Employee</h4>
             <form className="card" onSubmit={onFormSubmit}>
                 <div className="card-body">
@@ -136,7 +136,7 @@ const EmployeeEdit = (props) => {
                 </div>
                 </div>
             </form>
-        </div>
+        </Fragment>
     );
 
 };

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import JobService from "../../../service/JobService";
 
@@ -54,7 +54,7 @@ const JobEdit = (props) => {
     };
 
     return (
-        <div>
+        <Fragment>
             <h4>Add Job</h4>
             <form className='card' encType='multipart/form-data' onSubmit={onFormSubmit}>
                 <div className="card-body">
@@ -147,7 +147,7 @@ const JobEdit = (props) => {
 
             </form>
 
-        </div>
+        </Fragment>
     );
 
 };

@@ -5,7 +5,8 @@ import ReactPaginate from "react-paginate"
 
 const JobsList = (props) => {
 
-    const jobs = props.jobs.map(job => <Job key={job.jobId} job={job} onDelete={props.onDelete} onComplete={props.onComplete} />);
+    const jobs = props.jobs.map(job => <Job key={job.jobId} job={job} onDelete={props.onDelete}
+                                            onComplete={props.onComplete}/>);
 
     const handlePageClick = (e) => {
         props.onPageClick(e.selected)
@@ -59,19 +60,31 @@ const JobsList = (props) => {
         </div>
     );
 
+    let emptyResult = (
+        <h3 className="col">Empty! There are no active orders. Add new one</h3>
+    );
+
+    let toShow;
+
+    if (props.jobs.length === 0) {
+        toShow = emptyResult;
+    } else {
+        toShow = jobsTable;
+    }
+
     return (
         <Fragment>
-            <h4 className="text-upper text-left">Orders</h4>
+            <h2 className="text-upper text-left">Orders</h2>
             <Link className="btn btn-outline-secondary mb-3 row" to={"/sketches"}>
                 <span><strong>Create new order</strong></span>
             </Link>
-            <div>
+            <Fragment>
 
                 <div className={"row"}>
-                    {jobsTable}
+                    {toShow}
                 </div>
-                {paginate()}
-            </div>
+                {props.jobs.length > 0 && paginate()}
+            </Fragment>
 
         </Fragment>
     );

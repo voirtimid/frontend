@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {Fragment, useState} from "react";
 import ReactPaginate from "react-paginate"
 import JobSearch from "../../JobsApp/JobSearch/JobSeaerch";
 import jsPDF from 'jspdf';
@@ -136,10 +136,8 @@ const JobsListHistory = (props) => {
         props.onClearFilters();
     };
 
-    return (
-        <div>
-            <h4 className="text-upper text-left">Завршени Работни налози</h4>
-
+    let showPastOrders = (
+        <Fragment>
             <p>
                 <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
                         aria-expanded="false" aria-controls="collapseExample">
@@ -218,12 +216,12 @@ const JobsListHistory = (props) => {
                     </form>
                 </div>
             </div>
-            <div>
+            <Fragment>
                 <div className={"row"}>
                     {jobsTable}
                 </div>
                 {paginate()}
-            </div>
+            </Fragment>
 
             <div className="form-group row">
                 <div className="col-6">
@@ -236,7 +234,26 @@ const JobsListHistory = (props) => {
                 </div>
             </div>
 
-        </div>
+        </Fragment>
+    );
+
+    let emptyResult = (
+        <h3 className="col">Empty! There are no closed orders.</h3>
+    );
+
+    let toShow;
+
+    if (props.jobs.length === 0) {
+        toShow = emptyResult;
+    } else {
+        toShow = showPastOrders;
+    }
+
+    return (
+        <Fragment>
+            <h2 className="text-upper text-left">Closed Orders</h2>
+            {toShow}
+        </Fragment>
     );
 };
 

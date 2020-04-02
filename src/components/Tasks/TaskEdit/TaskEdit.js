@@ -30,24 +30,20 @@ const TaskEdit = (props) => {
             setEmployee(task.employee);
             setMachine(task.machine);
             setCnc(task.cncCode);
+            MachineService.getAllMachines().then(response => {
+                const machines = response.data.filter(m => m.machineId !== task.machine.machineId);
+                setMachines(machines);
+            });
+            EmployeeService.getAllEmployees().then(response => {
+                const employees = response.data.filter(e => e.employeeId !== task.employee.employeeId);
+                setEmployees(employees);
+            });
         })
     }, []);
 
     useEffect(() => {
         JobService.getJob(jobId).then(response => {
             setJob(response.data);
-        })
-    }, []);
-
-    useEffect(() => {
-        MachineService.getAllMachines().then(response => {
-            setMachines(response.data);
-        })
-    }, []);
-
-    useEffect(() => {
-        EmployeeService.getAllEmployees().then(response => {
-            setEmployees(response.data);
         })
     }, []);
 

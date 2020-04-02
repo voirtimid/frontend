@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import Employee from "../Employee/Employee";
 import {Link} from "react-router-dom";
 
@@ -24,7 +24,7 @@ const EmployeesList = (props) => {
     );
 
     return (
-        <div>
+        <Fragment>
             <h4 className="text-upper text-left row">Employees</h4>
             <Link className="btn btn-outline-secondary mb-3 row" to={"/employees/new"}>
                 <span><strong>Add new employee</strong></span>
@@ -33,7 +33,7 @@ const EmployeesList = (props) => {
             <div className="row">
                 {employeesTable}
             </div>
-        </div>
+        </Fragment>
     );
 
 };

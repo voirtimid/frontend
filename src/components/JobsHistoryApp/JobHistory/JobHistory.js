@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import JobService from "../../../service/JobService";
 import moment from "moment";
@@ -29,7 +29,7 @@ const JobHistory = (props) => {
     const renderTasks = tasks.map(task => <TaskHistory key={task.taskId} jobId={jobId} task={task} />);
 
     return (
-        <div>
+        <Fragment>
             <h4 className="text-upper text-left" >Job name: {job.jobName}</h4>
 
             <div className="table-responsive">
@@ -94,7 +94,7 @@ const JobHistory = (props) => {
 
 
             </div>
-        </div>
+        </Fragment>
     );
 };
 

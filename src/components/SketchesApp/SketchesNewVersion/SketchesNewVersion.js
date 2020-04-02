@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import FileService from "../../../service/FileService";
 import SketchService from "../../../service/SketchService";
@@ -298,12 +298,12 @@ const SketchesNewVersion = (props) => {
                                 Next step
                             </button>
                         </div>
-                        <div>
+                        <Fragment>
                             {showLoading &&
                             <div className="spinner-border" role="status">
                                 <span className="sr-only">Loading...</span>
                             </div>}
-                        </div>
+                        </Fragment>
                     </div>
 
                 </form>

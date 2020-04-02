@@ -1,12 +1,12 @@
-import React from "react";
+import React, {Fragment} from "react";
 import "./Footer.css"
 
 const Footer = (props) => {
 
     return (
-        <footer>
-            <div>
-                MetalKat &copy; - 2020
+        <footer className="footer">
+            <div className="footer-copyright text-center">
+                MetalCut &copy; - 2020 <a href="http://metalkat.mk" target="_blank">Official website</a>
             </div>
         </footer>
     );

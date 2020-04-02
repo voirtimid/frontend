@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useHistory} from "react-router";
 import "./SketchSearch.css"
@@ -150,7 +150,7 @@ const SketchSearch = (props) => {
     };
 
     let editSketch = (
-        <div>
+        <Fragment>
 
             <p>
                 <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
@@ -377,7 +377,7 @@ const SketchSearch = (props) => {
                     </form>
                 </div>
             </div>
-        </div>
+        </Fragment>
     );
 
     const handleInputChangeSearch = (event) => {
