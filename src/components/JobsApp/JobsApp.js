@@ -8,6 +8,7 @@ import TaskService from "../../service/TaskService";
 import TaskDetails from "../Tasks/TaskDetails/TaskDetails";
 import JobEdit from "./JobEdit/JobEdit";
 import TaskEdit from "../Tasks/TaskEdit/TaskEdit";
+import autoBindReact from "auto-bind";
 
 class JobsApp extends React.Component {
 
@@ -21,14 +22,7 @@ class JobsApp extends React.Component {
             totalPages:0
 
         };
-        this.createTask = this.createTask.bind(this);
-        this.addTaskToJob = this.addTaskToJob.bind(this);
-        this.updateJob = this.updateJob.bind(this);
-        this.deleteJob = this.deleteJob.bind(this);
-        this.loadJobs = this.loadJobs.bind(this);
-        this.completeJob = this.completeJob.bind(this);
-        this.updateTask = this.updateTask.bind(this);
-        this.closeTask = this.closeTask.bind(this);
+        autoBindReact(this);
     }
 
     componentDidMount() {
@@ -36,11 +30,10 @@ class JobsApp extends React.Component {
     }
 
     loadJobs(page = 0, size = 5) {
-        JobService.getAllJobsPaged(page, size).then(response => {
+        JobService.getAllInProgressJobsPaged(page, size).then(response => {
             const jobs = response.data.content;
-            const toShow = jobs.filter(job => {return job.finished !== true});
             this.setState({
-                    jobs: toShow,
+                    jobs: jobs,
                     page: response.data.pageable.pageNumber,
                     pageSize: response.data.pageable.pageSize,
                     totalPages: response.data.totalPages

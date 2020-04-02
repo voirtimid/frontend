@@ -1,19 +1,50 @@
-import React from "react";
-// import { TimeLine } from "react-gantt-timeline";
+import React, {useEffect, useState} from "react";
+import {Chart} from "react-google-charts";
+import TaskService from "../../service/TaskService";
 
 
 
 const GanttChart = (props) => {
 
-    let data=[ {id:1,start:new Date(), end:new Date()+1 ,name:'Demo Task 1'},
-        {id:2,start:new Date(), end:new Date()+1 ,name:'Demo Task 2'}];
 
-    let links = [ {id:1,start:1, end:2},
-        {id:2,start:1, end:3}];
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        TaskService.getAllInProgressTasks().then(response => {
+            const localData = response.data.map(task => {
+                const startDateParts = task.plannedStartDate.split("-");
+                const endDateParts = task.plannedEndDate.split("-");
+                const percentDone = task.trackedWorkTime / task.plannedHours;
+                return [
+                    task.taskId.toString(),
+                    task.taskName.toString(),
+                    new Date(parseInt(startDateParts[0]), parseInt(startDateParts[1]) - 1, parseInt(startDateParts[2])),
+                    new Date(parseInt(endDateParts[0]), parseInt(endDateParts[1]) - 1, parseInt(endDateParts[2])),
+                    null,
+                    percentDone,
+                    null
+                ]
+            });
+            localData.unshift([
+                { type: 'string', label: 'Task ID' },
+                { type: 'string', label: 'Task Name' },
+                { type: 'date', label: 'Start Date' },
+                { type: 'date', label: 'End Date' },
+                { type: 'number', label: 'Duration' },
+                { type: 'number', label: 'Percent Complete' },
+                { type: 'string', label: 'Dependencies' }
+            ]);
+            setData(localData);
+        })
+    }, []);
+
+
 
     return (
         <div>
-            {/*<TimeLine data={data} links={links} />*/}
+            <Chart chartType="Gantt"
+                   data={data}>
+            </Chart>
         </div>
     );
 

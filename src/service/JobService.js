@@ -14,6 +14,15 @@ class JobService {
         })
     }
 
+    static getAllInProgressJobsPaged(page, size) {
+        return axios.get(`/api/jobs/paged/inProgress`, {
+            headers: {
+                'page': page,
+                'size': size
+            }
+        })
+    }
+
     static getAllJobsHistoryPaged(page, size) {
         return axios.get(`/api/jobs/history/paged`, {
             headers: {

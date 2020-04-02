@@ -40,10 +40,8 @@ const Job = (props) => {
         }
     };
 
-    let className = getClassName();
-
     return (
-        <tr className={className}>
+        <tr className={getClassName()}>
             <td>{props.job.sketch.sketchName}</td>
             <td><a href={`/sketches/${props.job.sketch.sketchId}`}>{props.job.sketch.drawing}</a></td>
             <td>{props.job.numberOfPieces}</td>

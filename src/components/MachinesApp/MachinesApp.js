@@ -5,6 +5,7 @@ import MachineService from "../../service/MachineService";
 import MachineAdd from "./MachineAdd/MachineAdd";
 import MachineEdit from "./MachineEdit/MachineEdit";
 import MachineCalendar from "../CalendarApp/MachineCalendar/MachineCalendar";
+import autoBindReact from "auto-bind";
 
 class MachinesApp extends React.Component {
 
@@ -14,9 +15,7 @@ class MachinesApp extends React.Component {
             machines: [],
             tasks: []
         };
-        this.createMachine = this.createMachine.bind(this);
-        this.updateMachine = this.updateMachine.bind(this);
-        this.deleteMachine = this.deleteMachine.bind(this);
+        autoBindReact(this);
     }
 
     componentDidMount() {

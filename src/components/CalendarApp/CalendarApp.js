@@ -7,10 +7,8 @@ const CalendarApp = (props) => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        TaskService.getAllTasks().then(response => {
-            console.log(response.data);
-            const tasks = response.data.filter(task => {return task.finished === false});
-            const localData = tasks.map(task => {
+        TaskService.getAllInProgressTasks().then(response => {
+            const localData = response.data.map(task => {
                 const startDateParts = task.plannedStartDate.split("-");
                 const endDateParts = task.plannedEndDate.split("-");
                 return {

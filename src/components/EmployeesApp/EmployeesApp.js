@@ -6,6 +6,7 @@ import EmployeeAdd from "./EmployeeAdd/EmployeeAdd";
 import EmployeeEdit from "./EmployeeEdit/EmployeeEdit";
 import TasksList from "../Tasks/TasksList/TasksList";
 import TaskEmployeeDetails from "../Tasks/TaskEmployeeDetails/TaskEmployeeDetails";
+import autoBindReact from "auto-bind";
 
 class EmployeesApp extends React.Component {
 
@@ -14,10 +15,7 @@ class EmployeesApp extends React.Component {
         this.state = {
             employees: []
         };
-
-        this.createEmployee = this.createEmployee.bind(this);
-        this.updateEmployee = this.updateEmployee.bind(this);
-        this.deleteEmployee = this.deleteEmployee.bind(this);
+        autoBindReact(this);
     }
 
     componentDidMount() {

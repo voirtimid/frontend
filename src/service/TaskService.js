@@ -6,6 +6,10 @@ class TaskService {
         return axios.get(`/api/tasks`);
     }
 
+    static getAllInProgressTasks() {
+        return axios.get(`/api/tasks/inProgress`);
+    }
+
     static getAllTasksForMachine(machineId) {
         return axios.get(`/api/tasks/machine/${machineId}`)
     }

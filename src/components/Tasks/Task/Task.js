@@ -8,35 +8,34 @@ const Task = (props) => {
 
     const task = props.task;
 
-    const [employeeName, setEmployeeName] = useState("");
-    const [machineName, setMachineName] = useState("");
-    const [status, setStatus] = useState(props.task.finished);
+    const employeeName = props.task.employee.firstName + " " + props.task.employee.lastName;
+    const machineName = props.task.machine.name + " - " + props.task.machine.shortName;
 
-    const [taskStatus, setTaskStatus] = useState(props.task.status);
-
-    useEffect(() => {
-        EmployeeService.getEmployee(props.task.employee.employeeId).then(response => {
-            setEmployeeName(response.data.firstName + " " + response.data.lastName)
-        })
-    }, []);
-
-    useEffect(() => {
-        MachineService.getMachine(props.task.machine.machineId).then(response => {
-            setMachineName(response.data.name + " - " + response.data.shortName);
-        })
-    }, []);
+    let status = props.task.finished;
+    let taskStatus = props.task.status;
 
     const onTaskFinished = (e) => {
         e.preventDefault();
         props.onCompleteTask(task.taskId);
-        setStatus(!status);
-        setTaskStatus("FINISHED")
+        status = !status;
+        taskStatus = "FINISHED"
+    };
+
+    const getClassName = () => {
+        switch (taskStatus) {
+            case "FINISHED":
+                return "table-success";
+            case "BEHIND":
+                return "table-danger";
+            case "TODAY":
+                return "table-warning";
+            default:
+                return ""
+        }
     };
 
     return (
-        <tr className={(((taskStatus === "FINISHED") && "table-success")
-                        || ((taskStatus === "BEHIND") && "table-danger")
-                        || ((taskStatus === "TODAY") && "table-warning"))}>
+        <tr className={getClassName()}>
             <td>{task.taskName}</td>
             <td>{employeeName}</td>
             <td>{machineName}</td>
