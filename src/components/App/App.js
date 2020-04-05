@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import './App.css';
 import Header from "../Header/Header";
@@ -11,64 +11,66 @@ import GanttChart from "../GanttChart/GanttChart";
 import JobsHistoryApp from "../JobsHistoryApp/JobsHistoryApp";
 import CalendarApp from "../CalendarApp/CalendarApp";
 import Footer from "../Footer/Footer";
-import autoBindReact from "auto-bind";
 
-class App extends React.Component {
+const App = () => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: {}
-        };
+    let userFromLocalStorage = localStorage.getItem("user");
+    let parsed = JSON.parse(userFromLocalStorage);
 
-        autoBindReact(this);
-    }
+    const isLoggedIn = !!localStorage.getItem("user");
 
-    manageUser(user) {
-        this.setState(() => ({
-            "user": user
-        }));
-    }
+    const [user, setUser] = useState(parsed || {});
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn);
 
-    render() {
-        return (
-            <Fragment>
-                <div className="App">
-                    <Router>
-                        <Header user={this.state.user}/>
-                        <Switch>
-                            <Route path={"/sketches"}>
-                                <SketchesApp/>
-                            </Route>
-                            <Route path={"/machines"}>
-                                <MachinesApp/>
-                            </Route>
-                            <Route path={"/employees"}>
-                                <EmployeesApp/>
-                            </Route>
-                            <Route path={"/jobs"}>
-                                <JobsApp/>
-                            </Route>
-                            <Route path={"/history"}>
-                                <JobsHistoryApp/>
-                            </Route>
-                            <Route path={"/gantt"}>
-                                <GanttChart/>
-                            </Route>
-                            <Route path={"/calendar"}>
-                                <CalendarApp/>
-                            </Route>
+    const manageUser = (user) => {
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
+        setLoggedIn(true);
+    };
 
-                            <Route path={"/login"}>
-                                <UserManagementApp login={this.manageUser} user={this.state.user}/>
-                            </Route>
-                        </Switch>
-                    </Router>
-                </div>
-                <Footer/>
-            </Fragment>
-        );
-    }
-}
+    const logOutUser = () => {
+        localStorage.removeItem("user");
+        setUser({});
+        setLoggedIn(false);
+    };
+
+    return (
+        <Fragment>
+            <div className="App">
+                <Router>
+                    <Header user={user} loggedIn={loggedIn} logOutUser={logOutUser}/>
+                    <Switch>
+                        <Route path={"/sketches"}>
+                            <SketchesApp/>
+                        </Route>
+                        < Route path={"/machines"}>
+                            <MachinesApp/>
+                        </Route>
+                        <Route path={"/employees"}>
+                            <EmployeesApp/>
+                        </Route>
+                        <Route path={"/jobs"}>
+                            <JobsApp/>
+                        </Route>
+                        <Route path={"/history"}>
+                            <JobsHistoryApp/>
+                        </Route>
+                        <Route path={"/gantt"}>
+                            <GanttChart/>
+                        </Route>
+                        <Route path={"/calendar"}>
+                            <CalendarApp/>
+                        </Route>
+
+                        <Route path={"/login"}>
+                            <UserManagementApp login={manageUser} user={user}/>
+                        </Route>
+                    </Switch>
+                </Router>
+            </div>
+            <Footer/>
+        </Fragment>
+    );
+};
 
 export default App;

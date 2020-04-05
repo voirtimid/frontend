@@ -29,6 +29,7 @@ const JobAddTask = (props) => {
     const validation = {
         employeeError: "",
         machineError: "",
+        cncCodeError: "",
         minutesError: "",
         startDateError: "",
         endDateError: "",
@@ -65,6 +66,7 @@ const JobAddTask = (props) => {
     const isValid = () => {
         let employeeError = "";
         let machineError = "";
+        let cncCodeError = "";
         let minutesError = "";
         let startDateError = "";
         let endDateError = "";
@@ -73,6 +75,9 @@ const JobAddTask = (props) => {
         }
         if (!task.machineId) {
             machineError = "Machine is not chosen";
+        }
+        if (task.cncCodeId === 1) {
+            cncCodeError = "Cnc code is not uploaded";
         }
         if (!task.minutesForPiece) {
             minutesError = "Minutes for piece is not entered";
@@ -83,11 +88,12 @@ const JobAddTask = (props) => {
         if (!task.plannedEndDate) {
             endDateError = "End date is not entered";
         }
-        if (employeeError || machineError || minutesError || startDateError || endDateError) {
+        if (employeeError || machineError || cncCodeError || minutesError || startDateError || endDateError) {
             setValidate({
                 ...validation,
                 employeeError: employeeError,
                 machineError: machineError,
+                cncCodeError: cncCodeError,
                 minutesError: minutesError,
                 startDateError: startDateError,
                 endDateError: endDateError
@@ -303,6 +309,9 @@ const JobAddTask = (props) => {
                     <div className="form-group row">
                         <label htmlFor="cncFilename" className="col-sm-4 offset-sm-1 text-left">CNC code file</label>
                         <div className="col-sm-6">
+                            <div style={{fontSize: 12, color: "red"}}>
+                                {validate.cncCodeError}
+                            </div>
                             <input type="file" className="form-control" id="cncFilename" name="cncFilename"
                                    placeholder="CNC code file" onChange={onFileChangeHandler}/>
                         </div>

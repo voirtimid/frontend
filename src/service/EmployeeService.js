@@ -17,6 +17,10 @@ class EmployeeService {
         return axios.get(`/api/employees/${employeeId}`);
     }
 
+    static getEmployeeFromUserId(userId) {
+        return axios.get(`/api/employees/user/${userId}`);
+    }
+
     static updateEmployee(employeeId, updatedEmployee) {
         return axios.put(`/api/employees/${employeeId}`, updatedEmployee);
     }
