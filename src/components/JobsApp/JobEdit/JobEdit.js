@@ -21,7 +21,6 @@ const JobEdit = (props) => {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        console.log(job);
         props.onSubmit(job.jobId, job);
 
         history.push("/jobs")

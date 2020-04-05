@@ -17,7 +17,7 @@ const TaskEmployeeDetails = (props) => {
     const [machine, setMachine] = useState({});
     const [sketch, setSketch] = useState({});
     const [cnc, setCnc] = useState({});
-    const [cncFileContent, setCncFileContent] = useState("");
+    let cncFileContent;
 
     useEffect(() => {
         TaskService.getTask(taskId).then(response => {
@@ -27,7 +27,7 @@ const TaskEmployeeDetails = (props) => {
             setMachine(task.machine);
             setCnc(task.cncCode);
             FileService.readFile(task.cncCode.cncId).then(response => {
-                setCncFileContent(response.data);
+                cncFileContent = response.data;
             });
             SketchService.getSketchByName(task.taskName.split(" ")[0]).then(response => {
                 setSketch(response.data)
@@ -41,7 +41,7 @@ const TaskEmployeeDetails = (props) => {
 
     const startWorking = () => {
         TaskService.startWorkingOnTask(taskId).then(response => {
-
+            setTask(response.data);
         });
     };
 
@@ -71,7 +71,8 @@ const TaskEmployeeDetails = (props) => {
                 <hr/>
 
                 <p>
-                    <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    <button className="btn btn-primary" type="button" data-toggle="collapse"
+                            data-target="#collapseExample"
                             aria-expanded="false" aria-controls="collapseExample">
                         Show Sketch (Project)
                     </button>
@@ -84,9 +85,9 @@ const TaskEmployeeDetails = (props) => {
                             <label htmlFor="drawing" className="col-sm-4 offset-sm-1 text-left">Drawing Code</label>
                             <div className="form-inline col-sm-6">
                                 <input type="text" disabled className="form-control" id="drawing" name="drawing"
-                                       placeholder="Drawing code" value={sketch.drawing} />
+                                       placeholder="Drawing code" value={sketch.drawing}/>
                                 <input type="text" disabled className="form-control" id="sketchName" name="sketchName"
-                                       placeholder="Sketch Name" value={sketch.sketchName} />
+                                       placeholder="Sketch Name" value={sketch.sketchName}/>
                             </div>
                         </div>
 
@@ -96,7 +97,7 @@ const TaskEmployeeDetails = (props) => {
                             <label htmlFor="companyName" className="col-sm-4 offset-sm-1 text-left">Company Name</label>
                             <div className="col-sm-6">
                                 <input disabled type="text" className="form-control" id="companyName" name="companyName"
-                                       placeholder="Company Name" value={sketch.companyName} />
+                                       placeholder="Company Name" value={sketch.companyName}/>
                             </div>
                         </div>
 
@@ -106,7 +107,7 @@ const TaskEmployeeDetails = (props) => {
                             <label htmlFor="companyInfo" className="col-sm-4 offset-sm-1 text-left">Company Info</label>
                             <div className="col-sm-6">
                         <textarea disabled className="form-control" id="companyInfo" name="companyInfo"
-                                  placeholder="Company Info" value={sketch.companyInfo} />
+                                  placeholder="Company Info" value={sketch.companyInfo}/>
                             </div>
                         </div>
 
@@ -116,7 +117,7 @@ const TaskEmployeeDetails = (props) => {
                             <label htmlFor="usedTools" className="col-sm-4 offset-sm-1 text-left">Used Tools</label>
                             <div className="col-sm-6">
                                 <input disabled type="text" className="form-control" id="usedTools" name="usedTools"
-                                       placeholder="Used Tools" value={sketch.usedTools} />
+                                       placeholder="Used Tools" value={sketch.usedTools}/>
                             </div>
                         </div>
 
@@ -125,9 +126,10 @@ const TaskEmployeeDetails = (props) => {
                         <div className="form-group row">
                             <label htmlFor="imageFilename" className="col-sm-4 offset-sm-1 text-left">Image File</label>
                             <div className="col-sm-6">
-                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.imageFilename, sketch.drawing).then(response => {
-                                    FileDownload(response.data, sketch.imageFilename);
-                                })}>{sketch.imageFilename}</button>
+                                <button type="button" className="btn btn-link"
+                                        onClick={() => FileService.downloadFile(sketch.imageFilename, sketch.drawing).then(response => {
+                                            FileDownload(response.data, sketch.imageFilename);
+                                        })}>{sketch.imageFilename}</button>
                             </div>
                         </div>
 
@@ -137,9 +139,10 @@ const TaskEmployeeDetails = (props) => {
                             <label htmlFor="technologyFilename"
                                    className="col-sm-4 offset-sm-1 text-left">Technology</label>
                             <div className="col-sm-6">
-                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.technologyFilename, sketch.drawing).then(response => {
-                                    FileDownload(response.data, sketch.technologyFilename);
-                                })}>{sketch.technologyFilename}</button>
+                                <button type="button" className="btn btn-link"
+                                        onClick={() => FileService.downloadFile(sketch.technologyFilename, sketch.drawing).then(response => {
+                                            FileDownload(response.data, sketch.technologyFilename);
+                                        })}>{sketch.technologyFilename}</button>
                             </div>
                         </div>
 
@@ -149,9 +152,10 @@ const TaskEmployeeDetails = (props) => {
                             <label htmlFor="myTechnologyFilename" className="col-sm-4 offset-sm-1 text-left">My
                                 Technology</label>
                             <div className="col-sm-6">
-                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.myTechnologyFilename, sketch.drawing).then(response => {
-                                    FileDownload(response.data, sketch.myTechnologyFilename);
-                                })}>{sketch.myTechnologyFilename}</button>
+                                <button type="button" className="btn btn-link"
+                                        onClick={() => FileService.downloadFile(sketch.myTechnologyFilename, sketch.drawing).then(response => {
+                                            FileDownload(response.data, sketch.myTechnologyFilename);
+                                        })}>{sketch.myTechnologyFilename}</button>
                             </div>
                         </div>
 
@@ -161,9 +165,10 @@ const TaskEmployeeDetails = (props) => {
                             <label htmlFor="measuringListFilename" className="col-sm-4 offset-sm-1 text-left">Measuring
                                 List</label>
                             <div className="col-sm-6">
-                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.measuringListFilename, sketch.drawing).then(response => {
-                                    FileDownload(response.data, sketch.measuringListFilename);
-                                })}>{sketch.measuringListFilename}</button>
+                                <button type="button" className="btn btn-link"
+                                        onClick={() => FileService.downloadFile(sketch.measuringListFilename, sketch.drawing).then(response => {
+                                            FileDownload(response.data, sketch.measuringListFilename);
+                                        })}>{sketch.measuringListFilename}</button>
                             </div>
                         </div>
 
@@ -174,9 +179,10 @@ const TaskEmployeeDetails = (props) => {
                                 Measuring
                                 List</label>
                             <div className="col-sm-6">
-                                <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(sketch.myMeasuringListFilename, sketch.drawing).then(response => {
-                                    FileDownload(response.data, sketch.myMeasuringListFilename);
-                                })}>{sketch.myMeasuringListFilename}</button>
+                                <button type="button" className="btn btn-link"
+                                        onClick={() => FileService.downloadFile(sketch.myMeasuringListFilename, sketch.drawing).then(response => {
+                                            FileDownload(response.data, sketch.myMeasuringListFilename);
+                                        })}>{sketch.myMeasuringListFilename}</button>
                             </div>
                         </div>
                     </div>
@@ -187,9 +193,10 @@ const TaskEmployeeDetails = (props) => {
                 <div className="form-group row">
                     <label htmlFor="cncFilename" className="col-sm-4 offset-sm-1 text-left">CNC code file</label>
                     <div className="col-sm-6">
-                        <button type="button" className="btn btn-link" onClick={() => FileService.downloadFile(cnc.cncFilename, "cnc").then(response => {
-                            FileDownload(response.data, cnc.cncFilename);
-                        })}>{cnc.cncFilename}</button>
+                        <button type="button" className="btn btn-link"
+                                onClick={() => FileService.downloadFile(cnc.cncFilename, "cnc").then(response => {
+                                    FileDownload(response.data, cnc.cncFilename);
+                                })}>{cnc.cncFilename}</button>
                     </div>
                 </div>
 
@@ -282,21 +289,27 @@ const TaskEmployeeDetails = (props) => {
 
                 <hr/>
 
-                <div
-                    className="col-sm-3  text-center">
-                    <button
-                        onClick={() => cancelGoBack()}
-                        type="button"
-                        className="btn btn-danger text-upper">
-                        Go Back
-                    </button>
+                <div className="row">
 
-                    <button
-                        onClick={() => startWorking()}
-                        type="button"
-                        className="btn btn-danger text-upper">
-                        {(task.workInProgress && "Stop working") || "Start working"}
-                    </button>
+                    <div
+                        className="col-sm-3  text-center">
+                        <button
+                            onClick={() => cancelGoBack()}
+                            type="button"
+                            className="btn btn-danger text-upper">
+                            Go Back
+                        </button>
+
+                    </div>
+                    <div
+                        className="col-sm-9  text-center">
+                        <button
+                            onClick={() => startWorking()}
+                            type="button"
+                            className="btn btn-secondary text-upper">
+                            {(task.workInProgress && "Stop working") || "Start working"}
+                        </button>
+                    </div>
                 </div>
             </div>
 

@@ -138,7 +138,6 @@ const TaskEdit = (props) => {
         };
 
         props.onSubmit(taskDTO);
-        // history.push(`/jobs?redirectTo=${jobId}`);
         history.push(`/jobs/${jobId}/tasks`);
     };
 
@@ -225,6 +224,12 @@ const TaskEdit = (props) => {
                             <input type="text" disabled className="form-control" id="plannedHours" name="plannedHours"
                                    placeholder="Actual Working hours" value={task.plannedHours}
                                    onChange={handleInputChange}/>
+                        </div>
+                        <br/>
+                        <label htmlFor="trackedWorkTime" className="col-sm-4 offset-sm-1 text-left">Tracked work time in hours</label>
+                        <div className="col-sm-3">
+                            <input type="text" disabled className="form-control" id="trackedWorkTime" name="trackedWorkTime"
+                                   placeholder="Tracked Working hours" value={parseFloat(task.trackedWorkTime).toFixed(2)}/>
                         </div>
                         <br/>
                         <label htmlFor="totalWorkTime" className="col-sm-4 offset-sm-1 text-left">Actual Working

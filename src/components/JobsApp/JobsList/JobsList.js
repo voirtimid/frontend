@@ -80,7 +80,7 @@ const JobsList = (props) => {
             </Link>
             <Fragment>
 
-                <div className={"row"}>
+                <div className="row mb-3">
                     {toShow}
                 </div>
                 {props.jobs.length > 0 && paginate()}

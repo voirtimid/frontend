@@ -3,9 +3,10 @@ import {Link} from "react-router-dom";
 
 const Header = (props) => {
 
+    const user = props.user;
+
     return (
         <header>
-            {/*style={{backgroundColor: "#cce6ff"}}*/}
             <nav className="navbar navbar-expand-md navbar-dark navbar-fixed bg-dark">
                 <a className="navbar-brand" href="/">MetalCut</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
@@ -30,6 +31,10 @@ const Header = (props) => {
                         </li>
                     </ul>
                 </div>
+                <form className="form-inline mt-2 mt-md-0 ml-3">
+                    Hello, {user.email}
+                    <Link className="btn btn-outline-info my-2 my-sm-0" to={"/login"}>Login</Link>
+                </form>
             </nav>
         </header>
     );

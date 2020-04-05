@@ -46,8 +46,6 @@ const JobAdd = (props) => {
         };
 
         setJob(changedJob);
-
-        console.log(changedJob);
     };
 
     const cancelGoBack = () => {

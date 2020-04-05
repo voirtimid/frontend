@@ -22,7 +22,7 @@ const TaskDetailsHistory = (props) => {
         TaskService.getTask(taskId).then(response => {
             const task = response.data;
             setTask(task);
-            console.log(task);
+
             setEmployee(task.employee);
             setMachine(task.machine);
             setCnc(task.cncCode);
@@ -35,6 +35,10 @@ const TaskDetailsHistory = (props) => {
 
     const cancelGoBack = () => {
         history.push(`/history/jobs/${jobId}`);
+    };
+
+    const getTrackedWorkingHours = () => {
+        return parseFloat(task.trackedWorkTime).toFixed(2);
     };
 
     return (
@@ -88,6 +92,12 @@ const TaskDetailsHistory = (props) => {
                     <div className="col-sm-3">
                         <input type="text" disabled className="form-control" id="plannedHours" name="plannedHours"
                                placeholder="Actual Working hours" value={task.plannedHours}/>
+                    </div>
+                    <br/>
+                    <label htmlFor="trackedWorkTime" className="col-sm-4 offset-sm-1 text-left">Tracked work time in hours</label>
+                    <div className="col-sm-3">
+                        <input type="text" disabled className="form-control" id="trackedWorkTime" name="trackedWorkTime"
+                               placeholder="Tracked Working hours" value={getTrackedWorkingHours()}/>
                     </div>
                     <br/>
                     <label htmlFor="totalWorkTime" className="col-sm-4 offset-sm-1 text-left">Actual Working

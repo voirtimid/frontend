@@ -399,7 +399,6 @@ const SketchSearch = (props) => {
 
         SketchService.getSketchByName(drawing).then(response => {
             const sketch = response.data;
-            // console.log(sketch);
             if (sketch === "") {
                 alert("Не постои цртеж со ова име. Креирајте нов цртеж");
                 history.push(`/sketches/new/` + drawing)
@@ -418,7 +417,6 @@ const SketchSearch = (props) => {
         setSuggestions([]);
         SketchService.getSketchByName(value).then(response => {
             const sketch = response.data;
-            // console.log(sketch);
             if (sketch === "") {
                 alert("Не постои цртеж со ова име. Креирајте нов цртеж");
                 history.push(`/sketches/new/` + drawing)

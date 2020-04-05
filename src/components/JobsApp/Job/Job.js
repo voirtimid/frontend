@@ -22,7 +22,8 @@ const Job = (props) => {
             $('#jobsTable').dataTable( {
                 "retrieve": true,
                 "paging": false,
-                "searching": false
+                "searching": false,
+                "info": false
             });
         });
     }, []);

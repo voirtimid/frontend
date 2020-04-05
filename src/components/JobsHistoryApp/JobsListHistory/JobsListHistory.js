@@ -95,6 +95,7 @@ const JobsListHistory = (props) => {
                     <th scope="col">Drawing</th>
                     <th scope="col">Number of pieces</th>
                     <th scope="col">Created at:</th>
+                    <th scope="col">Finished at:</th>
                     <th scope="col">Planned/Actual Start</th>
                     <th scope="col">Planned/Actual End</th>
                     <th scope="col">Estimated/Actual Hours</th>
@@ -121,8 +122,6 @@ const JobsListHistory = (props) => {
         };
 
         setFilterJob(changedFilter);
-
-        console.log(changedFilter);
     };
 
     const filterData = (e) => {
@@ -217,7 +216,7 @@ const JobsListHistory = (props) => {
                 </div>
             </div>
             <Fragment>
-                <div className={"row"}>
+                <div className="row mb-3">
                     {jobsTable}
                 </div>
                 {paginate()}

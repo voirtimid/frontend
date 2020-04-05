@@ -5,42 +5,29 @@ import Header from "../Header/Header";
 import MachinesApp from "../MachinesApp/MachinesApp";
 import EmployeesApp from "../EmployeesApp/EmployeesApp";
 import JobsApp from "../JobsApp/JobsApp";
-import JobService from "../../service/JobService";
 import UserManagementApp from "../UserManagementApp/UserManagementApp";
 import SketchesApp from "../SketchesApp/SketchesApp";
 import GanttChart from "../GanttChart/GanttChart";
 import JobsHistoryApp from "../JobsHistoryApp/JobsHistoryApp";
 import CalendarApp from "../CalendarApp/CalendarApp";
 import Footer from "../Footer/Footer";
+import autoBindReact from "auto-bind";
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            jobs: [],
-            data: [],
             user: {}
         };
+
+        autoBindReact(this);
     }
 
-    componentDidMount() {
-        this.loadJobs();
-    }
-
-    loadJobs() {
-        JobService.getAllJobs().then(response => {
-            const loadedJobs = response.data;
-            const localData = loadedJobs.map(j => ({
-                EndTime: new Date(j.plannedEndDate),
-                StartTime: new Date(j.plannedStartDate),
-                Subject: j.jobName
-            }));
-            this.setState(() => ({
-                jobs: loadedJobs,
-                data: localData
-            }));
-        });
+    manageUser(user) {
+        this.setState(() => ({
+            "user": user
+        }));
     }
 
     render() {
@@ -48,7 +35,7 @@ class App extends React.Component {
             <Fragment>
                 <div className="App">
                     <Router>
-                        <Header/>
+                        <Header user={this.state.user}/>
                         <Switch>
                             <Route path={"/sketches"}>
                                 <SketchesApp/>
@@ -73,7 +60,7 @@ class App extends React.Component {
                             </Route>
 
                             <Route path={"/login"}>
-                                <UserManagementApp user={this.state.user}/>
+                                <UserManagementApp login={this.manageUser} user={this.state.user}/>
                             </Route>
                         </Switch>
                     </Router>

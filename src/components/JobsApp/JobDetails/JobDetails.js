@@ -28,7 +28,6 @@ const JobDetails = (props) => {
     const deleteTask = (taskId) => {
         TaskService.deleteTask(taskId).then(response => {
             const deletedTask = response.data;
-            console.log(deletedTask);
             const newTasks = tasks.filter(task => {
                 return task.taskId !== deletedTask.taskId;
             });

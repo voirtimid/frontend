@@ -9,6 +9,10 @@ class EmployeeService {
         return axios.post(`/api/employees`, employee);
     }
 
+    static createEmployeeWithUser(employeeDTO) {
+        return axios.post(`/api/employees/user`, employeeDTO);
+    }
+
     static getEmployee(employeeId) {
         return axios.get(`/api/employees/${employeeId}`);
     }
