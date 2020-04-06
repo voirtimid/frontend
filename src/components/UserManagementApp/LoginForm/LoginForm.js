@@ -59,8 +59,6 @@ const LoginForm = (props) => {
             };
             props.onLogin(userDTO);
         }
-
-        history.push("/");
     };
 
     return (
@@ -92,7 +90,7 @@ const LoginForm = (props) => {
                 <div className="form-group row">
                     <label htmlFor="email" className="col-sm-4 offset-sm-1 text-left">Email</label>
                     <div className="col-sm-6">
-                        <input type="text"
+                        <input type="email"
                                className="form-control"
                                id="email" name="email"
                                placeholder="Email"

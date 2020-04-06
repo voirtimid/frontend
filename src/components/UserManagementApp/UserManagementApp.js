@@ -28,11 +28,11 @@ const UserManagementApp = (props) => {
             };
 
             EmployeeService.createEmployeeWithUser(employeeDTO).then(response => {
-
+                props.login(newUser);
+                history.push("/");
             }).catch(reason => {
                 alert("Error while creating employee");
             });
-            props.login(newUser);
         }).catch(reason => {
             alert("User with this email already exist");
             history.push("/login")
@@ -42,6 +42,7 @@ const UserManagementApp = (props) => {
     const handleLoginSubmit = (userDTO) => {
         UserService.validateUser(userDTO).then(response => {
             props.login(response.data);
+            history.push("/");
         }).catch(reason => {
             alert("This account does not exist. Please register");
             history.push("/login")

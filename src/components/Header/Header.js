@@ -10,7 +10,7 @@ const Header = (props) => {
         if (props.loggedIn) {
             EmployeeService.getEmployeeFromUserId(props.user.userId).then(response => {
                 setEmployee(response.data);
-            })
+            });
         }
     }, [props.loggedIn]);
 
@@ -30,16 +30,16 @@ const Header = (props) => {
                         }
                         {props.loggedIn &&
                         [
-                            <li className="nav-item">
+                            <li key={1} className="nav-item">
                                 <Link className="nav-link" to={"/history/jobs"}>Past orders</Link>
                             </li>,
-                            <li className="nav-item">
+                            <li key={2} className="nav-item">
                                 <Link className="nav-link" to={"/employees"}>Employees</Link>
                             </li>,
-                            <li className="nav-item">
+                            <li key={3} className="nav-item">
                                 <Link className="nav-link" to={"/machines"}>Machines</Link>
                             </li>,
-                            <li className="nav-item">
+                            <li key={4} className="nav-item">
                                 <Link className="nav-link" to={"/calendar"}>Calendar</Link>
                             </li>
                         ]}
@@ -47,11 +47,11 @@ const Header = (props) => {
                 </div>
                 <form className="form-inline mt-2 mt-md-0 ml-3">
                     {props.loggedIn && [
-                        <Link to={`/employees/${employee.employeeId}/tasks`} className={"mr-2"}
+                        <Link key={1} to={`/employees/${employee.employeeId}/tasks`} className={"mr-2"}
                               style={{"color": "white"}}>
                             Hello, {employee.firstName}
                         </Link>,
-                        <button type="button" className="btn btn-danger"
+                        <button key={2} type="button" className="btn btn-danger"
                                 onClick={() => props.logOutUser()}>Logout</button>
                     ]}
                     {!props.loggedIn &&

@@ -16,7 +16,7 @@ const JobAddTask = (props) => {
         jobId: jobId,
         machineId: "",
         employeeId: "",
-        cncCodeId: 1,
+        cncCodeId: 0,
         plannedStartDate: "",
         plannedEndDate: "",
         plannedHours: 0,
@@ -29,7 +29,6 @@ const JobAddTask = (props) => {
     const validation = {
         employeeError: "",
         machineError: "",
-        cncCodeError: "",
         minutesError: "",
         startDateError: "",
         endDateError: "",
@@ -66,7 +65,6 @@ const JobAddTask = (props) => {
     const isValid = () => {
         let employeeError = "";
         let machineError = "";
-        let cncCodeError = "";
         let minutesError = "";
         let startDateError = "";
         let endDateError = "";
@@ -75,9 +73,6 @@ const JobAddTask = (props) => {
         }
         if (!task.machineId) {
             machineError = "Machine is not chosen";
-        }
-        if (task.cncCodeId === 1) {
-            cncCodeError = "Cnc code is not uploaded";
         }
         if (!task.minutesForPiece) {
             minutesError = "Minutes for piece is not entered";
@@ -88,12 +83,11 @@ const JobAddTask = (props) => {
         if (!task.plannedEndDate) {
             endDateError = "End date is not entered";
         }
-        if (employeeError || machineError || cncCodeError || minutesError || startDateError || endDateError) {
+        if (employeeError || machineError || minutesError || startDateError || endDateError) {
             setValidate({
                 ...validation,
                 employeeError: employeeError,
                 machineError: machineError,
-                cncCodeError: cncCodeError,
                 minutesError: minutesError,
                 startDateError: startDateError,
                 endDateError: endDateError
@@ -218,9 +212,8 @@ const JobAddTask = (props) => {
     };
 
 
-    const addNewTask = () => {
-
-        debugger;
+    const addNewTask = (e) => {
+        e.preventDefault();
 
         if (isValid()) {
             const newTask = {
@@ -244,12 +237,13 @@ const JobAddTask = (props) => {
 
             const nextTask = {
                 ...emptyTask,
-                cncCodeId: 1,
+                cncCodeId: 0,
                 machineId: task.machineId,
                 employeeId: task.employeeId
             };
 
             setTask(nextTask);
+            setValidate(validation);
 
             history.push(`/jobs/${jobId}/addTask`);
         }
@@ -309,9 +303,6 @@ const JobAddTask = (props) => {
                     <div className="form-group row">
                         <label htmlFor="cncFilename" className="col-sm-4 offset-sm-1 text-left">CNC code file</label>
                         <div className="col-sm-6">
-                            <div style={{fontSize: 12, color: "red"}}>
-                                {validate.cncCodeError}
-                            </div>
                             <input type="file" className="form-control" id="cncFilename" name="cncFilename"
                                    placeholder="CNC code file" onChange={onFileChangeHandler}/>
                         </div>
@@ -391,7 +382,7 @@ const JobAddTask = (props) => {
                             className="col-sm-4  text-center">
                             <button
                                 type="button"
-                                onClick={() => addNewTask()}
+                                onClick={e => addNewTask(e)}
                                 className="btn btn-primary text-upper">
                                 Create next Task
                             </button>
