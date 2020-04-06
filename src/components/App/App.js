@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch, useHistory} from 'react-router-dom'
 import './App.css';
 import Header from "../Header/Header";
 import MachinesApp from "../MachinesApp/MachinesApp";
@@ -11,6 +11,7 @@ import GanttChart from "../GanttChart/GanttChart";
 import JobsHistoryApp from "../JobsHistoryApp/JobsHistoryApp";
 import CalendarApp from "../CalendarApp/CalendarApp";
 import Footer from "../Footer/Footer";
+import Home from "../Home/Home";
 
 const App = () => {
 
@@ -32,12 +33,25 @@ const App = () => {
         localStorage.removeItem("user");
         setUser({});
         setLoggedIn(false);
+        window.location.href = "/";
     };
 
-    let loginRoute = (
+    let mustBeLoggedIn = (
         <Fragment>
-            <Route path={"/login"}>
-                <UserManagementApp login={manageUser} user={user}/>
+            <Route path={"/sketches"}>
+                <SketchesApp loggedIn={loggedIn} userRole={user.role}/>
+            </Route>
+            <Route path={"/jobs"}>
+                <JobsApp loggedIn={loggedIn} userRole={user.role}/>
+            </Route>
+            <Route path={"/history"}>
+                <JobsHistoryApp loggedIn={loggedIn}/>
+            </Route>
+            <Route path={"/machines"}>
+                <MachinesApp loggedIn={loggedIn} userRole={user.role}/>
+            </Route>
+            <Route path={"/employees"}>
+                <EmployeesApp loggedIn={loggedIn} userRole={user.role}/>
             </Route>
             <Route path={"/gantt"}>
                 <GanttChart/>
@@ -45,36 +59,13 @@ const App = () => {
             <Route path={"/calendar"}>
                 <CalendarApp/>
             </Route>
-            < Route path={"/machines"}>
-                <MachinesApp loggedIn={loggedIn} userRole={user.role}/>
-            </Route>
-            <Route path={"/employees"}>
-                <EmployeesApp loggedIn={loggedIn} userRole={user.role}/>
-            </Route>
         </Fragment>
     );
 
-    let everythingElse = (
-        <Fragment>
-            <Route path={"/sketches"}>
-                <SketchesApp loggedIn={loggedIn} userRole={user.role}/>
-            </Route>
-
-            <Route path={"/jobs"}>
-                <JobsApp loggedIn={loggedIn} userRole={user.role}/>
-            </Route>
-            <Route path={"/history"}>
-                <JobsHistoryApp loggedIn={loggedIn}/>
-            </Route>
-        </Fragment>
-    );
-
-    let toShow;
+    let toShow = undefined;
 
     if (isLoggedIn) {
-        toShow = everythingElse;
-    } else {
-        toShow = loginRoute;
+        toShow = mustBeLoggedIn;
     }
 
     return (
@@ -83,6 +74,13 @@ const App = () => {
                 <Router>
                     <Header user={user} loggedIn={loggedIn} logOutUser={logOutUser}/>
                     <Switch>
+                        <Route path={"/"} exact>
+                            <Home/>
+                        </Route>
+
+                        <Route path={"/login"}>
+                            <UserManagementApp login={manageUser} user={user}/>
+                        </Route>
                         {toShow}
                     </Switch>
                 </Router>

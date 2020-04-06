@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {Route, Switch} from "react-router-dom";
 import EmployeeService from "../../service/EmployeeService";
 import EmployeesList from "./EmployeesList/EmployeesList";
@@ -75,7 +75,7 @@ class EmployeesApp extends React.Component {
     toShow() {
         if (this.props.loggedIn) {
             return (
-                <Switch>
+                <Fragment>
                     <Route path={"/employees"} exact render={() => <EmployeesList userRole={this.props.userRole} employees={this.state.employees}
                                                                                   onDelete={this.deleteEmployee}/>}/>
                     <Route path={"/employees/new"} exact render={() => <EmployeeAdd onCreate={this.createEmployee}/>}/>
@@ -83,7 +83,7 @@ class EmployeesApp extends React.Component {
                            render={() => <EmployeeEdit onSubmit={this.updateEmployee}/>}/>
                     <Route path={"/employees/:employeeId/tasks"} exact render={() => <TasksList/>}/>
                     <Route path={"/employees/:employeeId/tasks/:taskId"} exact render={() => <TaskEmployeeDetails/>}/>
-                </Switch>
+                </Fragment>
             );
         }
     }
@@ -93,10 +93,12 @@ class EmployeesApp extends React.Component {
         return (
             <main role="main" className="mt-3">
                 <div className="container-fluid w-75">
-                    {this.toShow()}
                     <Switch>
+                    {this.toShow()}
+                    {!this.props.loggedIn &&
+
                         <Route path={"/employees"} exact render={() => <EmployeesList userRole={this.props.userRole} employees={this.state.employees}
-                                                                                      onDelete={this.deleteEmployee}/>}/>
+                                                                                      onDelete={this.deleteEmployee}/>}/>}
                     </Switch>
                 </div>
             </main>

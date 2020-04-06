@@ -60,7 +60,7 @@ const LoginForm = (props) => {
             props.onLogin(userDTO);
         }
 
-        history.push("/jobs");
+        history.push("/");
     };
 
     return (

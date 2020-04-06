@@ -29,32 +29,33 @@ const Header = (props) => {
                         </li>
                         }
                         {props.loggedIn &&
-                        <li className="nav-item">
-                            <Link className="nav-link" to={"/history/jobs"}>Past orders</Link>
-                        </li>
-                        }
-                        <li className="nav-item">
-                            <Link className="nav-link" to={"/employees"}>Employees</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to={"/machines"}>Machines</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to={"/calendar"}>Calendar</Link>
-                        </li>
+                        [
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/history/jobs"}>Past orders</Link>
+                            </li>,
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/employees"}>Employees</Link>
+                            </li>,
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/machines"}>Machines</Link>
+                            </li>,
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/calendar"}>Calendar</Link>
+                            </li>
+                        ]}
                     </ul>
                 </div>
                 <form className="form-inline mt-2 mt-md-0 ml-3">
-                    {props.loggedIn &&
-                    <Link to={`/employees/${employee.employeeId}/tasks`}>
-                    Hello, {employee.firstName}
-                    </Link>
-                    }
+                    {props.loggedIn && [
+                        <Link to={`/employees/${employee.employeeId}/tasks`} className={"mr-2"}
+                              style={{"color": "white"}}>
+                            Hello, {employee.firstName}
+                        </Link>,
+                        <button type="button" className="btn btn-danger"
+                                onClick={() => props.logOutUser()}>Logout</button>
+                    ]}
                     {!props.loggedIn &&
                     <Link className="btn btn-outline-info my-2 my-sm-0" to={"/login"}>Login</Link>
-                    }
-                    {props.loggedIn &&
-                    <button type="button" className="btn btn-danger" onClick={() => props.logOutUser()}>Log out</button>
                     }
                 </form>
             </nav>

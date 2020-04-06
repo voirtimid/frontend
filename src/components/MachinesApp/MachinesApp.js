@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {Route, Switch} from "react-router-dom";
 import MachinesList from "./MachinesList/MachinesList";
 import MachineService from "../../service/MachineService";
@@ -22,8 +22,7 @@ class MachinesApp extends React.Component {
         this.loadMachines();
     }
 
-    loadMachines()
-    {
+    loadMachines() {
         MachineService.getAllMachines().then(response => {
             this.setState(() => ({
                 machines: response.data
@@ -75,18 +74,17 @@ class MachinesApp extends React.Component {
 
     toShow() {
         if (this.props.loggedIn) {
-            return (
-                <Switch>
-                    <Route path={"/machines"} exact
-                           render={() => <MachinesList userRole={this.props.userRole} machines={this.state.machines} onDelete={this.deleteMachine} />}/>
-                    <Route path={"/machines/new"} exact
-                           render={() => <MachineAdd onCreate={this.createMachine}/>}/>
-                    <Route path={"/machines/:machineId/edit"}
-                           render={() => <MachineEdit onSubmit={this.updateMachine}/>}/>
-                    <Route path={"/machines/:machineId/calendar"}
-                           render={() => <MachineCalendar />}/>
-                </Switch>
-            );
+            return [
+                <Route path={"/machines"} exact
+                       render={() => <MachinesList userRole={this.props.userRole} machines={this.state.machines}
+                                                   onDelete={this.deleteMachine}/>}/>,
+                <Route path={"/machines/new"} exact
+                       render={() => <MachineAdd onCreate={this.createMachine}/>}/>,
+                <Route path={"/machines/:machineId/edit"}
+                       render={() => <MachineEdit onSubmit={this.updateMachine}/>}/>,
+                <Route path={"/machines/:machineId/calendar"}
+                       render={() => <MachineCalendar/>}/>
+            ];
         }
     }
 
@@ -94,11 +92,15 @@ class MachinesApp extends React.Component {
         return (
             <main role="main" className="mt-3">
                 <div className="container-fluid w-75">
-                    {this.toShow()}
                     <Switch>
+                        {this.toShow()}
+                        {!this.props.loggedIn &&
                         <Route path={"/machines"} exact
-                               render={() => <MachinesList userRole={this.props.userRole} machines={this.state.machines} onDelete={this.deleteMachine} />}/>
+                               render={() => <MachinesList userRole={this.props.userRole} machines={this.state.machines}
+                                                           onDelete={this.deleteMachine}/>}/>
+                        }
                     </Switch>
+
                 </div>
             </main>
         );
