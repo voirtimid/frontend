@@ -2,8 +2,11 @@ import React, {useState} from "react";
 import LoginForm from "./LoginForm/LoginForm";
 import UserService from "../../service/UserService";
 import EmployeeService from "../../service/EmployeeService";
+import {useHistory} from "react-router";
 
 const UserManagementApp = (props) => {
+
+    const history = useHistory();
 
     const [shouldRegister, setShouldRegister] = useState(false);
 
@@ -27,11 +30,12 @@ const UserManagementApp = (props) => {
             EmployeeService.createEmployeeWithUser(employeeDTO).then(response => {
 
             }).catch(reason => {
-                alert(reason);
+                alert("Error while creating employee");
             });
             props.login(newUser);
         }).catch(reason => {
-            alert(reason);
+            alert("User with this email already exist");
+            history.push("/login")
         });
     };
 
@@ -39,18 +43,10 @@ const UserManagementApp = (props) => {
         UserService.validateUser(userDTO).then(response => {
             props.login(response.data);
         }).catch(reason => {
-            alert(reason);
+            alert("This account does not exist. Please register");
+            history.push("/login")
         });
     };
-
-
-    // const renderPage = () => {
-    //     if (shouldRegister) {
-    //         return <RegisterForm onRegister={handleRegisterSubmit()} />;
-    //     } else {
-    //         return <LoginForm onLogin={handleLoginSubmit()}/>;
-    //     }
-    // };
 
     const textToShow = () => {
         if (shouldRegister) {
@@ -67,9 +63,7 @@ const UserManagementApp = (props) => {
             <div className="card m-lg-5">
                 <div className="card-body">
                     <h4 className="card-title">MetalCut Login page!</h4>
-                    {/*{renderPage()}*/}
                     <LoginForm onLogin={handleLoginSubmit} onRegister={handleRegisterSubmit} shouldRegister={shouldRegister}/>
-
                     <button type="button"
                             onClick={() => changePageStatus()}
                             className="btn-link">{textToShow()}</button>

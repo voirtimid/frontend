@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import './App.css';
 import Header from "../Header/Header";
@@ -34,37 +34,56 @@ const App = () => {
         setLoggedIn(false);
     };
 
+    let loginRoute = (
+        <Fragment>
+            <Route path={"/login"}>
+                <UserManagementApp login={manageUser} user={user}/>
+            </Route>
+            <Route path={"/gantt"}>
+                <GanttChart/>
+            </Route>
+            <Route path={"/calendar"}>
+                <CalendarApp/>
+            </Route>
+            < Route path={"/machines"}>
+                <MachinesApp loggedIn={loggedIn} userRole={user.role}/>
+            </Route>
+            <Route path={"/employees"}>
+                <EmployeesApp loggedIn={loggedIn} userRole={user.role}/>
+            </Route>
+        </Fragment>
+    );
+
+    let everythingElse = (
+        <Fragment>
+            <Route path={"/sketches"}>
+                <SketchesApp loggedIn={loggedIn} userRole={user.role}/>
+            </Route>
+
+            <Route path={"/jobs"}>
+                <JobsApp loggedIn={loggedIn} userRole={user.role}/>
+            </Route>
+            <Route path={"/history"}>
+                <JobsHistoryApp loggedIn={loggedIn}/>
+            </Route>
+        </Fragment>
+    );
+
+    let toShow;
+
+    if (isLoggedIn) {
+        toShow = everythingElse;
+    } else {
+        toShow = loginRoute;
+    }
+
     return (
         <Fragment>
             <div className="App">
                 <Router>
                     <Header user={user} loggedIn={loggedIn} logOutUser={logOutUser}/>
                     <Switch>
-                        <Route path={"/sketches"}>
-                            <SketchesApp/>
-                        </Route>
-                        < Route path={"/machines"}>
-                            <MachinesApp/>
-                        </Route>
-                        <Route path={"/employees"}>
-                            <EmployeesApp/>
-                        </Route>
-                        <Route path={"/jobs"}>
-                            <JobsApp/>
-                        </Route>
-                        <Route path={"/history"}>
-                            <JobsHistoryApp/>
-                        </Route>
-                        <Route path={"/gantt"}>
-                            <GanttChart/>
-                        </Route>
-                        <Route path={"/calendar"}>
-                            <CalendarApp/>
-                        </Route>
-
-                        <Route path={"/login"}>
-                            <UserManagementApp login={manageUser} user={user}/>
-                        </Route>
+                        {toShow}
                     </Switch>
                 </Router>
             </div>

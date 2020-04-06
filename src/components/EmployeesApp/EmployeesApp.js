@@ -72,16 +72,31 @@ class EmployeesApp extends React.Component {
         })
     }
 
+    toShow() {
+        if (this.props.loggedIn) {
+            return (
+                <Switch>
+                    <Route path={"/employees"} exact render={() => <EmployeesList userRole={this.props.userRole} employees={this.state.employees}
+                                                                                  onDelete={this.deleteEmployee}/>}/>
+                    <Route path={"/employees/new"} exact render={() => <EmployeeAdd onCreate={this.createEmployee}/>}/>
+                    <Route path={"/employees/:employeeId/edit"} exact
+                           render={() => <EmployeeEdit onSubmit={this.updateEmployee}/>}/>
+                    <Route path={"/employees/:employeeId/tasks"} exact render={() => <TasksList/>}/>
+                    <Route path={"/employees/:employeeId/tasks/:taskId"} exact render={() => <TaskEmployeeDetails/>}/>
+                </Switch>
+            );
+        }
+    }
+
+
     render() {
         return (
             <main role="main" className="mt-3">
                 <div className="container-fluid w-75">
+                    {this.toShow()}
                     <Switch>
-                        <Route path={"/employees"} exact render={() => <EmployeesList employees={this.state.employees} onDelete={this.deleteEmployee} />}/>
-                        <Route path={"/employees/new"} exact render={() => <EmployeeAdd onCreate={this.createEmployee}/>}/>
-                        <Route path={"/employees/:employeeId/edit"} exact render={() => <EmployeeEdit onSubmit={this.updateEmployee}/>}/>
-                        <Route path={"/employees/:employeeId/tasks"} exact render={() => <TasksList />}/>
-                        <Route path={"/employees/:employeeId/tasks/:taskId"} exact render={() => <TaskEmployeeDetails />}/>
+                        <Route path={"/employees"} exact render={() => <EmployeesList userRole={this.props.userRole} employees={this.state.employees}
+                                                                                      onDelete={this.deleteEmployee}/>}/>
                     </Switch>
                 </div>
             </main>

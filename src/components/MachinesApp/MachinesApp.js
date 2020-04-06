@@ -73,19 +73,31 @@ class MachinesApp extends React.Component {
         })
     }
 
+    toShow() {
+        if (this.props.loggedIn) {
+            return (
+                <Switch>
+                    <Route path={"/machines"} exact
+                           render={() => <MachinesList userRole={this.props.userRole} machines={this.state.machines} onDelete={this.deleteMachine} />}/>
+                    <Route path={"/machines/new"} exact
+                           render={() => <MachineAdd onCreate={this.createMachine}/>}/>
+                    <Route path={"/machines/:machineId/edit"}
+                           render={() => <MachineEdit onSubmit={this.updateMachine}/>}/>
+                    <Route path={"/machines/:machineId/calendar"}
+                           render={() => <MachineCalendar />}/>
+                </Switch>
+            );
+        }
+    }
+
     render() {
         return (
             <main role="main" className="mt-3">
                 <div className="container-fluid w-75">
+                    {this.toShow()}
                     <Switch>
                         <Route path={"/machines"} exact
-                               render={() => <MachinesList machines={this.state.machines} onDelete={this.deleteMachine} />}/>
-                        <Route path={"/machines/new"} exact
-                               render={() => <MachineAdd onCreate={this.createMachine}/>}/>
-                        <Route path={"/machines/:machineId/edit"}
-                               render={() => <MachineEdit onSubmit={this.updateMachine}/>}/>
-                        <Route path={"/machines/:machineId/calendar"}
-                               render={() => <MachineCalendar />}/>
+                               render={() => <MachinesList userRole={this.props.userRole} machines={this.state.machines} onDelete={this.deleteMachine} />}/>
                     </Switch>
                 </div>
             </main>

@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 const MachinesList = (props) => {
 
-    const machines = props.machines.map(machine => <Machine key={machine.machineId} machine={machine} onDelete={props.onDelete}/>);
+    const machines = props.machines.map(machine => <Machine userRole={props.userRole} key={machine.machineId} machine={machine} onDelete={props.onDelete}/>);
 
     let machinesTable = (
         <div className="table-responsive">
@@ -28,9 +28,10 @@ const MachinesList = (props) => {
     return (
         <Fragment>
             <h4 className="text-upper text-left row">Machines</h4>
+            {props.userRole === "Admin" &&
             <Link className="btn btn-outline-secondary mb-3 row" to={"/machines/new"}>
                 <span><strong>Add new machine</strong></span>
-            </Link>
+            </Link> }
 
             <div className="row">
                 {machinesTable}

@@ -23,7 +23,7 @@ const Header = (props) => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarCollapse">
                     <ul className="navbar-nav mr-auto">
-                        {props.loggedIn &&
+                        {props.user.role === "Admin" &&
                         <li className="nav-item">
                             <Link className="nav-link" to={"/jobs"}>Orders</Link>
                         </li>

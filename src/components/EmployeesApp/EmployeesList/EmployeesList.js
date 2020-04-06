@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 const EmployeesList = (props) => {
 
-    const employees = props.employees.map(employee => <Employee key={employee.employeeId} employee={employee} onDelete={props.onDelete}/>);
+    const employees = props.employees.map(employee => <Employee userRole={props.userRole} key={employee.employeeId} employee={employee} onDelete={props.onDelete}/>);
 
     let employeesTable = (
         <div className="table-responsive">
@@ -26,9 +26,11 @@ const EmployeesList = (props) => {
     return (
         <Fragment>
             <h4 className="text-upper text-left row">Employees</h4>
+            {props.userRole === "Admin" &&
             <Link className="btn btn-outline-secondary mb-3 row" to={"/employees/new"}>
                 <span><strong>Add new employee</strong></span>
             </Link>
+            }
 
             <div className="row">
                 {employeesTable}
