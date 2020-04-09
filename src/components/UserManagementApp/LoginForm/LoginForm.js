@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {sha256} from "js-sha256";
-import {useHistory} from "react-router";
 
 const LoginForm = (props) => {
 
@@ -11,8 +10,6 @@ const LoginForm = (props) => {
         firstName: "",
         lastName: ""
     };
-
-    const history = useHistory();
 
     const [user, setUser] = useState(emptyUser);
 

@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import {BrowserRouter as Router, Route, Switch, useHistory} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import './App.css';
 import Header from "../Header/Header";
 import MachinesApp from "../MachinesApp/MachinesApp";

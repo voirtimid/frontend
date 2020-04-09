@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from "react";
-import EmployeeService from "../../../service/EmployeeService";
-import MachineService from "../../../service/MachineService";
+import React from "react";
 import moment from "moment";
 import {Link} from "react-router-dom";
 
