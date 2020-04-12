@@ -143,16 +143,13 @@ class JobsApp extends React.Component {
 
     toShow() {
         if (this.props.loggedIn && this.props.userRole === "Admin") {
-            return (
-                <Switch>
-                    <Route path={"/jobs"} exact render={() => <JobsList onPageClick={this.loadJobs} jobs={this.state.jobs} onDelete={this.deleteJob} onComplete={this.completeJob} totalPages={this.state.totalPages}/>} />}
-                    <Route path={"/jobs/:jobId/edit"} exact render={() => <JobEdit onSubmit={this.updateJob}/>}/>
-                    <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>
-                    <Route path={"/jobs/:jobId/tasks"} exact render={() => <JobDetails jobs={this.state.jobs} onCompleteTask={this.closeTask} />}/>
-                    <Route path={"/jobs/:jobId/tasks/:taskId"} exact render={() => <TaskDetails />}/>
+            return [
+                    <Route path={"/jobs/:jobId/edit"} exact render={() => <JobEdit onSubmit={this.updateJob}/>}/>,
+                    <Route path={"/jobs/:jobId/addTask"} exact render={() => <JobAddTask onCreate={this.createTask}/>}/>,
+                    <Route path={"/jobs/:jobId/tasks"} exact render={() => <JobDetails jobs={this.state.jobs} onCompleteTask={this.closeTask} />}/>,
+                    <Route path={"/jobs/:jobId/tasks/:taskId"} exact render={() => <TaskDetails />}/>,
                     <Route path={"/jobs/:jobId/tasks/:taskId/edit"} exact render={() => <TaskEdit onSubmit={this.updateTask} />}/>
-                </Switch>
-            );
+            ];
         }
     }
 
@@ -160,7 +157,11 @@ class JobsApp extends React.Component {
         return (
             <main role="main" className="mt-3">
                 <div className="container-fluid w-75">
-                    {this.toShow()}
+                    <Switch>
+                        {this.toShow()}
+                        <Route path={"/jobs"} exact render={() => <JobsList userRole={this.props.userRole} onPageClick={this.loadJobs} jobs={this.state.jobs} onDelete={this.deleteJob} onComplete={this.completeJob} totalPages={this.state.totalPages}/>} />}
+                    </Switch>
+
                 </div>
             </main>
         );

@@ -23,13 +23,11 @@ const Header = (props) => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarCollapse">
                     <ul className="navbar-nav mr-auto">
-                        {props.user.role === "Admin" &&
-                        <li className="nav-item">
-                            <Link className="nav-link" to={"/jobs"}>Orders</Link>
-                        </li>
-                        }
                         {props.loggedIn &&
                         [
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/jobs"}>Orders</Link>
+                            </li>,
                             <li key={1} className="nav-item">
                                 <Link className="nav-link" to={"/history/jobs"}>Past orders</Link>
                             </li>,

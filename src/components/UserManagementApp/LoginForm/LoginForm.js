@@ -11,7 +11,57 @@ const LoginForm = (props) => {
         lastName: ""
     };
 
+    const validateUser = {
+        emailError: "",
+        passwordError: "",
+        firstNameError: "",
+        lastNameError: ""
+    }
+
     const [user, setUser] = useState(emptyUser);
+    const [validate, setValidate] = useState(validateUser);
+
+    const isValid = () => {
+        let emailError = ""
+        let passwordError = ""
+        let firstNameError = "";
+        let lastNameError = "";
+        if (!user.email) {
+            emailError = "Email is not entered";
+        }
+        if (!user.password) {
+            passwordError = "Password is not entered";
+        }
+        if (!user.firstName) {
+            firstNameError = "First name is not entered";
+        }
+        if (!user.lastName) {
+            lastNameError = "Last name is not entered";
+        }
+        if (props.shouldRegister) {
+            if (emailError || passwordError || firstNameError || lastNameError) {
+                setValidate({
+                    ...validateUser,
+                    emailError: emailError,
+                    passwordError: passwordError,
+                    firstNameError: firstNameError,
+                    lastNameError: lastNameError
+                });
+                return false;
+            }
+            return true;
+        } else {
+            if (emailError || passwordError) {
+                setValidate({
+                    ...validateUser,
+                    emailError: emailError,
+                    passwordError: passwordError
+                });
+                return false;
+            }
+            return true;
+        }
+    };
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -37,24 +87,26 @@ const LoginForm = (props) => {
     const loginUser = (e) => {
         e.preventDefault();
 
-        if (props.shouldRegister) {
-            const userDTO = {
-                email: user.email,
-                password: sha256(user.password),
-                role: user.role,
-                firstName: user.firstName,
-                lastName: user.lastName
-            };
+        if (isValid()) {
+            if (props.shouldRegister) {
+                const userDTO = {
+                    email: user.email,
+                    password: sha256(user.password),
+                    role: user.role,
+                    firstName: user.firstName,
+                    lastName: user.lastName
+                };
 
-            props.onRegister(userDTO);
-        } else {
+                props.onRegister(userDTO);
+            } else {
 
-            const userDTO = {
-                email: user.email,
-                password: sha256(user.password),
-                role: user.role
-            };
-            props.onLogin(userDTO);
+                const userDTO = {
+                    email: user.email,
+                    password: sha256(user.password),
+                    role: user.role
+                };
+                props.onLogin(userDTO);
+            }
         }
     };
 
@@ -65,9 +117,9 @@ const LoginForm = (props) => {
                 <div className="form-group row">
                     <label htmlFor="firstName" className="col-sm-4 offset-sm-1 text-left">First Name</label>
                     <div className="col-sm-6">
-                        {/*<div style={{fontSize: 12, color: "red"}}>*/}
-                        {/*    {employeeValidated.firstNameError}*/}
-                        {/*</div>*/}
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.firstNameError}
+                        </div>
                         <input type="text" className="form-control" id="firstName" name="firstName"
                                placeholder="First Name" value={user.firstName} onChange={handleInputChange}/>
                     </div>
@@ -76,9 +128,9 @@ const LoginForm = (props) => {
                 <div className="form-group row">
                     <label htmlFor="lastName" className="col-sm-4 offset-sm-1 text-left">Last Name</label>
                     <div className="col-sm-6">
-                        {/*<div style={{fontSize: 12, color: "red"}}>*/}
-                        {/*    {employeeValidated.lastNameError}*/}
-                        {/*</div>*/}
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.lastNameError}
+                        </div>
                         <input type="text" className="form-control" id="lastName" name="lastName"
                                placeholder="Short Name" value={user.lastName} onChange={handleInputChange}/>
                     </div>
@@ -87,6 +139,9 @@ const LoginForm = (props) => {
                 <div className="form-group row">
                     <label htmlFor="email" className="col-sm-4 offset-sm-1 text-left">Email</label>
                     <div className="col-sm-6">
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.emailError}
+                        </div>
                         <input type="email"
                                className="form-control"
                                id="email" name="email"
@@ -97,6 +152,9 @@ const LoginForm = (props) => {
                 <div className="form-group row">
                     <label htmlFor="password" className="col-sm-4 offset-sm-1 text-left">Password</label>
                     <div className="col-sm-6">
+                        <div style={{fontSize: 12, color: "red"}}>
+                            {validate.passwordError}
+                        </div>
                         <input type="password"
                                className="form-control"
                                id="password"

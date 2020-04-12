@@ -137,6 +137,43 @@ const JobsListHistory = (props) => {
 
     let showPastOrders = (
         <Fragment>
+
+            <Fragment>
+                <div className="row mb-3">
+                    {jobsTable}
+                </div>
+                {paginate()}
+            </Fragment>
+
+            <div className="form-group row">
+                <div className="col-6">
+                    <button type="button" className="btn btn-primary" onClick={() => exportDataToPDF(false)}> Export current page to PDF
+                    </button>
+                </div>
+                <div className="col-6">
+                    <button type="button" className="btn btn-primary" onClick={() => exportDataToPDF(true)}> Export all pages to PDF
+                    </button>
+                </div>
+            </div>
+
+        </Fragment>
+    );
+
+    let emptyResult = (
+        <h3 className="col">Empty! There are no closed orders.</h3>
+    );
+
+    let toShow;
+
+    if (props.jobs.length === 0) {
+        toShow = emptyResult;
+    } else {
+        toShow = showPastOrders;
+    }
+
+    return (
+        <Fragment>
+            <h2 className="text-upper text-left">Closed Orders</h2>
             <p>
                 <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
                         aria-expanded="false" aria-controls="collapseExample">
@@ -215,42 +252,6 @@ const JobsListHistory = (props) => {
                     </form>
                 </div>
             </div>
-            <Fragment>
-                <div className="row mb-3">
-                    {jobsTable}
-                </div>
-                {paginate()}
-            </Fragment>
-
-            <div className="form-group row">
-                <div className="col-6">
-                    <button type="button" className="btn btn-primary" onClick={() => exportDataToPDF(false)}> Export current page to PDF
-                    </button>
-                </div>
-                <div className="col-6">
-                    <button type="button" className="btn btn-primary" onClick={() => exportDataToPDF(true)}> Export all pages to PDF
-                    </button>
-                </div>
-            </div>
-
-        </Fragment>
-    );
-
-    let emptyResult = (
-        <h3 className="col">Empty! There are no closed orders.</h3>
-    );
-
-    let toShow;
-
-    if (props.jobs.length === 0) {
-        toShow = emptyResult;
-    } else {
-        toShow = showPastOrders;
-    }
-
-    return (
-        <Fragment>
-            <h2 className="text-upper text-left">Closed Orders</h2>
             {toShow}
         </Fragment>
     );

@@ -75,9 +75,11 @@ const JobsList = (props) => {
     return (
         <Fragment>
             <h2 className="text-upper text-left">Orders</h2>
+            {props.userRole === "Admin" &&
             <Link className="btn btn-outline-secondary mb-3 row" to={"/sketches"}>
                 <span><strong>Create new order</strong></span>
             </Link>
+            }
             <Fragment>
 
                 <div className="row mb-3">
