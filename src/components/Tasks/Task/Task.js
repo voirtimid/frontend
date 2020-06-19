@@ -54,7 +54,9 @@ const Task = (props) => {
                 }
                 {!status &&
                 <form onSubmit={onTaskFinished}>
-                    <button className="btn btn-sm btn-success">Complete Task
+                    <button
+                        disabled={!(task.realStartDate || task.realEndDate)}
+                        className="btn btn-sm btn-success">Complete Task
                     </button>
                 </form>
                 }

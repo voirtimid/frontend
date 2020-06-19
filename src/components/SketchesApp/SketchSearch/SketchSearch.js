@@ -454,7 +454,7 @@ const SketchSearch = (props) => {
 
             <br/>
             <Link to={"/sketches/new"} className="btn btn-secondary">
-                Create new project
+                Create new drawing
             </Link>
             <br/>
 

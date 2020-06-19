@@ -52,6 +52,7 @@ const Job = (props) => {
             <td>{props.job.plannedHours.toFixed(1)} / {props.job.realHours.toFixed(1)}</td>
             <td>{props.job.plannedTimeForPiece.toFixed(1)} / {props.job.realTimeForPiece.toFixed(1)}</td>
             <td>{finishedTasks} / {props.job.tasks.length}</td>
+            {props.userRole === "Admin" &&
             <td>
                 <button type="button"
                         className="btn btn-success btn-sm"
@@ -64,6 +65,7 @@ const Job = (props) => {
                     <span><strong>Tasks</strong></span>
                 </Link>
             </td>
+            }
         </tr>
     );
 };

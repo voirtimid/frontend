@@ -6,7 +6,7 @@ import ReactPaginate from "react-paginate"
 const JobsList = (props) => {
 
     const jobs = props.jobs.map(job => <Job key={job.jobId} job={job} onDelete={props.onDelete}
-                                            onComplete={props.onComplete}/>);
+                                            onComplete={props.onComplete} userRole={props.userRole}/>);
 
     const handlePageClick = (e) => {
         props.onPageClick(e.selected)
@@ -50,7 +50,7 @@ const JobsList = (props) => {
                     <th scope="col">Estimated/Actual Hours</th>
                     <th scope="col">Estimated/Actual Time for Piece</th>
                     <th scope="col">Number of tasks</th>
-                    <th scope="col">Actions</th>
+                    {props.userRole === "Admin" && <th scope="col">Actions</th>}
                 </tr>
                 </thead>
                 <tbody>
