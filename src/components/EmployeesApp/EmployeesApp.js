@@ -6,7 +6,7 @@ import EmployeeAdd from "./EmployeeAdd/EmployeeAdd";
 import EmployeeEdit from "./EmployeeEdit/EmployeeEdit";
 import TasksList from "../Tasks/TasksList/TasksList";
 import TaskEmployeeDetails from "../Tasks/TaskEmployeeDetails/TaskEmployeeDetails";
-import autoBindReact from "auto-bind";
+import { reactAutoBind } from 'auto-bind2'
 
 class EmployeesApp extends React.Component {
 
@@ -15,7 +15,7 @@ class EmployeesApp extends React.Component {
         this.state = {
             employees: []
         };
-        autoBindReact(this);
+        reactAutoBind(this);
     }
 
     componentDidMount() {

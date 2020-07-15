@@ -4,7 +4,7 @@ import {Route, Switch} from "react-router";
 import TaskDetailsHistory from "../Tasks/TaskDetailsHistory/TaskDetailsHistory";
 import JobsListHistory from "./JobsListHistory/JobsListHistory";
 import JobHistory from "./JobHistory/JobHistory";
-import autoBindReact from "auto-bind";
+import { reactAutoBind } from 'auto-bind2'
 
 class JobsHistoryApp extends React.Component {
 
@@ -18,7 +18,7 @@ class JobsHistoryApp extends React.Component {
             totalPages:0
 
         };
-        autoBindReact(this);
+        reactAutoBind(this);
     }
 
     componentDidMount() {

@@ -1,5 +1,6 @@
 # build environment
 FROM node:13.12.0-alpine as build
+RUN apk add --no-cache git
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./

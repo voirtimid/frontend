@@ -8,7 +8,7 @@ import TaskService from "../../service/TaskService";
 import TaskDetails from "../Tasks/TaskDetails/TaskDetails";
 import JobEdit from "./JobEdit/JobEdit";
 import TaskEdit from "../Tasks/TaskEdit/TaskEdit";
-import autoBindReact from "auto-bind";
+import { reactAutoBind } from 'auto-bind2'
 
 class JobsApp extends React.Component {
 
@@ -22,7 +22,7 @@ class JobsApp extends React.Component {
             totalPages:0
 
         };
-        autoBindReact(this);
+        reactAutoBind(this);
     }
 
     componentDidMount() {
