@@ -10,7 +10,7 @@
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "auto-bind2": "^1.0.3",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "datatables": "^1.10.18",
     "datatables.net": "^1.10.20",
