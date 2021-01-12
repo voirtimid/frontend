@@ -13,7 +13,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "datatables": "^1.10.18",
-    "datatables.net": "^1.10.20",
+    "datatables.net": "^1.10.22",
     "datatables.net-dt": "^1.10.20",
     "font-awesome": "^4.7.0",
     "html2canvas": "^1.0.0-rc.5",
